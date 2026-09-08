@@ -30,7 +30,7 @@
         >
         <p class="small">
           Public sample of the original local Git checks. Microsoft is not a
-          customer. The sample does not include this version’s CI and approval
+          customer; no endorsement is implied. The sample does not include this version’s CI and approval
           checks.
         </p>
       </section>
@@ -53,7 +53,7 @@
           <h2>FAIL</h2>
           <p>
             The verifier could not safely establish a result. Required
-            prerequisites need attention.
+            prerequisites need attention. It does not mean bad code.
           </p>
         </div>
       </section>
@@ -71,6 +71,13 @@
             link and download the pack before it expires.
           </p>
           <p>No call required. No customer source code is executed.</p>
+          <p>
+            Check eligibility, save your private link, and pay through Stripe.
+            Return here to authorize the public repository and confirm the exact
+            scope. This page shows progress and provides your downloads. Within
+            seven days, prepare your one reassessment of the same PR, confirm
+            its current scope, and download the comparison and Action handoff.
+          </p>
         </div>
         <div>
           <h2>One configured price</h2>
@@ -101,6 +108,10 @@
           pack checks those requirements and one non-author human collaborator
           approval. It does not certify all branch rules, CODEOWNERS, test
           quality, or the eventual merge state of an open PR.
+        </p>
+        <p>
+          This is not bug detection, a security or compliance certification,
+          proof of correctness, or a guarantee of safe code or a safe merge.
         </p>
         <p>These remain outside the implemented proof:</p>
         <ul>
@@ -147,6 +158,19 @@
             GitHub’s check-run API. All listed checks must succeed on the
             relevant SHA. We do not infer your organization’s CI policy.
           </p>
+          <details>
+            <summary>How to find your required CI checks</summary>
+            <p>
+              Use the check names your repository requires. Open
+              <code>https://api.github.com/repos/OWNER/REPO/commits/SHA/check-runs</code>
+              with your public repository and relevant commit SHA. For each
+              required entry, copy its <code>name</code> and <code>app.id</code>
+              as <code>name | app.id</code>, one per line. Use the candidate head
+              for an open PR or the landed merge commit for a supported merge.
+              Paginate if GitHub returns more results. No token is required.
+              Commit-status-only CI is not supported.
+            </p>
+          </details>
           <button>Check free eligibility</button>
           <p class="small">
             Eligibility checks deliverability only. It does not reveal paid
@@ -212,11 +236,43 @@
         </div>
       </section>
       <footer>
-        Merge-Proof · Standard Evidence Pack<br />Source repositories are
-        deleted after each isolated run. Captured evidence and reports are
-        retained for seven days; payment and exception records are retained for
-        purchase reconciliation. No source file contents are included in the
-        evidence pack.
+        <h2>Data and support</h2>
+        <p>Merge-Proof Standard Evidence Pack is from OHCAYGO, owned by Ryan Williams.</p>
+        <p>
+          Public GitHub repositories only. We read repository and PR metadata,
+          full Git history, changed paths, check-run results and review metadata.
+          We do not request PATs, GitHub App installation, private-repository or
+          organization access, or permission to write to your repository.
+          Customer code, hooks and dependencies are not executed.
+        </p>
+        <p>
+          Temporary Git copies are removed after each completed or failed
+          attempt. Reports contain repository and PR identifiers, commit hashes,
+          changed paths, findings, selected CI/review identifiers and evidence
+          states, plus capture and artifact provenance. Source file contents and
+          review bodies are not included. Reports are private to anyone holding
+          your access link; save it securely. There is no automatic email recovery.
+        </p>
+        <p>
+          Downloads and reassessment expire seven days after payment. Report
+          artifacts are removed by the next hourly cleanup or service startup;
+          unpaid eligibility records expire after seven days. Paid order metadata,
+          Stripe transaction references, purchase email, confirmed amount and
+          exception records remain for reconciliation without automatic deletion.
+          Stripe handles checkout and payment details; we do not receive your
+          card number. No analytics or model provider is used by this factory.
+        </p>
+        <p>
+          For a failed attempt, use the retry or exception controls on your pack
+          page. REFUND_REQUIRED is recorded for Ryan to review, never an automatic
+          refund. For billing, lost access or refund questions, email
+          <a href="mailto:support@ohcaygo.com">support@ohcaygo.com</a>.
+          Include your repository/PR and Stripe receipt reference; do not send
+          your private access link, card number or credentials. Support is
+          asynchronous; no call is required. General product questions can use
+          <a href="https://github.com/ohcaygo/merge-proof/issues" target="_blank" rel="noopener">Merge-Proof GitHub issues</a>.
+          Issues are public: never post access links, payment details or private data.
+        </p>
       </footer>
     </main>
   </body>

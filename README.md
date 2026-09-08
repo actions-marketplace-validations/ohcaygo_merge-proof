@@ -1,5 +1,11 @@
 # merge-proof
 
+The documentation below describes the published local CLI and Action. The
+[Merge-Proof Standard Evidence Pack](factory/README.md) is the public-GitHub-only
+paid factory in this same product family, adding bounded SHA-bound CI and human
+approval evidence, private report delivery and one reassessment. Its
+[launch readiness](factory/LAUNCH-READINESS.md) is separate from the CLI release.
+
 **Before an AI-authored PR merges, determine whether the available evidence actually proves the candidate against the repository state being merged.**
 
 A clean diff is not evidence. Git will merge a pull request without conflict even when the combined state — your changes plus everything that landed on the base while the PR was open — was never built or tested by anything. merge-proof looks for that gap and says so plainly.

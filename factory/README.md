@@ -4,6 +4,9 @@ The skinny factory extends the existing Merge-Proof repository. The public CLI,
 Action, historical collector, Kiota sample, and local verdict semantics remain
 unchanged. No model provider is used. No new package dependency is introduced.
 
+The [commercial launch checklist](LAUNCH-READINESS.md) records remaining owner
+actions separately from the achieved [factory acceptance](ACCEPTANCE.md).
+
 ## Run locally
 
 Requirements: Node 22+ (tested on Node 24), Git, a POSIX shell, and Chrome/Chromium
