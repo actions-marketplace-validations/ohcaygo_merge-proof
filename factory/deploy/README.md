@@ -2,15 +2,16 @@
 
 Keep Cloudflare Pages project `merge-proof` and `merge-proof.ohcaygo.com`.
 The Pages worker proxies only `/api/*`, `/download/*` and `/webhooks/stripe`.
-Production variables are `FACTORY_BACKEND=https://161.35.59.206` and an encrypted
+Production variables are `FACTORY_BACKEND=https://merge-proof-origin.ohcaygo.com` and an encrypted
 `FACTORY_PROXY_SECRET`, matching `proxySecret` in the backend's private JSON.
 Never put either private JSON or the secret in the Pages upload or Git.
 
 The dedicated DigitalOcean backend is Droplet `598775880` (`merge-proof-factory`),
 NYC1, Debian 13, Basic Regular 1 vCPU / 2 GB / 50 GB, $12/month, no add-ons.
 The application runs as `mergeproof`, listens on loopback port 4327, and stores
-production state in `/var/lib/merge-proof/state`. Nginx terminates IP-address TLS.
-The public IP avoids adding another hostname. Certificate renewal is checked twice
+production state in `/var/lib/merge-proof/state`. Nginx terminates HTTPS for the owner-approved backend-only origin hostname.
+Workers fetch does not support raw-IP origins. The customer URL remains unchanged.
+Certificate renewal is checked twice
 daily by `merge-proof-certbot.timer`; its deploy hook reloads Nginx. Verify renewal
 with `certbot renew --dry-run` after certificate or webserver configuration changes.
 

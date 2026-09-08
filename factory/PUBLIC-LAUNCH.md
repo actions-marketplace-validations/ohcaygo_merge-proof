@@ -1,5 +1,47 @@
 # Public launch execution — September 8, 2026
 
+## Final public deployment — September 8, 2026, 17:03 UTC
+
+This final checkpoint supersedes the earlier blocked checkpoints below.
+
+PUBLIC_LAUNCH_FINISH_LINE: ACHIEVED — VERIFIED WITHOUT REAL CHARGE.
+NOT YET VERIFIED WITH REAL CUSTOMER PAYMENT: actual paid live webhook → production analysis/report/download/reassessment. No live payment is claimed.
+
+| Return field | Verified result |
+|---|---|
+| PRODUCT | Merge-Proof Standard Evidence Pack |
+| PUBLIC_URL | https://merge-proof.ohcaygo.com |
+| REPOSITORY_HEAD | Runtime source commit 36d59e5; subsequent final documentation commit is the head of the clean delivery checkout /private/tmp/merge-proof-public-launch-final |
+| DEPLOYMENT_TARGET | Existing Cloudflare Pages project merge-proof ($0/month) and existing DigitalOcean Droplet 598775880 ($12/month), no add-ons |
+| DOMAIN/HOSTNAME | Customer hostname unchanged. Owner explicitly approved backend-only DNS A merge-proof-origin.ohcaygo.com → 161.35.59.206, DNS-only; no other hostname created |
+| HTTPS | Public HTTPS PASS; origin trusted certificate expires 2026-12-07; renewal rehearsal PASS and existing timer active |
+| PUBLIC_PAGE / STUDY_VISIBLE | Chrome public page and existing G1 findings/disclosures visible; JavaScript initialized live price; no browser errors observed |
+| KIOTA_SAMPLE | /sample HTTP 200; original public PDF preserved, SHA256 6250cbc8cc33bf7030339197c95ced5c36440c223a9b02c61c98fa2c5a323a80; no-endorsement disclaimer visible |
+| PUBLIC_REPO_V1 / ELIGIBILITY | Chrome free eligibility for pallets/click PR 3781 returned ELIGIBLE and private access link; required check Random 3.14t (stable), App ID 15368. Unsupported host rejected HTTP 400. Existing private-repo rejection fixture retained |
+| STRIPE_LIVE_ACCOUNT | acct_1UDDJ2A4MpEXwdH4: fresh account-status view says No active tasks for your account, superseding earlier review banner. Actual live checkout opens |
+| STRIPE_LIVE_PRODUCT | prod_VDtR6ryWQmho00, Merge-Proof Standard Evidence Pack |
+| STRIPE_LIVE_PRICE | price_1UDReIA4MpEXwdH48FgJ5E5K, one-time 500000 USD, active/live verified through restricted read key |
+| STRIPE_LIVE_PAYMENT_LINK | plink_1UDRfUA4MpEXwdH4v2IP6WbF, fixed quantity one; https://buy.stripe.com/6oUcN4deR69zbtgc7f9IQ00; return https://merge-proof.ohcaygo.com/#paid |
+| REAL_MONEY_TRANSACTION | NO. Browser reached product/price/payment form and stopped; restricted API read confirmed session status open and payment_status unpaid, amount 500000 USD |
+| WEBHOOK_PUBLIC | we_1UDRjDA4MpEXwdH4GrlSjpT1 active for only checkout.session.completed and checkout.session.async_payment_succeeded at /webhooks/stripe. Public unsigned POST reaches handler and is rejected 400. No fabricated live paid event sent |
+| PRODUCTION_CONFIG_SEPARATED_FROM_TEST | Private live configuration with dedicated restricted rk_live key and live webhook secret. 12 affected config/adapter/proxy tests PASS, including wrong-mode rejection |
+| RUNTIME_ANALYSIS / PDF_GENERATION | Earlier actual Linux-host fixture suite 34/34 PASS under production systemd restrictions, including real Git and Chromium/PDF execution. Runtime code unchanged apart from tested restricted-key compatibility |
+| SECURE_DOWNLOAD / REASSESSMENT | Actual-host fixture journey PASS from earlier run; public unauthenticated download rejects 401. No claim of real paid production delivery |
+| SUPPORT_CONTACT / NON_CLAIMS | support@ohcaygo.com and approved V1 limitations/privacy/non-claims visible |
+| PRIVACY_SECRET_CHECK | Actual three private config secrets compared privately with public root/app/style/sample/worker/routes responses: no secret matches. Origin denies unauthenticated requests 403; pages.dev API denied 404. Access links and key never printed in evidence |
+| STATE_PERSISTENCE | Graceful restart retained live state SHA256 bc75a703bcc9125ab51d538dccb869e16b8f275b76263c98f81b057ca32ba274; service and renewal timer active |
+| TESTS | Public HTTPS/offer/eligibility/checkout-boundary/protected-route/sample checks PASS; origin renewal rehearsal PASS; affected local tests 12/12 PASS. Earlier actual-host 34/34 fixture suite retained |
+| INDEPENDENT_REVIEW | No additional independent review required by inspected project procedure; no independent production review claimed |
+| FILES_CHANGED / COMMITS | 36d59e5: restricted-key compatibility + test + checkpoint; final documentation commit updates this record and deploy/README.md. No methodology changes |
+| WORKING_TREE | Dedicated final delivery checkout is clean. Original authoring checkout contains pre-existing untracked .cursor/ from other/user work, preserved untouched; no owned changes left uncommitted |
+| EXTERNAL_ACTIONS | Approved origin DNS, free certificate, existing Nginx reload, existing Pages variable update and deployment; read-only live Stripe checks; one unpaid eligibility/checkout verification; no charge/refund/add-on |
+| KNOWN_LIMITATIONS | Existing bounded public-repository V1 restrictions remain. Initial raw-IP proxy deployment failed and was rolled back; resolved by explicitly approved origin DNS. First browser submit preceded script initialization; loaded Chrome flow then verified successfully |
+| UNVERIFIED_WITHOUT_REAL_PAYMENT | End-to-end processing after an actual live customer payment, including successful live webhook event and final paid download/reassessment |
+| BLOCKER | None for the authorized no-real-charge launch finish line |
+| NEXT | STOP |
+
+Production Pages deployment: **9190aa0d-75a6-418c-a7d3-e61bf1c6022e**, verified as current after dashboard reload. Existing original deployment 0fcf6857-0c8e-4ee0-a842-9744a1e0cb0b retained for rollback. Backend release remains /opt/merge-proof/releases/launch-20260908-restricted-key. Customer-facing traffic stays on merge-proof.ohcaygo.com; the origin serves only authenticated factory requests.
+
 ## Latest checkpoint — September 8, 2026, 16:52 UTC
 
 This checkpoint supersedes the historical checkpoints below.
