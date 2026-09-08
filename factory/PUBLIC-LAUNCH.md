@@ -1,5 +1,21 @@
 # Public launch execution — September 8, 2026
 
+## Latest checkpoint — September 8, 2026, 16:52 UTC
+
+This checkpoint supersedes the historical checkpoints below.
+
+- Dedicated restricted LIVE Stripe key `Merge-Proof production verification` created by Ryan and installed ONLY in backend `/etc/merge-proof/live.json` (root:mergeproof 0640). The configured permissions were inspected in the rendered Stripe form: Prices Read, Checkout Sessions Read, Payment Links Read; every other permission None. Key value never included in repository or chat. Temporary local transfer file removed after installation. No write, charge or refund authority granted.
+- Backend compatibility change accepts restricted keys while preserving strict live/test separation. Deployed release `/opt/merge-proof/releases/launch-20260908-restricted-key`; existing service restarted successfully. Affected configuration/Stripe/proxy tests: 12/12 PASS. Earlier complete host fixture evidence remains below.
+- Authenticated Stripe GET price and Payment Link: HTTP 200, active and livemode true. Price `price_1UDReIA4MpEXwdH48FgJ5E5K`: 500000 USD, one-time. Product `prod_VDtR6ryWQmho00`. Payment Link `plink_1UDRfUA4MpEXwdH4v2IP6WbF`, https://buy.stripe.com/6oUcN4deR69zbtgc7f9IQ00. Backend authenticated offer returns HTTP 200 and $5,000.00. Initial origin check omitted required client-IP header and was corrected; no security control changed.
+- Live webhook `we_1UDRjDA4MpEXwdH4GrlSjpT1` active at https://merge-proof.ohcaygo.com/webhooks/stripe for ONLY checkout.session.completed and checkout.session.async_payment_succeeded. Signing secret installed privately. Public delivery is NOT yet connected.
+- Stripe account review remains pending in dashboard (2–3 day estimate). Active API objects do not prove checkout acceptance. No real-money transaction or refund performed.
+- Existing Cloudflare production variables verified after reload: FACTORY_PROXY_SECRET encrypted Secret; FACTORY_BACKEND https://161.35.59.206; Fail closed persisted.
+- Production bundle deployment `982edd4f-e57e-4b89-ae42-24fa9d55b3de` succeeded, but public `/api/offer` returned Cloudflare 403 error 1003. This establishes that the previously proposed raw-IP fetch architecture is incompatible with Workers. Official documentation: https://developers.cloudflare.com/workers/platform/known-issues/#fetch-to-ip-addresses . Valid IP HTTPS alone does not overcome that platform restriction.
+- Rolled public production back to preserved deployment `0fcf6857-0c8e-4ee0-a842-9744a1e0cb0b`; Cloudflare confirmed rollback. Public HTTPS original page title verified after propagation; original sample PDF SHA256 unchanged: 6250cbc8cc33bf7030339197c95ced5c36440c223a9b02c61c98fa2c5a323a80. Factory form is not public after rollback.
+- Owner decision requested: allow backend-only DNS A name merge-proof-origin.ohcaygo.com for existing 161.35.59.206 Droplet, HTTPS certificate, and updating existing Pages backend variable. No customer-facing URL change, no additional website or compute, no incremental hosting cost. This is an exception to the explicit no-new-hostname constraint; no DNS name created without approval.
+- PUBLIC_LAUNCH_FINISH_LINE: NOT_ACHIEVED. Backend is configured; public proxy and Stripe review remain blocking. Failed public integration is not reported as passing.
+- No new purchases or add-ons. Existing public Pages hosting $0/month; approved backend $12/month. Untracked `.cursor/` belongs to other/user work and is left untouched.
+
 ## Backend provisioned and verified — September 8, 2026, 15:42 UTC
 
 This is the latest checkpoint and supersedes earlier preparation-only statements.

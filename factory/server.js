@@ -47,8 +47,8 @@ function loadConfig() {
   );
   if (config.stripeSecret)
     ensure(
-      config.stripeSecret.startsWith(
-        config.mode === "test" ? "sk_test_" : "sk_live_",
+      ["sk", "rk"].some((kind) =>
+        config.stripeSecret.startsWith(`${kind}_${config.mode}_`),
       ),
       "WRONG_PAYMENT_MODE",
     );
