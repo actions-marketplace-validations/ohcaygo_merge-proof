@@ -180,3 +180,12 @@ Primary implementation references:
 - https://docs.stripe.com/webhooks/signature
 - https://docs.github.com/en/rest/checks/runs
 - https://docs.github.com/en/rest/pulls/reviews
+
+Expiry does not erase undelivered paid outcomes: an expired purchase with no
+successful report, or an unresolved failed reassessment, escalates once to Ryan
+as REFUND_REQUIRED before access/artifacts are removed. Delivered packs that
+simply reach the disclosed seven-day window expire without inventing a refund.
+Expired reconciliation records do not count toward the active eligibility cap.
+The public wrong-SHA demonstration is an explicitly labeled withholding replay:
+`node factory/proof/wrong-sha-replay.js` retains authentic candidate-SHA checks
+while withholding landed-SHA checks. It is not a claim that the live PR lacked CI.

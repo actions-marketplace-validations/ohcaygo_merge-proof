@@ -183,4 +183,7 @@ act($("refund"), async () =>
   }
 })();
 
-act($("refresh-scope"), async () => { render(await api("scope", {})); text("message", "Scope refreshed. Confirm the current states below."); });
+act($("refresh-scope"), async () => {
+  render(await api("scope", {}));
+  text("message", "Scope refreshed. Confirm the current states below.");
+});

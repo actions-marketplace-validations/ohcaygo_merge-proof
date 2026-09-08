@@ -25,6 +25,7 @@ async function generate({
   const model = normalize(clean);
   model.notChecked = clean.notChecked;
   model.kind = "factory";
+  if (scope.shape === "two-parent-merge") model.rows[0].squash = scope.ciSha;
   let html = renderHtml(model, {
     scope: `${scope.repo} PR #${scope.pr}; ${scope.shape}. One record, captured ${capture.capturedAt}. CI on ${scope.ciSha}; approval on ${scope.headSha}.`,
     source: "report.json",
@@ -36,6 +37,7 @@ async function generate({
       "MERGE-PROOF / STANDARD EVIDENCE PACK",
     )
     .replace("Merge-Proof pilot report", "Merge-Proof Standard Evidence Pack")
+    .replaceAll("Landed squash", "Landed state")
     .replace(
       "This report renders one recorded local CLI analysis against its supplied base and candidate refs. It does not establish that the candidate landed on that base, fetch fresh evidence, or inspect CI. The CLI format has no capture timestamp; freshness must be established separately.",
       "This report combines isolated Git object analysis with a bounded GitHub API capture. Open PRs use the captured candidate head for CI; supported two-parent merges use the landed merge SHA for CI and original PR head for approval. GitHub metadata was checked again after capture. It records evidence available at capture time, not a reconstruction of approval or CI as of merge time. It does not certify every branch rule, CODEOWNER requirement, or test quality. No customer source code is executed. Custom .mergeproofignore files are not loaded in the factory.",

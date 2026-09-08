@@ -90,7 +90,9 @@ class Factory {
         pr = Number(input.pr),
         required = requiredChecks(input.required);
       ensure(
-        Object.keys(this.store.data.orders).length < 1000,
+        Object.values(this.store.data.orders).filter(
+          (o) => o.expiresAt > Date.now() && !o.expiredAt,
+        ).length < 1000,
         "BUSY_RETRY",
         429,
       );
@@ -372,7 +374,16 @@ class Factory {
   }
   purge() {
     for (const [id, o] of Object.entries(this.store.data.orders)) {
-      if (o.expiresAt < Date.now() && o.state !== "RUNNING") {
+      if (o.expiresAt < Date.now() && o.state !== "RUNNING" && !o.expiredAt) {
+        // Expiry may revoke downloads, but cannot erase an undelivered purchase.
+        // Reconciliation metadata does not consume active eligibility capacity.
+        if (
+          o.payment &&
+          (!o.runs.length || ["RETRY", "MANUAL_EXCEPTION"].includes(o.state)) &&
+          o.state !== "REFUND_REQUIRED"
+        ) {
+          this.exception(o, o.failure || "DELIVERY_EXPIRED", "REFUND_REQUIRED");
+        }
         fs.rmSync(path.join(this.store.root, "artifacts", id), {
           recursive: true,
           force: true,
@@ -381,8 +392,10 @@ class Factory {
         else {
           o.tokenHash = null;
           o.pendingScope = null;
+          o.deliveredCount = o.runs.length;
           o.runs = [];
-          o.state = "EXPIRED";
+          o.expiredAt = Date.now();
+          if (o.state !== "REFUND_REQUIRED") o.state = "EXPIRED";
         }
       }
     }
