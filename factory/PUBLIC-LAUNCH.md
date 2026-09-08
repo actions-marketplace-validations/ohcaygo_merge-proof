@@ -33,7 +33,7 @@ PUBLIC_LAUNCH_FINISH_LINE: NOT_ACHIEVED
 | TESTS | npm test: 26 analyzer + 9 report PASS; npm run test:factory: 32 PASS, including real Git/PDF with synthetic Stripe fixture, not a new Stripe transaction; git diff --check PASS |
 | INDEPENDENT_REVIEW | Existing factory review and fixes inspected. No complete production candidate exists to review; no new independent review claimed |
 | FILES_CHANGED | factory/public/index.html; factory/PUBLIC-LAUNCH.md |
-| COMMITS | One local study/launch-evidence commit; obtain exact hash with git log -1 |
+| COMMITS | 55c3e14 adds study and execution evidence; a subsequent documentation commit records owner clarification and hosting/activation findings; obtain current hash with git log -1 |
 | WORKING_TREE | Checked clean after commit |
 | EXTERNAL_ACTIONS | Read-only public GitHub HEAD and public DNS lookups; inspected Stripe sandbox and live activation UI after explicit owner confirmation; inspected Cloudflare login. No external mutation, push, deployment, purchase or refund |
 | KNOWN_LIMITATIONS | Existing factory limits preserved; no compatible host/access identified in inspected repository or local SSH configuration |
