@@ -1,13 +1,16 @@
 # Merge-Proof skinny factory — implementation return
 
-Recorded September 7, 2026 (America/Chicago).
+Updated September 7, 2026 (America/Chicago), after final delivery closure.
 
-The factory is implemented and locally tested. The single independent review's
-two concrete defects are fixed and affected behavior has been rechecked.
-**FACTORY_FINISH_LINE: NOT_ACHIEVED** because no actual Stripe TEST Payment Link
-transaction has been completed. Stripe test configuration was absent from the
-workspace/environment and its private configuration-file path was requested from
-Ryan. Synthetic Stripe fixtures are not presented as a real test transaction.
+The factory is implemented, tested and independently reviewed; the two concrete
+review findings were fixed and rechecked. The actual Stripe TEST purchase,
+webhook, paid-run binding, report and reassessment are confirmed by the preserved
+private receipt. The remaining browser PDF download now passes in normal Chrome.
+**FACTORY_FINISH_LINE: ACHIEVED. BLOCKER: NONE.**
+
+See [final browser delivery evidence](proof/browser-download-closure.md). This
+supersedes the earlier missing-Stripe and browser-download acceptance blockers;
+it does not change the original review history or claim production deployment.
 
 | Required return field | Result |
 |---|---|
@@ -16,11 +19,11 @@ Ryan. Synthetic Stripe fixtures are not presented as a real test transaction.
 | SOURCE_COMMIT | `dab4c4b896a4ff704603e4945edfce87c43fd4e5` — fetched current public origin/main |
 | FACTORY_COMMIT | `5efae84a255bb0984ea23be5a90167367ae3bc5a` — implementation plus review fixes; this acceptance record is a subsequent documentation-only commit |
 | CURRENT_PUBLIC_MERGEPROOF_PRESERVED | YES. Existing src/, bin/, Action, historical collector and Kiota sample unchanged; no push or integration performed. |
-| OFFER_PAGE | PASS locally: offer, verdict definitions, limitations, deliverables, eligibility, configured-price adapter, failed-run principle and both deferred gaps. Browser rendered; checkout honestly unavailable without config. |
+| OFFER_PAGE | PASS locally: offer, verdict definitions, limitations, deliverables, eligibility, configured-price adapter, failed-run principle and both deferred gaps. Browser rendered; configured Stripe TEST checkout completed. |
 | KIOTA_SAMPLE_LINK | PASS — existing sample served at `/sample`; explicit public-methodology / not-a-customer disclaimer and original coverage caveat. |
 | ELIGIBILITY | PASS — real Git preconditions, bounded scope, public access checks, no verdict/findings in free output; actual browser reached ELIGIBLE for pallets/click #3781. |
 | PAYMENT | Stripe Payment Link; client_reference_id bound to eligible order; timestamped raw-body HMAC verification; Stripe session retrieval verifies paid status, mode, link, SKU, quantity, contact, transaction and authoritative amount. Idempotent persistence precedes acknowledgement. |
-| TEST_PAYMENT | FAIL / NOT EXECUTED — no actual Stripe TEST transaction. Signed synthetic fixture webhook tests pass. |
+| TEST_PAYMENT | PASS — actual Stripe TEST Payment Link transaction succeeded; authenticated webhook HTTP 200; exact transaction/order binding preserved in the private receipt. No real money. |
 | REPOSITORY_INPUT | Public GitHub repository URL plus one PR. Open PR or explicit two-parent merge supported. Private, squash/rebase and ambiguous/oversized history rejected before payment. |
 | GITHUB_APP_PERMISSIONS | NOT_REQUIRED — public-only input. No GitHub App or PAT workflow. Private adapter tests verify rejection; successful private-repo analysis is not implemented or claimed. |
 | LEAST_PRIVILEGE | PASS for supported public path: unauthenticated public GitHub reads; no GitHub write, organization, repository-secret or customer-token access. |
@@ -39,21 +42,23 @@ Ryan. Synthetic Stripe fixtures are not presented as a real test transaction.
 | EXCEPTION_STATES | AUTH_FAILED, NOT_ELIGIBLE_AFTER_PAYMENT, UNSUPPORTED_HISTORY, AMBIGUOUS_SHA, RUN_FAILED, REPORT_FAILED, REFUND_REQUIRED; RETRY and MANUAL_EXCEPTION customer choices; unbound/duplicate purchase and expired-undelivered cases retained for Ryan. |
 | REFUND_REQUIRED_PATH | PASS — Ryan-owned durable local exception inbox. Expired undelivered purchases/failed reassessments escalate idempotently before access removal. |
 | AUTO_REFUNDS | NO |
-| ASYNC_ZERO_RYAN_HAPPY_PATH | FAIL / NOT FULLY PROVEN with real Stripe. Local fixture HTTP journey completes with zero manual intervention; actual browser eligibility passed. |
+| ASYNC_ZERO_RYAN_HAPPY_PATH | PASS for configured test journey — actual Stripe TEST purchase through paid report and one reassessment; normal Chrome PDF download verified. Initial owner configuration is not claimed to be automatic. |
 | PUBLIC_PROOF_REPOS | pallets/click and pallets/itsdangerous — four authentic PR captures plus one explicitly labeled wrong-SHA withholding replay; details below. No customer claim. |
 | REGRESSION_TESTS | `npm test`: 26/26 analyzer + 9/9 report tests pass. Independently reproduced by reviewer. |
 | NEW_TESTS | `npm run test:factory`: 27/27 candidate tests pass, independently reproduced. Added five retention/report regressions pass. Post-fix `node --test factory/test/journey.test.js factory/test/retention.test.js`: 11/11 pass. 32 unique factory tests covered across these runs. |
-| END_TO_END_FACTORY_TEST | FAIL for required actual Stripe TEST checkout; PASS for clearly labeled synthetic-Stripe HTTP journey with real Git/PDF/download/reassessment. |
+| END_TO_END_FACTORY_TEST | PASS — actual Stripe TEST checkout, webhook, paid report, original preservation, one reassessment and browser PDF delivery. Synthetic fixture evidence remains separately identified. |
 | PRIVACY_SECRET_CHECK | PASS within supported local/public scope: credential-pattern scan, secret-scrub tests, no local paths in delivered JSON, no review bodies/source contents in captures, protected download routes, ephemeral cleanup. Not a claim of deployed security certification. |
-| INDEPENDENT_REVIEW | One independent non-Claude Codex reviewer, `/root/independent_factory_review`; [saved review](review/independent-review.md). Reviewed immutable 65151f2012ec36d698df526e85ff0249f7b88370; two P2 lifecycle findings repaired. External Stripe acceptance blocker remains. |
+| INDEPENDENT_REVIEW | One independent non-Claude Codex reviewer, `/root/independent_factory_review`; [saved review](review/independent-review.md). Reviewed immutable 65151f2012ec36d698df526e85ff0249f7b88370; two P2 lifecycle findings repaired. Subsequent actual Stripe TEST and browser acceptance evidence closes the external acceptance blocker; no second broad review. |
 | FIXES_AFTER_REVIEW | Paid expiry refund escalation; active-only eligibility capacity; focused tests. Also corrected factory report “Landed state” label and recorded merge SHA. No second broad review. |
-| KNOWN_LIMITATIONS | Missing real Stripe test acceptance; public-only; one PR; two-parent/open history only; declared check-run policy rather than every branch rule/status/CODEOWNER requirement; no approval-at-merge reconstruction; process isolation; single Node service/private persistent JSON store; seven-day delivery/reassessment; customer saves private link; no email recovery; unauthenticated GitHub API limits fail closed. |
+| KNOWN_LIMITATIONS | Public-only; one PR; two-parent/open history only; declared check-run policy rather than every branch rule/status/CODEOWNER requirement; no approval-at-merge reconstruction; process isolation; single Node service/private persistent JSON store; seven-day delivery/reassessment; customer saves private link; no email recovery; unauthenticated GitHub API limits fail closed. |
 | FILES_CHANGED | factory/ service, adapters, runner, offer, reports, tests, public proof, configuration example, operating and review docs; package scripts, README, ignore rules and a factory CI job. |
-| EXTERNAL_ACTIONS | Read-only origin fetches and public GitHub API/Git reads; official Stripe/GitHub documentation reads; pinned Prettier fetched to a temporary cache. Local loopback service and Chrome PDF generation. No outreach, posts, purchases, API writes, customer repo publication, push, integration or deployment. |
+| EXTERNAL_ACTIONS | Read-only origin fetches and public GitHub API/Git reads; official Stripe/GitHub documentation reads; pinned Prettier fetched to a temporary cache. Local loopback service and Chrome PDF generation. Subsequent authorized Stripe TEST setup and simulated purchase completed; receipt preserved. No real-money purchase, production Stripe change, outreach, publication, push, integration or deployment. |
 | FULL_PLATFORM_FEATURES_ADDED | NONE |
 | CLAUDE_USED | NO |
-| FACTORY_FINISH_LINE | NOT_ACHIEVED |
-| BLOCKER | Provide the existing private Stripe TEST configuration path containing test secret key, webhook secret, one-time Payment Link ID and price ID, with a matching test webhook/return URL. Then complete and verify the real disposable-customer Payment Link transaction through report delivery and reassessment. No real purchase is required or authorized. |
+| REPORT_DELIVERY | PASS — HTTP 200 PDF attachment downloaded; exact paid-run artifact hash match. |
+| BROWSER_DOWNLOAD | PASS — normal Google Chrome, two matching completed downloads. |
+| FACTORY_FINISH_LINE | ACHIEVED |
+| BLOCKER | NONE |
 | NEXT | STOP. No continuous monitoring, multi-repo, subscriptions or V2. |
 
 ## Public methodology evidence
