@@ -178,3 +178,14 @@ Derived from verification rules developed for an internal multi-agent engineerin
 ## License
 
 [MIT](LICENSE)
+
+## Standard Evidence Pack factory
+
+The optional [skinny factory](factory/README.md) extends this repository with a
+single-PR offer, eligibility, Stripe Payment Link fulfillment, isolated Git runs,
+SHA-bound GitHub CI/review evidence, secure report delivery and one reassessment.
+Run `npm run factory:start` locally. It is separate from the published local-only
+CLI/Action coverage described above; those interfaces retain their current checks.
+Stripe test payment acceptance and release status are recorded in the factory's
+acceptance report. The factory explicitly leaves remote durability and declared
+scope comparison unimplemented.

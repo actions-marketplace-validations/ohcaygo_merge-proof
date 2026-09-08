@@ -1,0 +1,49 @@
+{
+  "capturedAt": "2026-09-08T00:34:57.757Z",
+  "sourceCommit": "dab4c4b896a4ff704603e4945edfce87c43fd4e5",
+  "results": [
+    {
+      "repo": "pallets/click",
+      "pr": 3827,
+      "headSha": "6f9943ed5613d6d4e8ff3d54ec7377e2366c6463",
+      "ci": "CI_MATCHES_RELEVANT_SHA",
+      "approval": "APPROVAL_MISSING",
+      "verdict": "NOT_PROVEN",
+      "captureHash": "0ff3da677438cd9f7b32137c80639e61c3437f6504061b4f1d431441f175a780"
+    },
+    {
+      "repo": "pallets/itsdangerous",
+      "pr": 428,
+      "headSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+      "ci": "CI_MATCHES_RELEVANT_SHA",
+      "approval": "APPROVAL_MISSING",
+      "verdict": "NOT_PROVEN",
+      "captureHash": "5185b27c5b434a58ebc1f664a233d8c286175659ed6bbcf830f99770416f23c8"
+    },
+    {
+      "repo": "pallets/click",
+      "pr": 3781,
+      "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+      "ci": "CI_MATCHES_RELEVANT_SHA",
+      "approval": "APPROVAL_MATCHES_CANDIDATE",
+      "verdict": "VERIFIED",
+      "captureHash": "aeb45d11c4b7f8d0dfef1203950038e211dbf70c940f8c0d69812c3d626165a2"
+    },
+    {
+      "repo": "pallets/itsdangerous",
+      "pr": 133,
+      "headSha": "c30678d19e37011890e2374cca04f7789e101793",
+      "ci": "CI_MISSING",
+      "approval": "APPROVAL_STALE_CANDIDATE",
+      "verdict": "NOT_PROVEN",
+      "captureHash": "983f819e26a609d6910fc346aa5c576af57bbe6c553685344573301742abe0d8"
+    }
+  ],
+  "cleanup": true,
+  "wrongShaReplay": {
+    "file": "wrong-sha-withholding.json",
+    "kind": "controlled withholding of exact-SHA records; authentic other-SHA evidence retained",
+    "ci": "CI_STALE_OR_OTHER_SHA",
+    "verdict": "NOT_PROVEN"
+  }
+}

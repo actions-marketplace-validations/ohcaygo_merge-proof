@@ -1,0 +1,227 @@
+"use strict";
+const http = require("node:http");
+const fs = require("node:fs");
+const path = require("node:path");
+const { ensure } = require("./common");
+const { Store } = require("./store");
+const { Stripe } = require("./stripe");
+const { GitHub } = require("./github");
+const { Runner } = require("./runner");
+const { Factory } = require("./service");
+const types = {
+  ".html": "text/html; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".pdf": "application/pdf",
+  ".json": "application/json",
+  ".md": "text/markdown; charset=utf-8",
+};
+function loadConfig() {
+  const file = process.env.FACTORY_CONFIG;
+  const c = file ? JSON.parse(fs.readFileSync(file, "utf8")) : {};
+  const config = {
+    mode: "test",
+    origin: "http://127.0.0.1:4318",
+    stateDir: path.resolve(__dirname, "../.factory-state"),
+    ...c,
+  };
+  for (const [name, key] of Object.entries({
+    STRIPE_SECRET_KEY: "stripeSecret",
+    STRIPE_WEBHOOK_SECRET: "webhookSecret",
+    STRIPE_PAYMENT_LINK_ID: "paymentLinkId",
+    STRIPE_PRICE_ID: "priceId",
+    FACTORY_ORIGIN: "origin",
+    FACTORY_STATE_DIR: "stateDir",
+  }))
+    if (process.env[name]) config[key] = process.env[name];
+  ensure(["test", "live"].includes(config.mode), "INVALID_CONFIG");
+  const url = new URL(config.origin);
+  ensure(config.origin === url.origin, "INVALID_CONFIG");
+  ensure(
+    url.protocol === "https:" ||
+      (config.mode === "test" &&
+        ["127.0.0.1", "localhost"].includes(url.hostname)),
+    "HTTPS_REQUIRED",
+  );
+  if (config.stripeSecret)
+    ensure(
+      config.stripeSecret.startsWith(
+        config.mode === "test" ? "sk_test_" : "sk_live_",
+      ),
+      "WRONG_PAYMENT_MODE",
+    );
+  return config;
+}
+function createServer(factory) {
+  const rates = new Map();
+  const config = factory.config;
+  const server = http.createServer(async (req, res) => {
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("Referrer-Policy", "no-referrer");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "DENY");
+    res.setHeader(
+      "Content-Security-Policy",
+      "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self' https://buy.stripe.com",
+    );
+    const send = (code, data) => {
+      res.writeHead(code, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(data));
+    };
+    const cookie = (token) =>
+      res.setHeader(
+        "Set-Cookie",
+        `mp_access=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=604800${config.origin.startsWith("https:") ? "; Secure" : ""}`,
+      );
+    try {
+      const url = new URL(req.url, config.origin);
+      ensure(url.origin === config.origin, "INVALID_REQUEST");
+      if (
+        req.method === "GET" &&
+        ["/", "/app.js", "/style.css", "/sample"].includes(url.pathname)
+      ) {
+        const file =
+          url.pathname === "/sample"
+            ? path.join(__dirname, "../samples/kiota.html")
+            : path.join(
+                __dirname,
+                "public",
+                url.pathname === "/" ? "index.html" : url.pathname.slice(1),
+              );
+        res.writeHead(200, { "Content-Type": types[path.extname(file)] });
+        fs.createReadStream(file).pipe(res);
+        return;
+      }
+      if (req.method === "GET" && url.pathname === "/api/offer") {
+        try {
+          send(200, await factory.stripe.offer());
+        } catch {
+          send(200, {
+            price: "Checkout unavailable until Stripe is configured",
+            available: false,
+            mode: config.mode,
+          });
+        }
+        return;
+      }
+      let raw = Buffer.alloc(0);
+      if (req.method === "POST") {
+        for await (const chunk of req) {
+          raw = Buffer.concat([raw, chunk]);
+          ensure(raw.length < 262144, "REQUEST_TOO_LARGE", 413);
+        }
+        if (url.pathname === "/webhooks/stripe") {
+          await factory.webhook(raw, req.headers["stripe-signature"]);
+          send(200, { received: true });
+          return;
+        }
+        ensure(req.headers.origin === config.origin, "ORIGIN_DENIED", 403);
+        ensure(
+          req.headers["content-type"]?.startsWith("application/json"),
+          "INVALID_REQUEST",
+          415,
+        );
+      }
+      const input = raw.length ? JSON.parse(raw) : {};
+      if (req.method === "POST" && url.pathname === "/api/eligibility") {
+        const ip = req.socket.remoteAddress;
+        const now = Date.now();
+        const r = rates.get(ip) || { count: 0, time: now };
+        if (now - r.time > 3600000) {
+          r.count = 0;
+          r.time = now;
+        }
+        ensure(r.count < 6, "RATE_LIMIT", 429);
+        r.count++;
+        if (rates.size > 1000) rates.clear();
+        rates.set(ip, r);
+        const result = await factory.eligible(input);
+        if (result.token) cookie(result.token);
+        send(200, result);
+        return;
+      }
+      if (req.method === "POST" && url.pathname === "/api/access") {
+        const o = factory.auth(input.token);
+        cookie(input.token);
+        send(200, factory.public(o));
+        return;
+      }
+      const token = req.headers.cookie
+        ?.split(";")
+        .map((x) => x.trim())
+        .find((x) => x.startsWith("mp_access="))
+        ?.slice(10);
+      const order = factory.auth(token);
+      if (req.method === "GET" && url.pathname === "/api/order") {
+        send(200, factory.public(order));
+        return;
+      }
+      if (req.method === "GET" && url.pathname.startsWith("/download/")) {
+        const [, , runId, name] = url.pathname.split("/");
+        const file = factory.download(order, runId, name);
+        res.writeHead(200, {
+          "Content-Type":
+            types[path.extname(file)] || "application/octet-stream",
+          "Content-Disposition": `attachment; filename="${name}"`,
+        });
+        fs.createReadStream(file).pipe(res);
+        return;
+      }
+      ensure(req.method === "POST", "NOT_FOUND", 404);
+      if (url.pathname === "/api/checkout")
+        send(200, await factory.checkout(order));
+      else if (url.pathname === "/api/authorize")
+        send(200, await factory.authorize(order, input));
+      else if (url.pathname === "/api/scope")
+        send(200, await factory.prepare(order));
+      else if (url.pathname === "/api/run")
+        send(202, factory.start(order, input));
+      else if (url.pathname === "/api/exception")
+        send(200, factory.escalate(order, input.state));
+      else send(404, { error: "NOT_FOUND" });
+    } catch (error) {
+      if (!res.headersSent)
+        send(error.status || 400, { error: error.code || "REQUEST_FAILED" });
+      else res.end();
+    }
+  });
+  server.requestTimeout = 30000;
+  server.headersTimeout = 15000;
+  return server;
+}
+if (require.main === module) {
+  const config = loadConfig();
+  const store = new Store(config.stateDir);
+  const factory = new Factory({
+    config,
+    store,
+    stripe: new Stripe(config),
+    github: new GitHub(),
+    runner: new Runner(),
+  });
+  factory.purge();
+  const sweep = setInterval(() => factory.purge(), 3600000);
+  const server = createServer(factory);
+  server.once("error", () => {
+    clearInterval(sweep);
+    store.close();
+    console.error("FACTORY_LISTEN_FAILED");
+    process.exitCode = 1;
+  });
+  server.listen(
+    Number(process.env.PORT || 4318),
+    process.env.FACTORY_HOST || "127.0.0.1",
+    () => console.log(`Merge-Proof factory: ${config.origin} (${config.mode})`),
+  );
+  const close = () => {
+    server.close(async () => {
+      await Promise.allSettled([...factory.jobs]);
+      clearInterval(sweep);
+      store.close();
+      process.exit(0);
+    });
+  };
+  process.on("SIGTERM", close);
+  process.on("SIGINT", close);
+}
+module.exports = { createServer, loadConfig };

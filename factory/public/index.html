@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Merge-Proof Standard Evidence Pack</title>
+    <meta
+      name="description"
+      content="A bounded, inspectable record of Git, exact-SHA CI and candidate-bound review evidence for one GitHub pull request."
+    />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <a href="/" class="brand">MERGE-PROOF</a
+        ><span>STANDARD EVIDENCE PACK</span>
+      </header>
+      <section class="intro">
+        <p class="eyebrow">ONE PULL REQUEST · ONE REASSESSMENT</p>
+        <h1>See what the merge<br />evidence actually proves.</h1>
+        <p class="lead">
+          An inspectable evidence pack for one supported public GitHub pull
+          request. Git history, CI on the relevant commit, and human approval
+          bound to the candidate.
+        </p>
+        <a href="/sample" target="_blank" rel="noopener"
+          >Inspect the Kiota methodology sample ↗</a
+        >
+        <p class="small">
+          Public sample of the original local Git checks. Microsoft is not a
+          customer. The sample does not include this version’s CI and approval
+          checks.
+        </p>
+      </section>
+      <section class="definitions">
+        <div>
+          <h2>VERIFIED</h2>
+          <p>
+            Implemented checks found no blocking evidence gap. It does not prove
+            correctness.
+          </p>
+        </div>
+        <div>
+          <h2>NOT_PROVEN</h2>
+          <p>
+            Evidence is missing under implemented checks. It does not mean
+            defective code.
+          </p>
+        </div>
+        <div>
+          <h2>FAIL</h2>
+          <p>
+            The verifier could not safely establish a result. Required
+            prerequisites need attention.
+          </p>
+        </div>
+      </section>
+      <section class="offer">
+        <div>
+          <h2>What you receive</h2>
+          <p>
+            A PDF report, JSON results, capture and evidence manifest, Action
+            handoff Markdown, and one reassessment with a before-and-after diff.
+            Your original report stays intact.
+          </p>
+          <p>
+            Download securely from this page. Access and one reassessment are
+            available for seven days after payment. Save your private access
+            link and download the pack before it expires.
+          </p>
+          <p>No call required. No customer source code is executed.</p>
+        </div>
+        <div>
+          <h2>One configured price</h2>
+          <p id="price" class="price">Loading Stripe price…</p>
+          <p>
+            Check eligibility before payment. Stripe confirms the actual
+            transaction amount. A missing-evidence verdict is a delivered
+            result, not a failed run.
+          </p>
+          <p>
+            If delivery fails, retry or request an exception. Undeliverable
+            purchases are escalated to Ryan as <strong>REFUND_REQUIRED</strong>.
+            Refunds are reviewed by Ryan, never issued automatically.
+          </p>
+        </div>
+      </section>
+      <section class="limits">
+        <h2>The limits are part of the result.</h2>
+        <p>
+          One open PR or reconstructable two-parent merge on public GitHub. Full
+          history must fit the bounded runner: repository metadata ≤128 MiB,
+          fetched objects ≤192 MiB, ≤100,000 reachable commits, and a two-minute
+          run limit. Squash/rebase merges, private repositories, and ambiguous
+          history are not supported in this version.
+        </p>
+        <p>
+          You confirm the required CI check names and their GitHub App IDs. This
+          pack checks those requirements and one non-author human collaborator
+          approval. It does not certify all branch rules, CODEOWNERS, test
+          quality, or the eventual merge state of an open PR.
+        </p>
+        <p>These remain outside the implemented proof:</p>
+        <ul>
+          <li>
+            <code>CANDIDATE_DURABLE_ON_REMOTE</code> — whether the candidate
+            remains durable on the remote.
+          </li>
+          <li>
+            <code>SCOPE_CREEP_VS_DECLARED_SCOPE</code> — whether changes stay
+            within declared scope.
+          </li>
+        </ul>
+      </section>
+      <section class="work" id="customer">
+        <div class="section-head">
+          <h2>Your evidence pack</h2>
+          <span id="state">START WITH ELIGIBILITY</span>
+        </div>
+        <p id="message" role="status" aria-live="polite"></p>
+        <form id="eligibility">
+          <label
+            >Public GitHub repository URL<input
+              name="url"
+              type="url"
+              placeholder="https://github.com/owner/repository"
+              required
+              autocomplete="off" /></label
+          ><label
+            >Pull request number<input
+              name="pr"
+              type="number"
+              min="1"
+              required /></label
+          ><label
+            >Required CI checks<textarea
+              name="required"
+              rows="3"
+              placeholder="tests | 15368"
+              required
+            ></textarea>
+          </label>
+          <p class="small">
+            One check per line: exact check name | GitHub App ID. Find both in
+            GitHub’s check-run API. All listed checks must succeed on the
+            relevant SHA. We do not infer your organization’s CI policy.
+          </p>
+          <button>Check free eligibility</button>
+          <p class="small">
+            Eligibility checks deliverability only. It does not reveal paid
+            findings or verdicts.
+          </p>
+        </form>
+        <div id="access" hidden>
+          <label
+            >Save this private access link<input id="private-link" readonly
+          /></label>
+          <p class="small">
+            Anyone with this link can access your pack until expiry. Keep it
+            private. It is not sent to Stripe or GitHub.
+          </p>
+        </div>
+        <div id="payment" hidden>
+          <p>
+            Your repository is eligible. Continue to the configured Stripe
+            Payment Link, then return here after payment.
+          </p>
+          <button id="pay">Continue to Stripe</button
+          ><button id="refresh" class="secondary">Check payment status</button>
+        </div>
+        <form id="authorization" hidden>
+          <h3>Confirm your repository</h3>
+          <p>
+            This purchase covers the repository and PR checked above. Confirm
+            permission to analyze this public repository.
+          </p>
+          <label>Repository URL<input name="url" type="url" required /></label
+          ><label
+            >PR number<input name="pr" type="number" min="1" required /></label
+          ><label class="check"
+            ><input type="checkbox" required /> I authorize this
+            public-repository analysis.</label
+          ><button>Authorize and prepare scope</button>
+        </form>
+        <div id="scope" hidden>
+          <h3>Confirm the exact scope</h3>
+          <pre id="scope-details"></pre>
+          <p>
+            The report applies to these captured states and the listed required
+            checks. If the candidate changes before execution, it must be
+            confirmed again.
+          </p>
+          <button id="run">Confirm scope and run</button>
+<button id="refresh-scope" class="secondary">Refresh scope</button>
+        </div>
+        <div id="delivery" hidden>
+          <h3>Your downloads</h3>
+          <div id="downloads"></div>
+          <button id="reassess">Prepare my one reassessment</button>
+          <p id="expiry" class="small"></p>
+        </div>
+        <div id="failure" hidden>
+          <p id="failure-detail"></p>
+          <button id="retry">Retry with current scope</button
+          ><button id="manual" class="secondary">
+            Request manual exception</button
+          ><button id="refund" class="secondary">
+            Escalate refund to Ryan
+          </button>
+        </div>
+      </section>
+      <footer>
+        Merge-Proof · Standard Evidence Pack<br />Source repositories are
+        deleted after each isolated run. Captured evidence and reports are
+        retained for seven days; payment and exception records are retained for
+        purchase reconciliation. No source file contents are included in the
+        evidence pack.
+      </footer>
+    </main>
+  </body>
+</html>

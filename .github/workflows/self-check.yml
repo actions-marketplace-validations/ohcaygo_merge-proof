@@ -94,3 +94,13 @@ jobs:
             console.log("dependencies: none");
           '
           test ! -d node_modules || { echo "node_modules must not be committed"; exit 1; }
+
+  factory:
+    name: skinny factory acceptance (synthetic Stripe, real Git and PDF)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm run test:factory

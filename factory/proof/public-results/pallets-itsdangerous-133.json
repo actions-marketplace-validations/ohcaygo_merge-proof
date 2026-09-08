@@ -1,0 +1,194 @@
+{
+  "method": "Live public GitHub capture plus isolated Git analysis. Purposive one-PR sample. These repositories are not customers. Required check selected from captured checks, not inferred branch policy.",
+  "scope": {
+    "repo": "pallets/itsdangerous",
+    "repoId": 1945034,
+    "pr": 133,
+    "headSha": "c30678d19e37011890e2374cca04f7789e101793",
+    "baseSha": "1a9b8d1f9968eb248bda69f39d373a6330b692ba",
+    "ciSha": "542fad1e9627a402620453610b3e6923f879fd84",
+    "shape": "two-parent-merge",
+    "authorId": 51237465
+  },
+  "required": [
+    {
+      "name": "No captured check available",
+      "appId": 15368
+    }
+  ],
+  "capture": {
+    "repo": "pallets/itsdangerous",
+    "repoId": 1945034,
+    "pr": 133,
+    "headSha": "c30678d19e37011890e2374cca04f7789e101793",
+    "baseSha": "1a9b8d1f9968eb248bda69f39d373a6330b692ba",
+    "ciSha": "542fad1e9627a402620453610b3e6923f879fd84",
+    "shape": "two-parent-merge",
+    "authorId": 51237465,
+    "capturedAt": "2026-09-08T00:34:55.317Z",
+    "checks": [],
+    "reviews": [
+      {
+        "id": 246346229,
+        "userId": 64992,
+        "userType": "User",
+        "association": "NONE",
+        "state": "APPROVED",
+        "commitId": "400c2d849534b768ae3f87362aec10796fae02c3",
+        "submittedAt": "2019-06-06T03:09:36Z"
+      },
+      {
+        "id": 246727511,
+        "userId": 1242887,
+        "userType": "User",
+        "association": "MEMBER",
+        "state": "APPROVED",
+        "commitId": "400c2d849534b768ae3f87362aec10796fae02c3",
+        "submittedAt": "2019-06-06T18:01:18Z"
+      },
+      {
+        "id": 307142847,
+        "userId": 45028982,
+        "userType": "User",
+        "association": "NONE",
+        "state": "APPROVED",
+        "commitId": "400c2d849534b768ae3f87362aec10796fae02c3",
+        "submittedAt": "2019-10-25T11:30:03Z"
+      },
+      {
+        "id": 339026405,
+        "userId": 635179,
+        "userType": "User",
+        "association": "NONE",
+        "state": "COMMENTED",
+        "commitId": "400c2d849534b768ae3f87362aec10796fae02c3",
+        "submittedAt": "2020-01-07T04:33:13Z"
+      }
+    ]
+  },
+  "result": {
+    "schemaVersion": 1,
+    "tool": {
+      "name": "merge-proof",
+      "version": "0.1.0"
+    },
+    "verdict": "NOT_PROVEN",
+    "repository": {
+      "path": "pallets/itsdangerous",
+      "shallow": false
+    },
+    "refs": {
+      "base": {
+        "ref": "1a9b8d1f9968eb248bda69f39d373a6330b692ba",
+        "sha": "1a9b8d1f9968eb248bda69f39d373a6330b692ba",
+        "date": "2020-04-17T09:10:19-07:00"
+      },
+      "head": {
+        "ref": "c30678d19e37011890e2374cca04f7789e101793",
+        "sha": "c30678d19e37011890e2374cca04f7789e101793",
+        "date": "2020-04-17T09:11:48-07:00"
+      },
+      "forkPoint": {
+        "sha": "1a9b8d1f9968eb248bda69f39d373a6330b692ba",
+        "date": "2020-04-17T09:10:19-07:00"
+      }
+    },
+    "metrics": {
+      "baseAdvanceCommits": 0,
+      "baseAgeDays": 0,
+      "candidateFileCount": 3,
+      "baseChangedFileCount": 0,
+      "overlapCount": 0,
+      "excludedCount": 0
+    },
+    "findings": [
+      {
+        "id": "CI_RAN_ON_FINAL_HEAD",
+        "severity": "blocking",
+        "title": "CI_RAN_ON_FINAL_HEAD",
+        "whatHappened": "CI_MISSING",
+        "missingEvidence": "Exact SHA-bound evidence for 542fad1e9627a402620453610b3e6923f879fd84.",
+        "doNext": "Supply current evidence for the confirmed scope and use the included reassessment."
+      },
+      {
+        "id": "HUMAN_APPROVAL_PRESENT",
+        "severity": "blocking",
+        "title": "HUMAN_APPROVAL_PRESENT",
+        "whatHappened": "APPROVAL_STALE_CANDIDATE",
+        "missingEvidence": "Exact SHA-bound evidence for c30678d19e37011890e2374cca04f7789e101793.",
+        "doNext": "Supply current evidence for the confirmed scope and use the included reassessment."
+      }
+    ],
+    "advisories": [],
+    "excluded": [],
+    "notChecked": [
+      {
+        "id": "CANDIDATE_DURABLE_ON_REMOTE",
+        "reason": "Remote durability is outside the implemented proof."
+      },
+      {
+        "id": "SCOPE_CREEP_VS_DECLARED_SCOPE",
+        "reason": "Comparison with declared intent or scope is outside the implemented proof."
+      }
+    ],
+    "ignoreFile": null,
+    "evidence": {
+      "ci": {
+        "targetSha": "542fad1e9627a402620453610b3e6923f879fd84",
+        "policy": "All scope-confirmed check names and App IDs must succeed on the relevant SHA.",
+        "checks": [
+          {
+            "name": "No captured check available",
+            "appId": 15368,
+            "state": "CI_MISSING",
+            "evidence": null
+          }
+        ],
+        "state": "CI_MISSING"
+      },
+      "approval": {
+        "targetSha": "c30678d19e37011890e2374cca04f7789e101793",
+        "policy": "At least one non-author human collaborator approval on this exact candidate; no outstanding changes-requested review.",
+        "reviews": [
+          {
+            "id": 246346229,
+            "userId": 64992,
+            "userType": "User",
+            "association": "NONE",
+            "state": "APPROVED",
+            "commitId": "400c2d849534b768ae3f87362aec10796fae02c3",
+            "submittedAt": "2019-06-06T03:09:36Z"
+          },
+          {
+            "id": 246727511,
+            "userId": 1242887,
+            "userType": "User",
+            "association": "MEMBER",
+            "state": "APPROVED",
+            "commitId": "400c2d849534b768ae3f87362aec10796fae02c3",
+            "submittedAt": "2019-06-06T18:01:18Z"
+          },
+          {
+            "id": 307142847,
+            "userId": 45028982,
+            "userType": "User",
+            "association": "NONE",
+            "state": "APPROVED",
+            "commitId": "400c2d849534b768ae3f87362aec10796fae02c3",
+            "submittedAt": "2019-10-25T11:30:03Z"
+          },
+          {
+            "id": 339026405,
+            "userId": 635179,
+            "userType": "User",
+            "association": "NONE",
+            "state": "COMMENTED",
+            "commitId": "400c2d849534b768ae3f87362aec10796fae02c3",
+            "submittedAt": "2020-01-07T04:33:13Z"
+          }
+        ],
+        "state": "APPROVAL_STALE_CANDIDATE"
+      }
+    }
+  }
+}

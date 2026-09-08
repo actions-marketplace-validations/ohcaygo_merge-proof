@@ -1,0 +1,10 @@
+{
+  "mode": "test",
+  "origin": "http://127.0.0.1:4327",
+  "stateDir": "/private/tmp/merge-proof-factory-test-state",
+  "sourceCommit": "dab4c4b896a4ff704603e4945edfce87c43fd4e5",
+  "stripeSecret": "SET_IN_PRIVATE_CONFIG_OR_STRIPE_SECRET_KEY",
+  "webhookSecret": "SET_IN_PRIVATE_CONFIG_OR_STRIPE_WEBHOOK_SECRET",
+  "paymentLinkId": "SET_TO_TEST_PAYMENT_LINK_ID",
+  "priceId": "SET_TO_SINGLE_ONE_TIME_PRICE_ID"
+}
