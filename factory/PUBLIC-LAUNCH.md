@@ -1,5 +1,44 @@
 # Public launch execution — September 8, 2026
 
+## Backend provisioned and verified — September 8, 2026, 15:42 UTC
+
+This is the latest checkpoint and supersedes earlier preparation-only statements.
+
+- DigitalOcean Droplet **598775880**, `merge-proof-factory`, is Active at **161.35.59.206**. Debian 13 in NYC1; Basic Regular 1 vCPU / 2 GB / 50 GB / 2 TB transfer, **$12/month**. Owner-selected deployment key attached. No backups, metrics agent, managed database, inference, AI agents or other add-ons purchased.
+- Existing **https://merge-proof.ohcaygo.com** Cloudflare Pages deployment is unchanged at $0/month. No new public hostname or website created. Cloudflare backend-connection secret confirmation remains pending; no Pages variables or deployment changed.
+- Backend installed and enabled as non-root `mergeproof`: Node 20.19.2, Git 2.47.3, Chromium 152.0.7977.82, Nginx, Certbot 5.8.0. Firewall permits SSH and HTTP/HTTPS; Node binds loopback port 4327. No Chrome sandbox bypass flag.
+- Verified public trusted IP-address HTTPS. Direct request without proxy authentication returns **403 PROXY_DENIED**, including after service restart. Certificate automatic renewal timer enabled; staging renewal rehearsal **PASS**. Initial rehearsal's optional random delay was interrupted and rehearsal rerun successfully without that delay; live HTTPS was not interrupted.
+- Actual host factory suite under the production service's User/Group, PrivateTmp, ProtectSystem, ProtectHome and UMask restrictions: **34/34 PASS**. Runtime 14.298 seconds, peak memory 236.6 MB. Real Git/PDF fixture journey, secure delivery, unauthorized rejection, reassessment and mode separation passed. Initial unrestricted suite had one omitted public test fixture; copied that fixture and affected tests passed before the complete restricted run. This is fixture evidence, not a Stripe payment.
+- Authenticated origin over verified HTTPS: live public GitHub `pallets/click` PR 3781 **ELIGIBLE**; unsupported non-GitHub URL rejected 400; unsigned webhook rejected 400. Unconfigured offer returns HTTP 200 with `available: false` as designed. The verification script initially expected HTTP 503, was corrected to the existing contract, and passed without product changes.
+- One unpaid eligibility record persists after graceful service restart. State SHA256 before/after: `4f146fcd4d0e1fff5a8c60059340827710771421197a21defa364143558c8c7f`. State directory 0700, state file 0600, owned by mergeproof; private live configuration 0640 root:mergeproof. No payment credentials have been installed.
+- Live Stripe activation remains at business verification; live product/price/link/webhook configuration remains incomplete. **No real-money Stripe transaction.** Backend readiness does not establish the public paid customer finish line.
+- Pending owner steps: confirm storing the dedicated backend connection secret in the existing Cloudflare Pages project; complete Stripe business/identity verification. Continue existing-site deployment and remaining public acceptance after these steps.
+- PUBLIC_LAUNCH_FINISH_LINE: **NOT_ACHIEVED**. Complete production candidate review is not claimed; no extra independent review was mandated by the inspected project instructions.
+
+
+## Current execution checkpoint — September 8, 2026
+
+This checkpoint supersedes the historical table and earlier hosting assumptions below.
+
+- Public launch finish line: **NOT ACHIEVED**. Existing public site remains unchanged.
+- Approved hostname: **https://merge-proof.ohcaygo.com** only. Cloudflare Pages project `merge-proof`, direct upload, deployment `0fcf6857-0c8e-4ee0-a842-9744a1e0cb0b`; public hosting $0/month. No new website or hostname.
+- Approved incremental purchase: one DigitalOcean Basic Regular 1 vCPU / 2 GB / 50 GB SSD backend, $12/month, 2 TB transfer. No backups, inference, AI agents, managed databases or other add-ons.
+- Verified payer: DigitalOcean `ryanwwilliams82@gmail.com`, `My Team` (`8c1f83b8-f03f-4235-a90a-d801c29abb7d`), primary Visa ending **0227**. User explicitly authorized this backend after adding payment method. No Droplet purchased at this checkpoint.
+- DigitalOcean form: New York NYC1, quantity 1, `merge-proof-factory`, existing `first-project`, optional monitoring unchecked and paid add-ons off. Awaiting the pending browser-required confirmation to add the dedicated deployment public SSH key; private key remains on the owner's Mac.
+- Minimum-change implementation prepared: Pages server-side proxy for `/api/*`, `/download/*`, `/webhooks/stripe`; authenticated origin requests, trusted per-client rate limiting, unchanged raw Stripe webhook body/signature, protected cookie/download responses and no caching. One non-root Node/Git/Chromium service with persistent private local state. No backend has been deployed.
+- IP-address HTTPS certificates are supported by current Let's Encrypt/Certbot and can avoid introducing another hostname. Issuance, automatic renewal and proxy connectivity remain to be verified on the actual backend.
+- Pages bundle builder preserves the existing public PDF (SHA256 `6250cbc8cc33bf7030339197c95ced5c36440c223a9b02c61c98fa2c5a323a80`) and adds the already prepared factory UI and study to the existing site. Bundle prepared locally; no Cloudflare deployment or settings change performed.
+- Tests run: factory suite **34/34 PASS**, including real Git/PDF fixture journey and new proxy authentication, per-client limiting, webhook/cookie forwarding and preview-host rejection checks. Syntax and whitespace checks pass. Earlier analyzer/report tests remain 26 + 9 passing; they were not rerun at this checkpoint. Linux production and live Stripe integration remain unverified.
+- Stripe account `acct_1UDDJ2A4MpEXwdH4` freshly verified: activation stops at business type; no selection submitted. Owner asked to complete business/identity verification. No live product, price, payment link or webhook created. **No real-money Stripe transaction.**
+- Candidate remains uncommitted while deployment work continues. No complete production candidate review or public launch acceptance claimed.
+
+Official deployment references:
+- https://developers.cloudflare.com/pages/get-started/direct-upload/
+- https://letsencrypt.org/2026/03/11/shorter-certs-certbot.html
+
+## Historical execution record (superseded where inconsistent above)
+
+
 PUBLIC_LAUNCH_FINISH_LINE: NOT_ACHIEVED
 
 | Return field | Current evidence |
@@ -8,7 +47,7 @@ PUBLIC_LAUNCH_FINISH_LINE: NOT_ACHIEVED
 | PUBLIC_URL | None deployed |
 | REPOSITORY_HEAD | Baseline b856624cfc6f344e808ea19b3c461c9551f3f6bd; this record and study copy form a subsequent local commit |
 | DEPLOYMENT_TARGET | Not established; persistent non-root Linux Node/Git/Chrome runtime required |
-| DOMAIN/HOSTNAME | Ryan-approved mergeproof.ohcaygo.com; no address returned by DNS. ohcaygo.com nameservers are phoenix.ns.cloudflare.com and chip.ns.cloudflare.com; Ryan confirmed domain control; Cloudflare dashboard currently requires sign-in |
+| DOMAIN/HOSTNAME (CURRENT-TRUTH 2026-09-08: live public site is hyphenated merge-proof.ohcaygo.com on Cloudflare Pages; unhyphenated form SUPERSEDED) | Ryan-approved merge-proof.ohcaygo.com; no address returned by DNS. ohcaygo.com nameservers are phoenix.ns.cloudflare.com and chip.ns.cloudflare.com; Ryan confirmed domain control; Cloudflare dashboard currently requires sign-in |
 | HTTPS | Production not established |
 | PUBLIC_PAGE | Updated page verified in Chrome on isolated local port 4338; not public |
 | STUDY_VISIBLE | Local PASS: existing findings, sampling/check limits, technical source/data links |
@@ -49,7 +88,7 @@ No existing payment state was changed.
 
 ## Hosting decision after owner clarification
 
-Ryan confirmed ohcaygo.com control, approved mergeproof.ohcaygo.com, and requested
+Ryan confirmed ohcaygo.com control. Live public hostname VERIFIED 2026-09-08 as merge-proof.ohcaygo.com (hyphen). Earlier launch notes that used the unhyphenated form are SUPERSEDED. Requested
 existing-infrastructure investigation plus lowest-cost compatible alternatives.
 No purchase is authorized yet. No external resources have been provisioned.
 

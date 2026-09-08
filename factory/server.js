@@ -2,6 +2,8 @@
 const http = require("node:http");
 const fs = require("node:fs");
 const path = require("node:path");
+const { isIP } = require("node:net");
+const { timingSafeEqual } = require("node:crypto");
 const { ensure } = require("./common");
 const { Store } = require("./store");
 const { Stripe } = require("./stripe");
@@ -74,6 +76,16 @@ function createServer(factory) {
         `mp_access=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=604800${config.origin.startsWith("https:") ? "; Secure" : ""}`,
       );
     try {
+      if (config.proxySecret) {
+        const supplied = req.headers["x-mp-proxy-key"];
+        ensure(
+          typeof supplied === "string" &&
+            Buffer.byteLength(supplied) === Buffer.byteLength(config.proxySecret) &&
+            timingSafeEqual(Buffer.from(supplied), Buffer.from(config.proxySecret)),
+          "PROXY_DENIED", 403,
+        );
+        ensure(isIP(req.headers["x-mp-client-ip"] || "") !== 0, "INVALID_CLIENT_IP", 400);
+      }
       const url = new URL(req.url, config.origin);
       ensure(url.origin === config.origin, "INVALID_REQUEST");
       if (
@@ -124,7 +136,7 @@ function createServer(factory) {
       }
       const input = raw.length ? JSON.parse(raw) : {};
       if (req.method === "POST" && url.pathname === "/api/eligibility") {
-        const ip = req.socket.remoteAddress;
+        const ip = config.proxySecret ? req.headers["x-mp-client-ip"] : req.socket.remoteAddress;
         const now = Date.now();
         const r = rates.get(ip) || { count: 0, time: now };
         if (now - r.time > 3600000) {

@@ -1,0 +1,25 @@
+[Unit]
+Description=Merge-Proof Standard Evidence Pack backend
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mergeproof
+Group=mergeproof
+WorkingDirectory=/opt/merge-proof/current
+Environment=FACTORY_CONFIG=/etc/merge-proof/live.json
+Environment=FACTORY_HOST=127.0.0.1
+Environment=PORT=4327
+Environment=CHROME_BIN=/usr/bin/chromium
+ExecStart=/usr/bin/node factory/server.js
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=180
+UMask=0077
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
