@@ -25,6 +25,7 @@
           request. Git history, CI on the relevant commit, and human approval
           bound to the candidate.
         </p>
+        <p><a href="#study">Read the G1 study findings</a></p>
         <a href="/sample" target="_blank" rel="noopener"
           >Inspect the Kiota methodology sample ↗</a
         >
@@ -33,6 +34,21 @@
           customer; no endorsement is implied. The sample does not include this version’s CI and approval
           checks.
         </p>
+      </section>
+      <section id="study" class="limits" aria-labelledby="study-title">
+        <h2 id="study-title">The G1 study</h2>
+        <p><strong>We analyzed 2037 merged, agent-authored pull requests across 32 public repositories. 24.1% triggered one or more evidence-gap conditions under the checks merge-proof implements.</strong></p>
+        <p>Read that sentence precisely. It is a statement about <strong>missing evidence</strong>, not about defects.</p>
+        <p>This study does NOT claim that 24.1% of agent-authored PRs contained bugs, were broken, were unsafe, or should not have merged. It makes no claim about the correctness of any pull request in the corpus.</p>
+        <ul>
+          <li>1547 VERIFIED (75.9%); 490 NOT_PROVEN (24.1%); 0 FAIL. 42 unresolvable PRs were excluded from all rates.</li>
+          <li>BASE_DRIFT_UNVERIFIED: 410 PRs (20.1%). PROTECTED_BOUNDARY: 109 PRs (5.4%). A PR can trigger both.</li>
+          <li>Only 2 of 6 conceptual checks were run. CI_RAN_ON_FINAL_HEAD, HUMAN_APPROVAL_PRESENT, CANDIDATE_DURABLE_ON_REMOTE and SCOPE_CREEP_VS_DECLARED_SCOPE were not implemented and not measured in this study.</li>
+          <li>This is a purposive sample, not a random one. These rates should not be read as rates for GitHub as a whole. All 32 contributing repositories landed in the team stratum; the small/solo stratum is empty.</li>
+          <li>The historical study detects agent co-author trailers in squash merges, with a per-repository cap of 80 PRs. Rebase-merged PRs are missed entirely. This differs from the supported open/two-parent history of the Standard Evidence Pack.</li>
+        </ul>
+        <p><a href="https://github.com/ohcaygo/merge-proof/blob/main/STUDY.md" target="_blank" rel="noopener">Full methodology, repository results and limitations ↗</a></p>
+        <p><a href="https://github.com/ohcaygo/merge-proof/blob/main/study-data.json" target="_blank" rel="noopener">Public study data ↗</a></p>
       </section>
       <section class="definitions">
         <div>
