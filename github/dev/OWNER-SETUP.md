@@ -168,6 +168,7 @@ Source: [GitHub registration fields](https://docs.github.com/en/apps/creating-gi
    must exist on the exact receipt head if enabled. It prints no credentials.
 4. Edit the same test file on the same development branch to `Development
    acceptance state 2` and commit through GitHub. This deliberately changes head.
+   A documentation-only commit exercises head-change invalidation without changing verifier behavior.
    In Recent deliveries retain the new `pull_request` **synchronize** delivery ID
    and new head. Wait for automatic re-proof, then run:
 
