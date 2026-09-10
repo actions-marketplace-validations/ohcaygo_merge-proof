@@ -205,3 +205,21 @@ test("historical scan retries the same reservation after infrastructure failure 
   );
   a.equal(s.meter.usage(2).remaining, 5);
 });
+test('active developers require pushed commits; repeated later pushes retain their own event evidence', async t => {
+ const h=setup(t);
+ const s=new ProofService({store:h.store,config:{hosted:true,webhookSecret:'s'.repeat(40)}});
+ s.meter.connect(2,9);
+ const send=async(p,id=randomUUID())=>{
+  const raw=Buffer.from(JSON.stringify({installation:{id:2},repository:{id:1,full_name:'fixture/public'},sender:{id:20,type:'User',login:'dev'},after:'a'.repeat(40),...p}));
+  await s.webhook(raw,{'x-github-event':'push','x-github-delivery':id,'x-hub-signature-256':'sha256='+createHmac('sha256','s'.repeat(40)).update(raw).digest('hex')});
+  return id;
+ };
+ await send({deleted:true,commits:[{id:'a'.repeat(40)}]});
+ await send({commits:[]});
+ a.equal(s.meter.usage(2).activeDevelopers.length,0);
+ const id=await send({commits:[{id:'a'.repeat(40)}]});
+ await send({commits:[{id:'a'.repeat(40)}]},id);
+ await send({commits:[{id:'a'.repeat(40)}]});
+ a.equal(s.meter.usage(2).activeDevelopers.length,1);
+ a.equal(s.meter.usage(2).activeDevelopers[0].activity.length,2);
+});

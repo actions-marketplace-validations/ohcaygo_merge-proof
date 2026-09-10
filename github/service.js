@@ -388,6 +388,9 @@ class ProofService {
     if (
       this.meter &&
       event === "push" &&
+      p.deleted !== true &&
+      Array.isArray(p.commits) && p.commits.length > 0 &&
+      /^[a-f0-9]{40}$/.test(p.after || "") && !/^0+$/.test(p.after) &&
       p.sender?.type === "User" &&
       !this.config.serviceIdentityIds?.includes(p.sender.id)
     )
@@ -395,7 +398,7 @@ class ProofService {
         installationId,
         p.sender,
         "PUSH",
-        `${repositoryId}:${p.after}`,
+        `${repositoryId}:${p.after}:${id}`,
       );
     const supported = [
       "pull_request",
