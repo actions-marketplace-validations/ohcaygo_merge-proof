@@ -72,3 +72,17 @@ The first actual hosted PR #5 receipt is `55685182-3d85-4be3-b571-dfff8dc2aed1`,
 Remaining acceptance: sandbox Checkout/Pro entitlement/top-up; provider renewal/cancellation checks; direct HTTP denial evidence for receipt retrieval while uninstalled (provider/ledger revocation was observed, but the browser reported a client-side block); scan cancellation; final evidence decision. **Go-live remains NOT_PROVEN.** Main/development promotion follows the normal required process and is not performed here.
 
 Configuration, permissions, accounting rules, support and rollback: [`../PRODUCTION.md`](../PRODUCTION.md). Preserve all historical orders and private state.
+
+## Paid sandbox and cancellation evidence
+
+Owner completed actual sandbox subscription and top-up Checkout in Chrome. Subscription `sub_1UEEzCA4MpEXwdH4bTC8YHMp` was verified active, `livemode:false`, quantity one, correct monthly SKU, paid invoice `in_1UEEzBA4MpEXwdH4Ap3oqdsw`. Signed provider events granted 50 included proofs and resumed the paused PR #5. Receipt `fdf16eaa-f5ed-4333-98a5-21e8b1b40888` consumed exactly one included proof for head `7cc2cba20c10e87dd063ecfebac08133d45368ce`; customer UI showed PRO/49 remaining.
+
+The actual $5 top-up was PAID and bound once to payment intent `pi_3UEF7wA4MpEXwdH406WjvuvJ`. Customer UI and ledger agreed: 49 included + 5 top-up = 54 remaining.
+
+Normal Stripe API cancellation set cancel-at-period-end. The signed update preserved current Pro access, and the customer opened the real test-mode portal, which displayed the October 10 cancellation and paid $29 invoice. Cancellation scheduling itself was exercised through the provider API, not by clicking the portal cancellation control.
+
+Advanced only existing sandbox clock `clock_1UEEiCA4MpEXwdH43cunMnpE` to `1791664667`. Provider status became canceled, ended_at `1791664607`; signed subscription-deleted processing set the ledger canceled/unpaid. Included balance became zero; lifetime free usage stayed five; purchased top-ups stayed five. This is provider-clock cancellation-expiry evidence; no host clock or real payment was changed. Paid renewal of an uncanceled subscription remains fixture-tested, not provider-clock proven.
+
+All four concrete Copilot conversations are resolved after their fixes and affected checks. Latest published source `7cc2cba` passed all nine CI jobs in run `34527978690`. Runtime remains `7c32b20`: automatic approval review rejected deploying the scan-label correction, including a retry citing earlier task authorization. Owner confirmation for that exact prelaunch deployment is pending.
+
+Current remaining work: prove purchased-credit consumption on a necessary new head, affected deployment/recheck, stronger receipt-denial and scan-cancel acceptance where available, final evidence decision. Public go-live remains NOT_PROVEN.
