@@ -19,6 +19,8 @@ Use a Stripe key authorized for the required customer, Checkout, subscription, p
 
 The public homepage stays prelaunch until the complete production journey passes. New legacy offer/eligibility/checkout HTTP entry points are retired by default; historical payment webhooks, access, fulfillment and downloads remain. `retireLegacyOffer:false` exists for historical integration tests and must not be enabled on the new public production path. Old saved `/#access=...` links redirect locally to `/legacy` without sending the token to another service. Separately deactivate the obsolete Stripe Payment Link for new purchases; preserve historical Stripe objects and obligations.
 
+For provider renewal acceptance only, private sandbox billing configuration may set `testClockId` to an existing Stripe `clock_...` identifier before customer creation. It is rejected in live mode and is never selectable by a customer. The ordinary flow omits it. Advancing Stripe time does not change the host clock; future-period UI entitlement must not be represented as current wall-clock acceptance. Inspect future-period accounting separately at the simulated time.
+
 ## GitHub App
 
 Homepage: `https://merge-proof.ohcaygo.com`. Callback: `/proof/callback`. Setup: `/proof/`. Webhook: `/proof/webhook`. Allow installation on any account and selected repositories. Keep TLS verification and expiring user tokens enabled. OAuth begins from `/proof/login` with a cookie-bound one-use state; do not require OAuth automatically during installation because that flow does not originate the application's state cookie.

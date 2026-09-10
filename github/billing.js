@@ -10,6 +10,8 @@ class Billing extends Stripe {
     this.store.data.proBilling ||= { checkouts: {}, events: [], payments: {} };
     this.data = this.store.data.proBilling;
     assert(["test", "live"].includes(config.mode), "WRONG_PAYMENT_MODE");
+    assert(!config.testClockId || (config.mode === "test" &&
+      /^clock_[A-Za-z0-9]+$/.test(config.testClockId)), "INVALID_TEST_CLOCK");
     assert(!this.data.mode || this.data.mode === config.mode, "BILLING_LEDGER_MODE_MISMATCH");
     this.data.mode = config.mode;
   }
@@ -74,7 +76,10 @@ class Billing extends Stripe {
     if (!account.customerId) {
       const customer = await this.request(
         "/customers",
-        { "metadata[merge_proof_account]": accountKey },
+        {
+          "metadata[merge_proof_account]": accountKey,
+          ...(this.config.testClockId ? { test_clock: this.config.testClockId } : {}),
+        },
         `mp-customer-${accountKey}`,
       );
       assert(/^cus_[A-Za-z0-9]+$/.test(customer.id || ""), "INVALID_CUSTOMER");

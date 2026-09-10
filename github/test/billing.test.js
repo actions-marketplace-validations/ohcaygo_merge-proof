@@ -188,6 +188,7 @@ test("checkout creation uses exact monthly quantity and redirect cannot activate
    throw Error("unexpected endpoint");
  };
  await h.b.checkout(2,"pro",2);
+ a.equal(requests.find(r=>r.p==="/customers").form.test_clock,undefined);
  const form=requests.find(r=>r.p==="/checkout/sessions").form;
  a.equal(form["line_items[0][quantity]"],"2");a.equal(form.mode,"subscription");a.equal(form.customer,"cus_test");
  a.equal(h.meter.usage(2).plan,"FREE");
@@ -218,4 +219,23 @@ test('quantity reconciliation never reverses a newly requested provider cancella
 test('sandbox ledger cannot be reopened with live billing', () => {
  const h=harness();
  a.throws(()=>new Billing({store:h.store,meter:h.meter},{mode:'live'}), /BILLING_LEDGER_MODE_MISMATCH/);
+});
+test('optional provider test clock attaches only to sandbox customer creation', async () => {
+  const h = harness();
+  h.b.config.testClockId = 'clock_acceptance';
+  h.meter.activity(2, {id: 1, type: 'User', login: 'dev'}, 'PR_OPENED', 'pr1');
+  let customerForm;
+  h.b.price = async () => {};
+  h.b.request = async (path, form) => {
+    if (path === '/customers') {customerForm = form; return {id: 'cus_clock'};}
+    return {id: 'cs_clock', url: 'https://checkout.stripe.com/c/pay/test'};
+  };
+  await h.b.checkout(2, 'pro', 1);
+  a.equal(customerForm.test_clock, 'clock_acceptance');
+  a.equal(customerForm['metadata[merge_proof_account]'], 'github:9');
+  const service = {store: {data: {}}, meter: h.meter};
+  a.throws(() => new Billing(service, {mode: 'live', testClockId: 'clock_acceptance'}),
+    {code: 'INVALID_TEST_CLOCK'});
+  a.throws(() => new Billing(service, {mode: 'test', testClockId: 'invalid'}),
+    {code: 'INVALID_TEST_CLOCK'});
 });
