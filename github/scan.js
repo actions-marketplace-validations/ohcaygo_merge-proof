@@ -51,7 +51,7 @@ async function scan(
     requestedLimit: limit,
     selected: rows.length,
     selection:
-      "Up to 10 merged PRs from the first 30 most recently updated closed PRs.",
+      `Up to ${limit} merged PRs from the first 30 most recently updated closed PRs.`,
     observedAt: new Date().toISOString(),
     rows,
     limitations: [
