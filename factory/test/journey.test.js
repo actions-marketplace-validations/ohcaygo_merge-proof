@@ -88,6 +88,7 @@ async function harness(t, { timeoutMs, reporter } = {}) {
     }),
   };
   const config = {
+    retireLegacyOffer: false, // Exercise preserved historical factory behavior explicitly.
     mode: "test",
     stripeSecret: "sk_test_fixture",
     webhookSecret: "whsec_fixture",
@@ -230,7 +231,8 @@ test("complete HTTP journey: eligibility -> signed fixture webhook -> authorizat
   const h = await harness(t);
   const offer = await h.request("/");
   a.equal(offer.status, 200);
-  a.match(await offer.text(), /CANDIDATE_DURABLE_ON_REMOTE/);
+  a.match(await offer.text(), /PROVE THE MERGE/);
+  a.match(await (await h.request("/legacy")).text(), /CANDIDATE_DURABLE_ON_REMOTE/);
   a.equal((await h.request("/sample")).status, 200);
   const eligible = await h.json("/api/eligibility", eligibility);
   a.equal(eligible.data.eligibility, "ELIGIBLE");

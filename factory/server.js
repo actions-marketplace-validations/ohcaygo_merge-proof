@@ -54,6 +54,31 @@ function loadConfig() {
     );
   return config;
 }
+function createProofRuntime(config, store, appConfig) {
+  if (!appConfig) return null;
+  let proofStore = store;
+  if (appConfig.hosted) {
+    ensure(typeof appConfig.stateDir === "string" && path.isAbsolute(appConfig.stateDir), "PRO_STATE_REQUIRED");
+    ensure(path.resolve(appConfig.stateDir) !== path.resolve(config.stateDir), "SEPARATE_PRO_STATE_REQUIRED");
+    const billing = appConfig.billing;
+    if (billing) {
+      ensure(["test", "live"].includes(billing.mode), "WRONG_PAYMENT_MODE");
+      ensure(["sk", "rk"].some(kind => billing.stripeSecret?.startsWith(`${kind}_${billing.mode}_`)), "WRONG_PAYMENT_MODE");
+    }
+    proofStore = new Store(appConfig.stateDir);
+  }
+  try {
+    const service = new (require("../github/service").ProofService)({store: proofStore, config: {...appConfig, origin: config.origin}});
+    if (service.meter && appConfig.billing) {
+      service.billing = new (require("../github/billing").Billing)(service, {...appConfig.billing, origin: config.origin});
+      proofStore.save();
+    }
+    return service;
+  } catch (error) {
+    if (proofStore !== store) proofStore.close();
+    throw error;
+  }
+}
 function createServer(factory, proofService = null) {
   const rates = new Map();
   const config = factory.config;
@@ -104,7 +129,14 @@ function createServer(factory, proofService = null) {
         return;
       if (
         req.method === "GET" &&
-        ["/", "/app.js", "/style.css", "/sample"].includes(url.pathname)
+        [
+          "/",
+          "/app.js",
+          "/landing.js",
+          "/legacy",
+          "/style.css",
+          "/sample",
+        ].includes(url.pathname)
       ) {
         const file =
           url.pathname === "/sample"
@@ -112,13 +144,28 @@ function createServer(factory, proofService = null) {
             : path.join(
                 __dirname,
                 "public",
-                url.pathname === "/" ? "index.html" : url.pathname.slice(1),
+                url.pathname === "/"
+                  ? "index.html"
+                  : url.pathname === "/legacy"
+                    ? "legacy.html"
+                    : url.pathname.slice(1),
               );
         res.writeHead(200, { "Content-Type": types[path.extname(file)] });
         fs.createReadStream(file).pipe(res);
         return;
       }
       if (req.method === "GET" && url.pathname === "/api/offer") {
+        if (config.retireLegacyOffer !== false) {
+          send(200, {
+            available: false,
+            price: "Pro — $29/month per active developer",
+            hostedReady: false,
+            includedProofs: 50,
+            topup: { amount: 5, proofs: 5 },
+            freeProofs: 5,
+          });
+          return;
+        }
         try {
           send(200, await factory.stripe.offer());
         } catch {
@@ -150,6 +197,7 @@ function createServer(factory, proofService = null) {
       }
       const input = raw.length ? JSON.parse(raw) : {};
       if (req.method === "POST" && url.pathname === "/api/eligibility") {
+        ensure(config.retireLegacyOffer === false, "LEGACY_OFFER_RETIRED", 410);
         const ip = config.proxySecret
           ? req.headers["x-mp-client-ip"]
           : req.socket.remoteAddress;
@@ -196,9 +244,10 @@ function createServer(factory, proofService = null) {
         return;
       }
       ensure(req.method === "POST", "NOT_FOUND", 404);
-      if (url.pathname === "/api/checkout")
+      if (url.pathname === "/api/checkout") {
+        ensure(config.retireLegacyOffer === false, "LEGACY_OFFER_RETIRED", 410);
         send(200, await factory.checkout(order));
-      else if (url.pathname === "/api/authorize")
+      } else if (url.pathname === "/api/authorize")
         send(200, await factory.authorize(order, input));
       else if (url.pathname === "/api/scope")
         send(200, await factory.prepare(order));
@@ -234,13 +283,17 @@ if (require.main === module) {
   const appConfig = appConfigPath
     ? JSON.parse(fs.readFileSync(appConfigPath, "utf8"))
     : null;
-  const proofService = appConfig
-    ? new (require("../github/service").ProofService)({
-        store,
-        config: { ...appConfig, origin: config.origin },
-      })
-    : null;
+  const proofService = createProofRuntime(config, store, appConfig);
   let proofDrain = Promise.resolve();
+  let billingDrain = Promise.resolve();
+  const billingTimer = proofService?.billing
+    ? setInterval(() => {
+        billingDrain = proofService.billing.reconcileQuantities().catch(() => {
+          proofService.data.billingHealth = "RECONCILIATION_UNAVAILABLE";
+          proofService.save();
+        });
+      }, 300000)
+    : null;
   const proofTimer = proofService
     ? setInterval(() => {
         if (!proofService.draining)
@@ -249,8 +302,10 @@ if (require.main === module) {
     : null;
   const server = createServer(factory, proofService);
   server.once("error", () => {
+    clearInterval(billingTimer);
     clearInterval(proofTimer);
     clearInterval(sweep);
+    if (proofService && proofService.store !== store) proofService.store.close();
     store.close();
     console.error("FACTORY_LISTEN_FAILED");
     process.exitCode = 1;
@@ -261,11 +316,15 @@ if (require.main === module) {
     () => console.log(`Merge-Proof factory: ${config.origin} (${config.mode})`),
   );
   const close = () => {
+    clearInterval(billingTimer);
     clearInterval(proofTimer);
     server.close(async () => {
       await Promise.allSettled([...factory.jobs]);
       await proofDrain;
+      await billingDrain;
+      await proofService?.scanJob;
       clearInterval(sweep);
+      if (proofService && proofService.store !== store) proofService.store.close();
       store.close();
       process.exit(0);
     });
@@ -273,4 +332,4 @@ if (require.main === module) {
   process.on("SIGTERM", close);
   process.on("SIGINT", close);
 }
-module.exports = { createServer, loadConfig };
+module.exports = { createServer, loadConfig, createProofRuntime };

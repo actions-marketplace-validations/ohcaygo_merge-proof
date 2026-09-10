@@ -4,7 +4,7 @@ const a = require("node:assert/strict");
 const { createServer } = require("../server");
 
 test("authenticated proxy preserves per-client eligibility limits and rejects direct forwarding", async (t) => {
-  const config = {origin: "https://merge-proof.ohcaygo.com", proxySecret: "fixture-proxy-key"};
+  const config = {retireLegacyOffer:false, origin: "https://merge-proof.ohcaygo.com", proxySecret: "fixture-proxy-key"};
   const server = createServer({config, eligible: async () => ({eligible: true})});
   await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
   t.after(() => new Promise(resolve => server.close(resolve)));

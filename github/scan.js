@@ -5,7 +5,11 @@ const { Client } = require("./client");
 const { collect } = require("./collect");
 const { prove } = require("./proof");
 const { assert, repoName } = require("./common");
-async function scan(client, repo, { limit = 5 } = {}) {
+async function scan(
+  client,
+  repo,
+  { limit = 5, canceled = () => false, progress = () => {} } = {},
+) {
   assert(
     repoName(repo) && Number.isInteger(limit) && limit >= 1 && limit <= 10,
     "INVALID_SCAN_SCOPE",
@@ -21,6 +25,7 @@ async function scan(client, repo, { limit = 5 } = {}) {
     .slice(0, limit);
   const rows = [];
   for (const p of eligible) {
+    assert(!canceled(), "SCAN_CANCELED");
     try {
       const c = await collect(client, repo, p.number, { historical: true }),
         r = prove(c);
@@ -38,6 +43,7 @@ async function scan(client, repo, { limit = 5 } = {}) {
         reason: e.code || "HISTORICAL_EVIDENCE_UNAVAILABLE",
       });
     }
+    await progress(rows.length, eligible.length);
   }
   return {
     schemaVersion: 2,
@@ -45,7 +51,7 @@ async function scan(client, repo, { limit = 5 } = {}) {
     requestedLimit: limit,
     selected: rows.length,
     selection:
-      "Up to 10 merged PRs from the first 30 most recently updated closed PRs.",
+      `Up to ${limit} merged PRs from the first 30 most recently updated closed PRs.`,
     observedAt: new Date().toISOString(),
     rows,
     limitations: [
