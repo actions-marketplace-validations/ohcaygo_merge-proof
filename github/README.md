@@ -148,8 +148,9 @@ semantic test coverage.** “GitHub accepted” is a computation from observed
 conclusions, not a claim that all GitHub merge controls permit merging.
 
 Rulesets and classic protection are intersected, not treated as alternatives.
-403/404 on protected-branch policy reads remain unavailable. Classic controls
-outside CI/review policy are not comprehensively evaluated. Unknown active
+403/404 on protected-branch policy reads remain unavailable. Classic signature and linear-history requirements are preserved in the evidence
+and block proof as unsupported; they cannot silently disappear from freshness.
+Other classic controls outside CI/review policy are not comprehensively evaluated. Unknown active
 ruleset requirements remain blocking limitations. No required validation
 configured means no required-validation proof, not automatic VERIFIED.
 
@@ -217,3 +218,11 @@ does not delete historical receipts to free space.
 - [GitHub webhook payloads](https://docs.github.com/en/webhooks/webhook-events-and-payloads)
 
 `examples/receipt.*` is explicitly synthetic fixture output, not a customer proof.
+
+## Development owner acceptance
+
+Follow [the exact setup and live acceptance packet](dev/OWNER-SETUP.md).
+The packet uses a public owner-controlled development PR, a development-only relay,
+and the existing server. `dev/acceptance.js` observes actual saved signed delivery
+IDs and checks immutable history versus a changed head; it does not manufacture
+webhooks or mark live acceptance complete from fixtures.

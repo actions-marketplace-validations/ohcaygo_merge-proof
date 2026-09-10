@@ -85,6 +85,12 @@ async function collectOnce(
           `${root}/branches/${encodeURIComponent(i.baseRef)}/protection`,
         );
         return {
+          required_signatures: c.required_signatures
+            ? { enabled: c.required_signatures.enabled }
+            : null,
+          required_linear_history: c.required_linear_history
+            ? { enabled: c.required_linear_history.enabled }
+            : null,
           required_status_checks: c.required_status_checks
             ? {
                 strict: c.required_status_checks.strict,

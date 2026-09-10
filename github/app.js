@@ -2,7 +2,7 @@
 const { createSign, createHmac, timingSafeEqual } = require("node:crypto");
 const { Client } = require("./client");
 const { assert } = require("./common");
-// Only token creation is a write. This App does not post checks or alter rules.
+// Tokens are scoped to one repository. Only optional receipt checks need write permission.
 async function installationClient(
   config,
   installationId,

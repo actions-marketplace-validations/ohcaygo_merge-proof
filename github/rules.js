@@ -49,6 +49,8 @@ function requirements(rules) {
       out.unsupported.push("REVIEW_THREADS_OR_REQUIRED_TEAMS");
   };
   const c = rules.classic.value;
+  for (const rule of ["required_signatures", "required_linear_history"])
+    if (c?.[rule]?.enabled) out.unsupported.push(rule);
   if (c?.required_status_checks) {
     const s = c.required_status_checks;
     out.strict ||= s.strict === true;

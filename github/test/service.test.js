@@ -322,3 +322,28 @@ test("refresh revalidates a saved merge-group hint instead of discarding its bin
   a.equal(after.current.state, "UNAVAILABLE");
   a.deepEqual(after.current.changed, []);
 });
+
+test("failed stale-check update does not prevent core re-proof", async (t) => {
+  const h = harness(t);
+  h.service.config.publishChecks = true;
+  let id = 700;
+  h.service.appClient = async () => {
+    const c = new Client(fixtureFetch()), request = c.request.bind(c);
+    c.request = async (p, o) => {
+      if (o?.method === "PATCH") throw new Error("delivery unavailable");
+      if (o?.method === "POST" && p.endsWith("/check-runs")) return { id: id++ };
+      return request(p, o);
+    };
+    return c;
+  };
+  await h.service.webhook(...hook());
+  await h.service.drain();
+  const first = Object.values(h.service.data.receipts)[0];
+  await h.service.webhook(...hook("push"));
+  await h.service.drain();
+  a.equal(Object.keys(h.service.data.receipts).length, 2);
+  a.equal(first.current.state, "STALE");
+  a.equal(first.receipt.verdict, "VERIFIED");
+  a.equal(first.checkDelivery, "UNAVAILABLE");
+  a.equal(h.service.data.queue.length, 0);
+});

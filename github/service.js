@@ -307,20 +307,25 @@ class ProofService {
             row.checkId &&
             row.current.state === "STALE"
           )
-            await client.request(
-              `/repos/${job.repo}/check-runs/${row.checkId}`,
-              {
-                method: "PATCH",
-                body: {
-                  status: "completed",
-                  conclusion: "neutral",
-                  output: {
-                    title: "STALE — RE-PROOF REQUIRED",
-                    summary: `Historical ${row.receipt.verdict} remains available. Relevant evidence changed; refresh is pending.`,
+            try {
+              await client.request(
+                `/repos/${job.repo}/check-runs/${row.checkId}`,
+                {
+                  method: "PATCH",
+                  body: {
+                    status: "completed",
+                    conclusion: "neutral",
+                    output: {
+                      title: "STALE — RE-PROOF REQUIRED",
+                      summary: `Historical ${row.receipt.verdict} remains available. Relevant evidence changed; refresh is pending.`,
+                    },
                   },
                 },
-              },
-            );
+              );
+            } catch {
+              // Optional delivery failure must not stop independent evidence collection.
+              row.checkDelivery = "UNAVAILABLE";
+            }
         }
       const out = await this.run(job.repo, job.pr, {
         client,

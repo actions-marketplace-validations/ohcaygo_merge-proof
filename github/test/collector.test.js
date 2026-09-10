@@ -3,8 +3,21 @@ const { test } = require("node:test");
 const a = require("node:assert/strict");
 const { Client } = require("../client");
 const { collect } = require("../collect");
-const { prove } = require("../proof");
+const { prove, freshness } = require("../proof");
 const { fixtureFetch, H, B, M, OLD } = require("./fixtures");
+for (const rule of ["required_signatures", "required_linear_history"])
+  test(`classic ${rule} is preserved, blocks unsupported proof and stales history`, async () => {
+    const before = prove(await collect(new Client(fixtureFetch()), "fixture/public", 1));
+    a.equal(before.verdict, "VERIFIED");
+    const after = await collect(new Client(fixtureFetch({
+      mutate: (p, v) => p.endsWith("/protection")
+        ? { ...v, [rule]: { enabled: true } } : v,
+    })), "fixture/public", 1);
+    a.equal(after.rules.classic.value[rule].enabled, true);
+    a.equal(prove(after).verdict, "NOT_PROVEN");
+    a.equal(freshness(before, after).state, "STALE");
+    a.equal(before.verdict, "VERIFIED");
+  });
 test("real collector projects REST metadata into a complete proof with no source or review bodies", async () => {
   const f = fixtureFetch(),
     c = await collect(new Client(f), "fixture/public", 1);

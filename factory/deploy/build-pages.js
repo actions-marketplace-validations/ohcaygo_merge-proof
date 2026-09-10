@@ -14,7 +14,7 @@ for (const name of ["index.html", "app.js", "style.css"])
 fs.copyFileSync(path.join(__dirname, "../../samples/kiota.html"), path.join(out, "sample.html"));
 fs.writeFileSync(path.join(out, "kiota-sample-assessment.pdf"), pdf);
 fs.copyFileSync(path.join(__dirname, "pages-worker.mjs"), path.join(out, "_worker.js"));
-fs.writeFileSync(path.join(out, "_routes.json"), JSON.stringify({version:1, include:["/api/*", "/download/*", "/webhooks/stripe"], exclude:[]}, null, 2) + "\n");
+fs.copyFileSync(path.join(__dirname, "routes.json"), path.join(out, "_routes.json"));
 fs.writeFileSync(path.join(out, "_headers"), `/*
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY

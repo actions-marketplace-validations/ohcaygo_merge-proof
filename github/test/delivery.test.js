@@ -77,3 +77,11 @@ test("a skipped workflow step is visible but not full execution proof", () => {
   });
   a.equal(prove(c).verdict, "NOT_PROVEN");
 });
+
+test("Pages upload manifest sends proof routes to the existing worker", () => {
+  const routes = require("../../factory/deploy/routes.json");
+  a.ok(routes.include.includes("/proof/*"));
+  a.deepEqual(routes.exclude, []);
+  for (const route of ["/api/*", "/download/*", "/webhooks/stripe"])
+    a.ok(routes.include.includes(route));
+});
