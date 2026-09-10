@@ -54,6 +54,31 @@ function loadConfig() {
     );
   return config;
 }
+function createProofRuntime(config, store, appConfig) {
+  if (!appConfig) return null;
+  let proofStore = store;
+  if (appConfig.hosted) {
+    ensure(typeof appConfig.stateDir === "string" && path.isAbsolute(appConfig.stateDir), "PRO_STATE_REQUIRED");
+    ensure(path.resolve(appConfig.stateDir) !== path.resolve(config.stateDir), "SEPARATE_PRO_STATE_REQUIRED");
+    const billing = appConfig.billing;
+    if (billing) {
+      ensure(["test", "live"].includes(billing.mode), "WRONG_PAYMENT_MODE");
+      ensure(["sk", "rk"].some(kind => billing.stripeSecret?.startsWith(`${kind}_${billing.mode}_`)), "WRONG_PAYMENT_MODE");
+    }
+    proofStore = new Store(appConfig.stateDir);
+  }
+  try {
+    const service = new (require("../github/service").ProofService)({store: proofStore, config: {...appConfig, origin: config.origin}});
+    if (service.meter && appConfig.billing) {
+      service.billing = new (require("../github/billing").Billing)(service, {...appConfig.billing, origin: config.origin});
+      proofStore.save();
+    }
+    return service;
+  } catch (error) {
+    if (proofStore !== store) proofStore.close();
+    throw error;
+  }
+}
 function createServer(factory, proofService = null) {
   const rates = new Map();
   const config = factory.config;
@@ -258,17 +283,7 @@ if (require.main === module) {
   const appConfig = appConfigPath
     ? JSON.parse(fs.readFileSync(appConfigPath, "utf8"))
     : null;
-  const proofService = appConfig
-    ? new (require("../github/service").ProofService)({
-        store,
-        config: { ...appConfig, origin: config.origin },
-      })
-    : null;
-  if (proofService?.meter && config.proPriceId && config.topupPriceId)
-    proofService.billing = new (require("../github/billing").Billing)(
-      proofService,
-      { ...config, webhookSecret: config.proWebhookSecret },
-    );
+  const proofService = createProofRuntime(config, store, appConfig);
   let proofDrain = Promise.resolve();
   let billingDrain = Promise.resolve();
   const billingTimer = proofService?.billing
@@ -290,6 +305,7 @@ if (require.main === module) {
     clearInterval(billingTimer);
     clearInterval(proofTimer);
     clearInterval(sweep);
+    if (proofService && proofService.store !== store) proofService.store.close();
     store.close();
     console.error("FACTORY_LISTEN_FAILED");
     process.exitCode = 1;
@@ -308,6 +324,7 @@ if (require.main === module) {
       await billingDrain;
       await proofService?.scanJob;
       clearInterval(sweep);
+      if (proofService && proofService.store !== store) proofService.store.close();
       store.close();
       process.exit(0);
     });
@@ -315,4 +332,4 @@ if (require.main === module) {
   process.on("SIGTERM", close);
   process.on("SIGINT", close);
 }
-module.exports = { createServer, loadConfig };
+module.exports = { createServer, loadConfig, createProofRuntime };

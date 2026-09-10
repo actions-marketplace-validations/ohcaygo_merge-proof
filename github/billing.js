@@ -9,6 +9,9 @@ class Billing extends Stripe {
     this.store = service.store;
     this.store.data.proBilling ||= { checkouts: {}, events: [], payments: {} };
     this.data = this.store.data.proBilling;
+    assert(["test", "live"].includes(config.mode), "WRONG_PAYMENT_MODE");
+    assert(!this.data.mode || this.data.mode === config.mode, "BILLING_LEDGER_MODE_MISMATCH");
+    this.data.mode = config.mode;
   }
   async request(endpoint, form, key) {
     assert(this.config.stripeSecret, "PAYMENT_NOT_CONFIGURED");
@@ -162,6 +165,11 @@ class Billing extends Stripe {
           "INVALID_PAYMENT",
         );
         if (s.payment_status !== "paid") return;
+        if (c.state === "PAID") {
+          this.data.events.push(event.id);
+          this.store.save();
+          return;
+        }
         assert(
           s.line_items?.data?.length === 1 &&
             !s.line_items.has_more &&
@@ -249,15 +257,32 @@ class Billing extends Stripe {
     assert(
       item.price.id === this.config.proPriceId &&
         Number.isSafeInteger(item.quantity) &&
-        item.quantity > 0 &&
-        (!expectedQuantity || item.quantity === expectedQuantity),
+        item.quantity > 0,
       "WRONG_SKU",
     );
     const a = this.service.meter.data.accounts[accountKey];
     if (s.status === "active" && s.latest_invoice?.status === "paid") {
+      const invoice = s.latest_invoice;
+      const lines = invoice.lines;
+      const line = lines?.data?.[0];
+      const parent = line?.parent?.subscription_item_details;
+      assert(
+        invoice.customer === customer &&
+          invoice.livemode === (this.config.mode === "live") &&
+          lines?.data?.length === 1 && !lines.has_more &&
+          parent?.subscription === s.id && parent.subscription_item === item.id &&
+          parent.proration === false &&
+          line.pricing?.price_details?.price === this.config.proPriceId &&
+          Number.isSafeInteger(line.quantity) && line.quantity > 0 &&
+          (!expectedQuantity || line.quantity === expectedQuantity) &&
+          line.currency === "usd" && line.amount === line.quantity * 2900 &&
+          line.period?.start === item.current_period_start &&
+          line.period?.end === item.current_period_end,
+        "UNVERIFIED_PAID_PERIOD",
+      );
       this.service.meter.paidPeriod(accountKey, {
         id: s.id,
-        quantity: item.quantity,
+        quantity: line.quantity,
         periodStart: item.current_period_start * 1000,
         periodEnd: item.current_period_end * 1000,
         verifiedPaid: true,
@@ -341,6 +366,9 @@ class Billing extends Stripe {
       "WRONG_SUBSCRIPTION",
     );
     const item = s.items.data[0];
+    // Never undo a cancellation made in the provider portal, even if its
+    // webhook has not reached our local snapshot yet.
+    assert(!s.cancel_at_period_end && s.status === "active", "SUBSCRIPTION_ENDING");
     if (
       !a.quantityOperation ||
       a.quantityOperation.count !== count ||
@@ -358,7 +386,6 @@ class Billing extends Stripe {
             "items[0][id]": item.id,
             "items[0][quantity]": String(count),
             proration_behavior: "none",
-            cancel_at_period_end: "false",
           },
       `mp-quantity-${a.quantityOperation.id}`,
     );

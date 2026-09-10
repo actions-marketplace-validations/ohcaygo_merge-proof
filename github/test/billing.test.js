@@ -27,6 +27,7 @@ function harness() {
     items: {
       data: [
         {
+          id: "si_test",
           quantity: 2,
           price: { id: "price_pro" },
           current_period_start: now - 100,
@@ -34,7 +35,11 @@ function harness() {
         },
       ],
     },
-    latest_invoice: { id: "in_test", status: "paid" },
+    latest_invoice: { id: "in_test", status: "paid", customer: "cus_test", livemode: false,
+      lines: {data: [{quantity: 2, currency: "usd", amount: 5800,
+        parent: {subscription_item_details: {subscription: "sub_test", subscription_item: "si_test", proration: false}},
+        pricing: {price_details: {price: "price_pro"}}, period: {start: now - 100, end: now + 1000}}]}
+    },
   };
   const session = {
     id: "cs_test",
@@ -113,6 +118,7 @@ test("two paid developers get 100 monthly proofs, duplicate invoices preserve us
   a.equal(h.meter.usage(2).includedBalance, 99);
   h.meter.topup("github:9", "pi_extra");
   h.subscription.items.data[0].current_period_start += 50;
+  h.subscription.latest_invoice.lines.data[0].period.start += 50;
   await h.b.subscription("github:9", "sub_test", "cus_test", 2);
   a.equal(h.meter.usage(2).includedBalance, 100);
   a.equal(h.meter.usage(2).topupBalance, 5);
@@ -180,4 +186,29 @@ test("checkout creation uses exact monthly quantity and redirect cannot activate
  a.equal(h.meter.usage(2).plan,"FREE");
  await h.b.webhook(...event("checkout.session.completed","evt_pro",{id:"cs_pro"}));
  a.equal(h.meter.usage(2).plan,"PRO");a.equal(h.meter.usage(2).includedBalance,100);
+});
+test('renewal allowance follows paid invoice quantity, not mutable next-invoice quantity', async () => {
+ const h=harness();
+ h.subscription.items.data[0].quantity=4;
+ await h.b.subscription('github:9','sub_test','cus_test',2);
+ a.equal(h.meter.usage(2).includedBalance,100);
+ a.equal(h.meter.usage(2).paidDevelopers,2);
+ h.subscription.items.data[0].current_period_start+=50;
+ await a.rejects(h.b.subscription('github:9','sub_test','cus_test'), /UNVERIFIED_PAID_PERIOD/);
+ a.equal(h.meter.usage(2).includedBalance,100);
+});
+test('quantity reconciliation never reverses a newly requested provider cancellation', async () => {
+ const h=harness();
+ await h.b.subscription('github:9','sub_test','cus_test',2);
+ const account=h.meter.account(2); account.customerId='cus_test';
+ h.subscription.cancel_at_period_end=true;
+ h.meter.activity(2,{id:1,type:'User',login:'dev'},'PUSH','sha');
+ let writes=0;
+ h.b.request=async(p,form)=>{if(form)writes++;return h.subscription;};
+ await a.rejects(h.b.reconcileQuantities(), /SUBSCRIPTION_ENDING/);
+ a.equal(writes,0);
+});
+test('sandbox ledger cannot be reopened with live billing', () => {
+ const h=harness();
+ a.throws(()=>new Billing({store:h.store,meter:h.meter},{mode:'live'}), /BILLING_LEDGER_MODE_MISMATCH/);
 });

@@ -6,14 +6,16 @@ Reuse the existing Cloudflare Pages front door and dedicated Node backend. No Sm
 
 ## Private configuration
 
-Set `MP_GITHUB_APP_CONFIG` to a private host file based on `production.example.json`. Use a distinct production App, private key, client ID/secret, and signed webhook secret. Never commit the populated file. Retain `FACTORY_CONFIG` for the existing live factory, proxy secret, and historical Stripe obligations. Add these Pro billing fields there only after Stripe sandbox verification:
+Set `MP_GITHUB_APP_CONFIG` to a private host file based on `production.example.json`. Use a distinct production App, private key, client ID/secret, and signed webhook secret. Never commit the populated file. Retain `FACTORY_CONFIG` for the existing live factory, proxy secret, and historical Stripe obligations. Set a separate absolute `stateDir` in the private App file (use `/var/lib/merge-proof/pro-sandbox` for acceptance). Hosted Pro refuses the legacy state directory. Put these fields inside that file's `billing` object; no legacy Stripe credentials are inherited:
 
 - `proPriceId`: USD 2900, recurring monthly, licensed quantity.
 - `topupPriceId`: USD 500, one-time.
-- `proWebhookSecret`: separate secret for `/proof/stripe-webhook`; do not replace the old factory webhook secret.
+- `mode`: `test` for no-charge acceptance.
+- `stripeSecret`: the existing authorized Stripe test secret, set privately.
+- `webhookSecret`: separate secret for `/proof/stripe-webhook`; do not replace the old factory webhook secret.
 - `billingPortalConfiguration`: subscription updates disabled; cancellation at period end; payment-method management allowed. Quantity changes use the product's confirmation path, not default portal settings.
 
-Use a Stripe key authorized for the required customer, Checkout, subscription, price and portal APIs. The old restricted read key is not assumed to authorize these writes. Keep test and live configurations/state separate. `mode` and provider livemode are checked. Subscription access follows a fetched paid invoice and current subscription, not a redirect. Top-ups require the fetched paid Checkout, exact SKU/quantity/amount/customer, and one payment-intent binding.
+Use a Stripe key authorized for the required customer, Checkout, subscription, price and portal APIs. The old restricted read key is not assumed to authorize these writes. Keep test and live configurations/state separate. A ledger bound to test mode cannot be reopened with live billing. Use a new Pro live state directory when live activation is authorized, retaining sandbox evidence. `mode` and provider livemode are checked. Subscription access follows a fetched paid invoice with the exact subscription item, SKU, period and paid quantity, not a redirect or the mutable quantity for a future invoice. Top-ups require the fetched paid Checkout, exact SKU/quantity/amount/customer, and one payment-intent binding.
 
 The public homepage stays prelaunch until the complete production journey passes. New legacy offer/eligibility/checkout HTTP entry points are retired by default; historical payment webhooks, access, fulfillment and downloads remain. `retireLegacyOffer:false` exists for historical integration tests and must not be enabled on the new public production path. Old saved `/#access=...` links redirect locally to `/legacy` without sending the token to another service. Separately deactivate the obsolete Stripe Payment Link for new purchases; preserve historical Stripe objects and obligations.
 
