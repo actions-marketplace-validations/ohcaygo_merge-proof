@@ -4,7 +4,7 @@ Status: **PARTIAL — hosted production acceptance NOT_PROVEN.** Owner: this Cod
 
 ## Candidate and current truth
 
-Remote development branch freshly read as `c750291ba7910c25b2435f8bba25c8afd632df17`; main as `dab4c4b896a4ff704603e4945edfce87c43fd4e5`. Implementation source is committed at `5ea42015cd1a810a586da81b283d9d31177614c9` on `codex/merge-proof-pro-productionization`. Later verification-only changes do not change this runtime source. The development App remains separate.
+Remote development branch freshly read as `c750291ba7910c25b2435f8bba25c8afd632df17`; main as `dab4c4b896a4ff704603e4945edfce87c43fd4e5`. The host-tested implementation is `5ea42015cd1a810a586da81b283d9d31177614c9` on `codex/merge-proof-pro-productionization`. Latest runtime source is `d056271223378e05831341938c332d15e910c07e`: it adds a terminal outcome for unsupported historical scans instead of a retry prompt. That affected path and the accounting/payment tests passed 14/14 locally; the host suite was not rerun for this one-condition change. The development App remains separate.
 
 Implemented within the existing backend: cookie-bound GitHub user login; authorized installation/repository selection; hosted receipts and latest-history links; free five-proof ledger; repository-qualified proof deduplication; account mapping across reinstall; separate bounded scan reservation/progress/retry/cancel; Stripe Checkout/subscription/top-up verification; account-pooled monthly allowance; explicit next-invoice quantity confirmation without proration; renewal reductions; constrained billing portal; prelaunch Pro copy; default retirement of new legacy checkout/eligibility requests; preserved historical-order access and fulfillment. Source receipt/verdict semantics remain deterministic. The public hosted signup claim stays disabled.
 
@@ -19,7 +19,7 @@ On the existing DigitalOcean host, staged source at `/opt/merge-proof/releases/p
 | GitHub | 96/96 PASS |
 | Factory, including real Git/Chromium/PDF | 36/36 PASS |
 | Host unit | exit 0; 46.728 seconds; peak memory 266.6 MB |
-| Extra complete Checkout binding test | 6/6 billing tests PASS locally, including the added test |
+| Latest affected scan/meter/billing checks | 14/14 PASS locally, including full Checkout binding and scan reservation retry |
 | Local browser | Pro homepage inspected in Chrome; free local link, $29/50/$5-for-5 copy and prelaunch state visible |
 | Pages package | Built using the original sample PDF with enforced known SHA256 |
 | Source whitespace | `git diff --check` PASS |
