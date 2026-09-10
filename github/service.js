@@ -76,7 +76,11 @@ class ProofService {
         });
         if (job.state !== "CANCELED") {
           job.result = result;
-          job.state = result.rows.some((r) => r.state === "UNAVAILABLE")
+          job.state = result.rows.some(
+            (r) =>
+              r.state === "UNAVAILABLE" &&
+              r.reason !== "UNSUPPORTED_HISTORICAL_SHAPE",
+          )
             ? "RETRY_AVAILABLE"
             : "COMPLETE";
         }

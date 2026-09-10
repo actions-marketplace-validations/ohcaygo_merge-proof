@@ -177,3 +177,31 @@ test("signed hosted lifecycle: install, five heads, stale immutable history, six
   });
   a.equal(s.meter.usage(3).remaining, 0);
 });
+test("historical scan retries the same reservation after infrastructure failure and never consumes live taste", async (t) => {
+  const h = setup(t);
+  let unavailable = true;
+  const s = new ProofService({
+    store: h.store,
+    config: { hosted: true },
+    appClient: async () => {
+      if (unavailable) throw Error("provider unavailable");
+      return { authorize: async () => ({ id: 1 }), get: async () => [] };
+    },
+  });
+  s.meter.connect(2, 9);
+  const first = s.startScan(2, 1, "fixture/public");
+  await s.scanJob;
+  a.equal(first.state, "RETRY_AVAILABLE");
+  a.equal(s.meter.usage(2).remaining, 5);
+  unavailable = false;
+  const second = s.startScan(2, 1, "fixture/public");
+  a.equal(second.id, first.id);
+  await s.scanJob;
+  a.equal(second.state, "COMPLETE");
+  a.equal(s.startScan(2, 1, "fixture/public").id, first.id);
+  a.throws(
+    () => s.startScan(2, 2, "fixture/other"),
+    /SCAN_TASTE_ALREADY_RESERVED/,
+  );
+  a.equal(s.meter.usage(2).remaining, 5);
+});
