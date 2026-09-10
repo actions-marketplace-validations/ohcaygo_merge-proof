@@ -1,10 +1,10 @@
 # MERGE-PROOF-PRO-PRODUCTIONIZATION-001
 
-Status: **PARTIAL — hosted production acceptance NOT_PROVEN.** Owner: this Codex coding task, assigned by Ryan on September 10, 2026. Commercial policy approved directly in this task. No real-money purchase or charge performed.
+Status: **Core no-charge PRELAUNCH journey PASS; public go-live NOT_PROVEN.** Owner: this Codex coding task, assigned by Ryan on September 10, 2026. Commercial policy approved directly in this task. No real-money purchase or charge performed.
 
 ## Candidate and current truth
 
-Published branch: `codex/merge-proof-pro-productionization`; draft [PR #5](https://github.com/ohcaygo/merge-proof/pull/5), based on the existing exact-state branch at `c750291ba7910c25b2435f8bba25c8afd632df17`. Current runtime source deployed to the existing host: `7c32b208d7f500e9db4499ed1bf41f0c5774b0fa`. Earlier checkpoint results below retain their original source identifiers. Ryan explicitly authorized publication and existing-host/Pages PRELAUNCH deployment. No main merge or public go-live claim is authorized by this evidence.
+Published branch: `codex/merge-proof-pro-productionization`; draft [PR #5](https://github.com/ohcaygo/merge-proof/pull/5), based on the existing exact-state branch at `c750291ba7910c25b2435f8bba25c8afd632df17`. Current runtime source deployed to the existing host: `7cc2cba20c10e87dd063ecfebac08133d45368ce`. Earlier checkpoint results below retain their original source identifiers. Ryan explicitly authorized publication and existing-host/Pages PRELAUNCH deployment. No main merge or public go-live claim is authorized by this evidence.
 
 Continuation fixes: separate Pro provider configuration and durable state preserve legacy live payment obligations; the ledger rejects switching test/live modes; monthly entitlement is bound to the paid invoice line's SKU, subscription item, period and quantity; quantity updates cannot undo a provider-side cancellation; only human pushes containing commits count as activity, and distinct delivery evidence survives repeat pushes in later months.
 
@@ -86,3 +86,19 @@ Advanced only existing sandbox clock `clock_1UEEiCA4MpEXwdH43cunMnpE` to `179166
 All four concrete Copilot conversations are resolved after their fixes and affected checks. Latest published source `7cc2cba` passed all nine CI jobs in run `34527978690`. Runtime remains `7c32b20`: automatic approval review rejected deploying the scan-label correction, including a retry citing earlier task authorization. Owner confirmation for that exact prelaunch deployment is pending.
 
 Current remaining work: prove purchased-credit consumption on a necessary new head, affected deployment/recheck, stronger receipt-denial and scan-cancel acceptance where available, final evidence decision. Public go-live remains NOT_PROVEN.
+
+## Final observed checkpoint
+
+The owner reconfirmed deployment of 7cc2cba. That tested runtime is now active; earlier deployment-blocker text is historical and resolved. The prior release and accounting ledger remain intact.
+
+The next necessary evidence commit b84ef7b passed hosted CI run 34530261793 and generated receipt 9aed1215-7f63-40b1-83ae-37d740f6d3d6 at 2026-09-10T21:07:26.137Z. It consumed exactly one purchased proof after cancellation: free usage remained five, included balance zero, purchased balance four, and queue empty. This proves purchased credits remain usable after subscription expiry.
+
+An isolated real Stripe sandbox subscription renewed with a paid USD 58 invoice for two developers. The deployed Billing adapter processed that invoice against an in-memory ledger copy, with an explicitly synthetic prior-period usage of 17. At simulated period time, it granted 100 fresh included proofs, zero new-period usage, retained the four copied purchased proofs, and preserved ALREADY_ACCOUNTED for an existing proof key. No actual customer-ledger write or host-clock change occurred. The isolated test subscription was canceled afterward. This is real-provider renewal plus isolated accounting evidence, not a second customer browser journey.
+
+The completed historical scan remained COMPLETE when Cancel scan was pressed. Cancellation of a RUNNING scan remains fixture-tested; the one-time scan reservation was not reset to manufacture acceptance.
+
+Actual uninstall and reinstall were observed in GitHub and the ledger. A direct authenticated browser request for an old-installation receipt returned a client-side block with no matching host access-log entry. Exact HTTP denial for that request remains NOT_PROVEN; fixture denial tests do not substitute for that missing observation.
+
+The core install, proof, stale/re-proof, metering, free limit, sandbox Checkout, Pro entitlement, five-proof top-up, cancellation expiry and purchased-credit consumption journey passed. Same-head and GitHub-delivery deduplication passed. All four independent Copilot findings were fixed/rechecked and their conversations resolved; this is not human merge approval.
+
+Keep PRELAUNCH. No live billing activation, public go-live claim, real-money charge or main merge was performed. Direct HTTP denial evidence and normal human integration approval remain release boundaries, explicitly not represented as passes. Ryan explicitly authorized documentation-only publication of this final checkpoint to the existing candidate branch/PR. That authorization does not waive the HTTP-denial evidence gap or the required human merge decision. Earlier pending-publication and deployment statements are historical; this final checkpoint governs current status.
