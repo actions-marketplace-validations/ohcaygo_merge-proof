@@ -4,6 +4,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const dynamic = url.pathname.startsWith("/api/") ||
+      url.pathname.startsWith("/proof/") ||
       url.pathname.startsWith("/download/") || url.pathname === "/webhooks/stripe";
     if (!dynamic) return env.ASSETS.fetch(request);
     const unavailable = () => new Response(JSON.stringify({error: "BACKEND_UNAVAILABLE"}), {

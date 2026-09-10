@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "d5be3355-744a-4e42-bbb2-23ccc58c603a",
+  "tool": {
+    "name": "merge-proof",
+    "version": "0.1.0"
+  },
+  "policy": "github-exact-state-v1",
+  "verdict": "NOT_PROVEN",
+  "issuedAt": "2026-09-10T12:00:00Z",
+  "identity": {
+    "repository": "fixture/public",
+    "repositoryId": 1,
+    "visibility": "public",
+    "authorization": "PUBLIC_ANONYMOUS",
+    "pr": 1,
+    "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "headRef": "feature",
+    "headRepository": "fixture/public",
+    "headRepositoryId": 1,
+    "baseRef": "main",
+    "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "branchProtected": true,
+    "prState": "open",
+    "merged": false,
+    "mergeCommitSha": "cccccccccccccccccccccccccccccccccccccccc",
+    "authorId": 1,
+    "githubMergeable": true,
+    "githubMergeState": "clean"
+  },
+  "fingerprint": "7fbd2885fdf29c53cbe84a264aa282b157d9b3742a55a557e6fe57741633ce16",
+  "freshness": {
+    "state": "CURRENT",
+    "asOf": "2026-09-10T12:00:00Z",
+    "meaning": "Current only at the recorded observation; later views must recheck evidence."
+  },
+  "summary": {
+    "ci": {
+      "target": {
+        "state": "AVAILABLE",
+        "value": {
+          "kind": "HEAD_CONTAINS_CURRENT_BASE",
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        }
+      },
+      "state": "NOT_PROVEN",
+      "required": [
+        {
+          "name": "test",
+          "appId": 10,
+          "state": "SKIPPED",
+          "accepted": true,
+          "acceptanceSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "checkId": 10,
+          "conclusion": "skipped",
+          "executionRecorded": false,
+          "workflowJobs": [
+            {
+              "runId": 20,
+              "workflowId": 30,
+              "attempt": 1,
+              "runSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "jobId": 40,
+              "checkId": 10,
+              "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "status": "completed",
+              "conclusion": "success",
+              "runStatus": "completed",
+              "runConclusion": "success",
+              "steps": [
+                {
+                  "number": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-10T12:00:00Z",
+                  "completedAt": "2026-09-10T12:00:00Z"
+                }
+              ]
+            }
+          ],
+          "observedCheck": {
+            "id": 10,
+            "name": "test",
+            "appId": 10,
+            "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "status": "completed",
+            "conclusion": "skipped",
+            "startedAt": "2026-09-10T12:00:00Z",
+            "completedAt": "2026-09-10T12:00:00Z",
+            "suiteId": 50
+          },
+          "observedStatus": null
+        }
+      ],
+      "acceptedCount": 1,
+      "executionCount": 0
+    },
+    "approval": {
+      "state": "PROVEN",
+      "observed": [
+        {
+          "id": 60,
+          "reviewer": "reviewer",
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "current": [
+        {
+          "id": 60,
+          "reviewer": "reviewer",
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "required": 1,
+      "reason": null
+    },
+    "remote": {
+      "state": "AVAILABLE",
+      "value": {
+        "repositoryId": 1,
+        "ref": "feature",
+        "expectedSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "observedSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "confirmed": true
+      }
+    },
+    "rules": {
+      "state": "AVAILABLE",
+      "checks": [
+        {
+          "name": "test",
+          "appId": 10
+        }
+      ],
+      "approvals": 1,
+      "strict": true,
+      "dismissStale": true,
+      "lastPush": false,
+      "codeOwners": false,
+      "mergeQueue": false,
+      "unsupported": []
+    },
+    "target": {
+      "state": "AVAILABLE",
+      "value": {
+        "kind": "HEAD_CONTAINS_CURRENT_BASE",
+        "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    }
+  },
+  "gaps": [
+    "CURRENT_STATE_EXECUTION_NOT_PROVEN"
+  ],
+  "local": {
+    "schemaVersion": 1,
+    "tool": {
+      "name": "merge-proof",
+      "version": "0.1.0"
+    },
+    "verdict": "VERIFIED",
+    "repository": {
+      "path": "fixture/public",
+      "shallow": false
+    },
+    "refs": {
+      "base": {
+        "ref": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "date": "2026-09-10T12:00:00Z"
+      },
+      "head": {
+        "ref": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "date": "2026-09-10T12:00:00Z"
+      },
+      "forkPoint": {
+        "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "date": "2026-09-10T12:00:00Z"
+      }
+    },
+    "metrics": {
+      "baseAdvanceCommits": 0,
+      "baseAgeDays": 0,
+      "candidateFileCount": 1,
+      "baseChangedFileCount": 0,
+      "overlapCount": 0,
+      "excludedCount": 0
+    },
+    "findings": [],
+    "advisories": [],
+    "excluded": [],
+    "notChecked": [
+      {
+        "id": "CI_RAN_ON_FINAL_HEAD",
+        "reason": "merge-proof does not read CI results; it cannot tell which commit was tested."
+      },
+      {
+        "id": "HUMAN_APPROVAL_PRESENT",
+        "reason": "merge-proof does not read reviews or approvals."
+      },
+      {
+        "id": "CANDIDATE_DURABLE_ON_REMOTE",
+        "reason": "merge-proof inspects local git state only; it does not query a remote for durability."
+      },
+      {
+        "id": "SCOPE_CREEP_VS_DECLARED_SCOPE",
+        "reason": "merge-proof has no declared-scope input to compare the diff against."
+      }
+    ],
+    "ignoreFile": null,
+    "changedFiles": [
+      "src/feature.js"
+    ],
+    "source": "github-rest-git-metadata"
+  },
+  "evidence": {
+    "source": "github-rest",
+    "startedAt": "2026-09-10T12:00:00Z",
+    "observedAt": "2026-09-10T12:00:00Z",
+    "consistency": "STABLE_OBSERVATION",
+    "identity": {
+      "repository": "fixture/public",
+      "repositoryId": 1,
+      "visibility": "public",
+      "authorization": "PUBLIC_ANONYMOUS",
+      "pr": 1,
+      "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "headRef": "feature",
+      "headRepository": "fixture/public",
+      "headRepositoryId": 1,
+      "baseRef": "main",
+      "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "branchProtected": true,
+      "prState": "open",
+      "merged": false,
+      "mergeCommitSha": "cccccccccccccccccccccccccccccccccccccccc",
+      "authorId": 1,
+      "githubMergeable": true,
+      "githubMergeState": "clean"
+    },
+    "rules": {
+      "classic": {
+        "state": "AVAILABLE",
+        "value": {
+          "required_status_checks": {
+            "strict": true,
+            "checks": [
+              {
+                "context": "test",
+                "app_id": 10
+              }
+            ]
+          },
+          "required_pull_request_reviews": {
+            "required_approving_review_count": 1,
+            "dismiss_stale_reviews": true
+          }
+        }
+      },
+      "active": {
+        "state": "AVAILABLE",
+        "value": []
+      }
+    },
+    "git": {
+      "state": "AVAILABLE",
+      "value": {
+        "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "mergeBase": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "candidateFiles": [
+          "src/feature.js"
+        ],
+        "baseFiles": [],
+        "baseAdvanceCommits": 0,
+        "dates": {
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": "2026-09-10T12:00:00Z",
+          "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb": "2026-09-10T12:00:00Z"
+        }
+      }
+    },
+    "target": {
+      "state": "AVAILABLE",
+      "value": {
+        "kind": "HEAD_CONTAINS_CURRENT_BASE",
+        "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    },
+    "remote": {
+      "state": "AVAILABLE",
+      "value": {
+        "repositoryId": 1,
+        "ref": "feature",
+        "expectedSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "observedSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "confirmed": true
+      }
+    },
+    "checks": {
+      "state": "AVAILABLE",
+      "value": [
+        {
+          "id": 10,
+          "name": "test",
+          "appId": 10,
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "completed",
+          "conclusion": "skipped",
+          "startedAt": "2026-09-10T12:00:00Z",
+          "completedAt": "2026-09-10T12:00:00Z",
+          "suiteId": 50
+        }
+      ]
+    },
+    "statuses": {
+      "state": "AVAILABLE",
+      "value": []
+    },
+    "execution": {
+      "state": "AVAILABLE",
+      "value": [
+        {
+          "runId": 20,
+          "workflowId": 30,
+          "attempt": 1,
+          "runSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "jobId": 40,
+          "checkId": 10,
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "completed",
+          "conclusion": "success",
+          "runStatus": "completed",
+          "runConclusion": "success",
+          "steps": [
+            {
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "startedAt": "2026-09-10T12:00:00Z",
+              "completedAt": "2026-09-10T12:00:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    "reviews": {
+      "state": "AVAILABLE",
+      "value": [
+        {
+          "id": 60,
+          "userId": 2,
+          "login": "reviewer",
+          "userType": "User",
+          "state": "APPROVED",
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "submittedAt": "2026-09-10T12:00:00Z",
+          "writePermission": {
+            "state": "AVAILABLE",
+            "value": true
+          }
+        }
+      ]
+    }
+  },
+  "notChecked": [
+    "CODE_CORRECTNESS",
+    "SECURITY",
+    "WORKFLOW_CHECKOUT_CONTENTS",
+    "SCOPE_CREEP_VS_DECLARED_SCOPE",
+    "FUTURE_REMOTE_RETENTION"
+  ],
+  "next": "Run the required validation against the applicable current state, then re-run proof.",
+  "limitations": [
+    "VERIFIED covers only these evidence claims; it does not establish bug-free, secure or production-safe code.",
+    "GitHub observations are not an atomic transaction or a guarantee of future merge state.",
+    "Job records establish GitHub-reported execution, not what source a workflow actually checked out.",
+    "Remote confirmation is point-in-time ref presence, not a future retention guarantee."
+  ],
+  "example": "SYNTHETIC_FIXTURE_NOT_CUSTOMER_EVIDENCE"
+}

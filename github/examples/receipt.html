@@ -1,0 +1,456 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Merge Proof receipt</title><style>
+  body{font:15px/1.45 system-ui,sans-serif;color:#172a29;background:#f1f4ef;margin:0;padding:24px}main{max-width:760px;margin:auto;background:white;padding:32px;border:1px solid #cad5cd;border-radius:16px}button{display:block;margin:18px 0 0;padding:10px 16px;background:#174f43;color:white;border:0;border-radius:8px;cursor:pointer}h1{font-size:42px;margin:8px 0}header{border-bottom:2px solid #174f43;padding-bottom:18px}.brand{letter-spacing:.18em;font-size:13px}dl{display:grid;grid-template-columns:1fr 1.3fr;gap:8px}dt{color:#53655c}dd{margin:0;overflow-wrap:anywhere}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}summary{cursor:pointer}small{color:#53655c}@media(max-width:520px){body{padding:8px}main{padding:18px}dl{grid-template-columns:1fr}dd{margin-bottom:10px}}@media print{body{background:white;padding:0}main{border:0}details{display:block}}</style><main><p>Synthetic deterministic fixture — not customer evidence.</p><header><div class="brand">MERGE PROOF · PROVE THE MERGE</div><h1>NOT_PROVEN</h1><strong>Receipt currentness: UNAVAILABLE </strong><p>fixture/public #1</p><small>Historical result issued 2026-09-10T12:00:00Z. Currentness observed not refreshed.</small></header>
+  <dl><dt>Candidate</dt><dd title="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa">aaaaaaaaaaaa</dd><dt>Current base at proof</dt><dd title="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb">bbbbbbbbbbbb</dd><dt>GitHub mergeability</dt><dd title="true (clean)">true (clean)</dd><dt>Applicable validation state</dt><dd title="Head includes current base: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa">Head includes current base: aaaaaaaaaaaa</dd><dt>Base movement</dt><dd title="0 commits">0 commits</dd><dt>Candidate/base overlap</dt><dd title="0 files">0 files</dd><dt>Required check conclusions satisfied</dt><dd title="1 / 1">1 / 1</dd><dt>Execution recorded on applicable state</dt><dd title="NOT_PROVEN">NOT_PROVEN</dd><dt>Human approval</dt><dd title="OBSERVED">OBSERVED</dd><dt>Current required approval</dt><dd title="PROVEN">PROVEN</dd><dt>Remote candidate</dt><dd title="CONFIRMED AT OBSERVATION">CONFIRMED AT OBSERVATION</dd><dt>Repository requirements</dt><dd title="AVAILABLE">AVAILABLE</dd><dt>Current receipt status</dt><dd title="UNAVAILABLE">UNAVAILABLE</dd><dt>Protected boundary</dt><dd title="No designated boundary detected under available path evidence">No designated boundary detected under available path evidence</dd></dl>
+  <h2>Missing evidence</h2><ul><li>Required validation execution is not proven for the applicable current state.</li></ul><h2>Next</h2><p>Run the required validation against the applicable current state, then re-run proof.</p>
+  <p>NOT_PROVEN means evidence is insufficient. It does not mean the change is broken. A protected boundary is a designated high-impact area, not a vulnerability finding.</p>
+  <details><summary>What green actually meant</summary><pre>{
+  &quot;target&quot;: {
+    &quot;state&quot;: &quot;AVAILABLE&quot;,
+    &quot;value&quot;: {
+      &quot;kind&quot;: &quot;HEAD_CONTAINS_CURRENT_BASE&quot;,
+      &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+      &quot;headSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+      &quot;baseSha&quot;: &quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;
+    }
+  },
+  &quot;state&quot;: &quot;NOT_PROVEN&quot;,
+  &quot;required&quot;: [
+    {
+      &quot;name&quot;: &quot;test&quot;,
+      &quot;appId&quot;: 10,
+      &quot;state&quot;: &quot;SKIPPED&quot;,
+      &quot;accepted&quot;: true,
+      &quot;acceptanceSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+      &quot;checkId&quot;: 10,
+      &quot;conclusion&quot;: &quot;skipped&quot;,
+      &quot;executionRecorded&quot;: false,
+      &quot;workflowJobs&quot;: [
+        {
+          &quot;runId&quot;: 20,
+          &quot;workflowId&quot;: 30,
+          &quot;attempt&quot;: 1,
+          &quot;runSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+          &quot;jobId&quot;: 40,
+          &quot;checkId&quot;: 10,
+          &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+          &quot;status&quot;: &quot;completed&quot;,
+          &quot;conclusion&quot;: &quot;success&quot;,
+          &quot;runStatus&quot;: &quot;completed&quot;,
+          &quot;runConclusion&quot;: &quot;success&quot;,
+          &quot;steps&quot;: [
+            {
+              &quot;number&quot;: 1,
+              &quot;status&quot;: &quot;completed&quot;,
+              &quot;conclusion&quot;: &quot;success&quot;,
+              &quot;startedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+              &quot;completedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;
+            }
+          ]
+        }
+      ],
+      &quot;observedCheck&quot;: {
+        &quot;id&quot;: 10,
+        &quot;name&quot;: &quot;test&quot;,
+        &quot;appId&quot;: 10,
+        &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+        &quot;status&quot;: &quot;completed&quot;,
+        &quot;conclusion&quot;: &quot;skipped&quot;,
+        &quot;startedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+        &quot;completedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+        &quot;suiteId&quot;: 50
+      },
+      &quot;observedStatus&quot;: null
+    }
+  ],
+  &quot;acceptedCount&quot;: 1,
+  &quot;executionCount&quot;: 0
+}</pre></details>
+  <details><summary>Inspect full receipt JSON</summary><pre>{
+  &quot;receipt&quot;: {
+    &quot;schemaVersion&quot;: 2,
+    &quot;receiptId&quot;: &quot;d5be3355-744a-4e42-bbb2-23ccc58c603a&quot;,
+    &quot;tool&quot;: {
+      &quot;name&quot;: &quot;merge-proof&quot;,
+      &quot;version&quot;: &quot;0.1.0&quot;
+    },
+    &quot;policy&quot;: &quot;github-exact-state-v1&quot;,
+    &quot;verdict&quot;: &quot;NOT_PROVEN&quot;,
+    &quot;issuedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+    &quot;identity&quot;: {
+      &quot;repository&quot;: &quot;fixture/public&quot;,
+      &quot;repositoryId&quot;: 1,
+      &quot;visibility&quot;: &quot;public&quot;,
+      &quot;authorization&quot;: &quot;PUBLIC_ANONYMOUS&quot;,
+      &quot;pr&quot;: 1,
+      &quot;headSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+      &quot;headRef&quot;: &quot;feature&quot;,
+      &quot;headRepository&quot;: &quot;fixture/public&quot;,
+      &quot;headRepositoryId&quot;: 1,
+      &quot;baseRef&quot;: &quot;main&quot;,
+      &quot;baseSha&quot;: &quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;,
+      &quot;branchProtected&quot;: true,
+      &quot;prState&quot;: &quot;open&quot;,
+      &quot;merged&quot;: false,
+      &quot;mergeCommitSha&quot;: &quot;cccccccccccccccccccccccccccccccccccccccc&quot;,
+      &quot;authorId&quot;: 1,
+      &quot;githubMergeable&quot;: true,
+      &quot;githubMergeState&quot;: &quot;clean&quot;
+    },
+    &quot;fingerprint&quot;: &quot;7fbd2885fdf29c53cbe84a264aa282b157d9b3742a55a557e6fe57741633ce16&quot;,
+    &quot;freshness&quot;: {
+      &quot;state&quot;: &quot;CURRENT&quot;,
+      &quot;asOf&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+      &quot;meaning&quot;: &quot;Current only at the recorded observation; later views must recheck evidence.&quot;
+    },
+    &quot;summary&quot;: {
+      &quot;ci&quot;: {
+        &quot;target&quot;: {
+          &quot;state&quot;: &quot;AVAILABLE&quot;,
+          &quot;value&quot;: {
+            &quot;kind&quot;: &quot;HEAD_CONTAINS_CURRENT_BASE&quot;,
+            &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+            &quot;headSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+            &quot;baseSha&quot;: &quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;
+          }
+        },
+        &quot;state&quot;: &quot;NOT_PROVEN&quot;,
+        &quot;required&quot;: [
+          {
+            &quot;name&quot;: &quot;test&quot;,
+            &quot;appId&quot;: 10,
+            &quot;state&quot;: &quot;SKIPPED&quot;,
+            &quot;accepted&quot;: true,
+            &quot;acceptanceSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+            &quot;checkId&quot;: 10,
+            &quot;conclusion&quot;: &quot;skipped&quot;,
+            &quot;executionRecorded&quot;: false,
+            &quot;workflowJobs&quot;: [
+              {
+                &quot;runId&quot;: 20,
+                &quot;workflowId&quot;: 30,
+                &quot;attempt&quot;: 1,
+                &quot;runSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+                &quot;jobId&quot;: 40,
+                &quot;checkId&quot;: 10,
+                &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+                &quot;status&quot;: &quot;completed&quot;,
+                &quot;conclusion&quot;: &quot;success&quot;,
+                &quot;runStatus&quot;: &quot;completed&quot;,
+                &quot;runConclusion&quot;: &quot;success&quot;,
+                &quot;steps&quot;: [
+                  {
+                    &quot;number&quot;: 1,
+                    &quot;status&quot;: &quot;completed&quot;,
+                    &quot;conclusion&quot;: &quot;success&quot;,
+                    &quot;startedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+                    &quot;completedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;
+                  }
+                ]
+              }
+            ],
+            &quot;observedCheck&quot;: {
+              &quot;id&quot;: 10,
+              &quot;name&quot;: &quot;test&quot;,
+              &quot;appId&quot;: 10,
+              &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+              &quot;status&quot;: &quot;completed&quot;,
+              &quot;conclusion&quot;: &quot;skipped&quot;,
+              &quot;startedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+              &quot;completedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+              &quot;suiteId&quot;: 50
+            },
+            &quot;observedStatus&quot;: null
+          }
+        ],
+        &quot;acceptedCount&quot;: 1,
+        &quot;executionCount&quot;: 0
+      },
+      &quot;approval&quot;: {
+        &quot;state&quot;: &quot;PROVEN&quot;,
+        &quot;observed&quot;: [
+          {
+            &quot;id&quot;: 60,
+            &quot;reviewer&quot;: &quot;reviewer&quot;,
+            &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;
+          }
+        ],
+        &quot;current&quot;: [
+          {
+            &quot;id&quot;: 60,
+            &quot;reviewer&quot;: &quot;reviewer&quot;,
+            &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;
+          }
+        ],
+        &quot;required&quot;: 1,
+        &quot;reason&quot;: null
+      },
+      &quot;remote&quot;: {
+        &quot;state&quot;: &quot;AVAILABLE&quot;,
+        &quot;value&quot;: {
+          &quot;repositoryId&quot;: 1,
+          &quot;ref&quot;: &quot;feature&quot;,
+          &quot;expectedSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+          &quot;observedSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+          &quot;confirmed&quot;: true
+        }
+      },
+      &quot;rules&quot;: {
+        &quot;state&quot;: &quot;AVAILABLE&quot;,
+        &quot;checks&quot;: [
+          {
+            &quot;name&quot;: &quot;test&quot;,
+            &quot;appId&quot;: 10
+          }
+        ],
+        &quot;approvals&quot;: 1,
+        &quot;strict&quot;: true,
+        &quot;dismissStale&quot;: true,
+        &quot;lastPush&quot;: false,
+        &quot;codeOwners&quot;: false,
+        &quot;mergeQueue&quot;: false,
+        &quot;unsupported&quot;: []
+      },
+      &quot;target&quot;: {
+        &quot;state&quot;: &quot;AVAILABLE&quot;,
+        &quot;value&quot;: {
+          &quot;kind&quot;: &quot;HEAD_CONTAINS_CURRENT_BASE&quot;,
+          &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+          &quot;headSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+          &quot;baseSha&quot;: &quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;
+        }
+      }
+    },
+    &quot;gaps&quot;: [
+      &quot;CURRENT_STATE_EXECUTION_NOT_PROVEN&quot;
+    ],
+    &quot;local&quot;: {
+      &quot;schemaVersion&quot;: 1,
+      &quot;tool&quot;: {
+        &quot;name&quot;: &quot;merge-proof&quot;,
+        &quot;version&quot;: &quot;0.1.0&quot;
+      },
+      &quot;verdict&quot;: &quot;VERIFIED&quot;,
+      &quot;repository&quot;: {
+        &quot;path&quot;: &quot;fixture/public&quot;,
+        &quot;shallow&quot;: false
+      },
+      &quot;refs&quot;: {
+        &quot;base&quot;: {
+          &quot;ref&quot;: &quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;,
+          &quot;sha&quot;: &quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;,
+          &quot;date&quot;: &quot;2026-09-10T12:00:00Z&quot;
+        },
+        &quot;head&quot;: {
+          &quot;ref&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+          &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+          &quot;date&quot;: &quot;2026-09-10T12:00:00Z&quot;
+        },
+        &quot;forkPoint&quot;: {
+          &quot;sha&quot;: &quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;,
+          &quot;date&quot;: &quot;2026-09-10T12:00:00Z&quot;
+        }
+      },
+      &quot;metrics&quot;: {
+        &quot;baseAdvanceCommits&quot;: 0,
+        &quot;baseAgeDays&quot;: 0,
+        &quot;candidateFileCount&quot;: 1,
+        &quot;baseChangedFileCount&quot;: 0,
+        &quot;overlapCount&quot;: 0,
+        &quot;excludedCount&quot;: 0
+      },
+      &quot;findings&quot;: [],
+      &quot;advisories&quot;: [],
+      &quot;excluded&quot;: [],
+      &quot;notChecked&quot;: [
+        {
+          &quot;id&quot;: &quot;CI_RAN_ON_FINAL_HEAD&quot;,
+          &quot;reason&quot;: &quot;merge-proof does not read CI results; it cannot tell which commit was tested.&quot;
+        },
+        {
+          &quot;id&quot;: &quot;HUMAN_APPROVAL_PRESENT&quot;,
+          &quot;reason&quot;: &quot;merge-proof does not read reviews or approvals.&quot;
+        },
+        {
+          &quot;id&quot;: &quot;CANDIDATE_DURABLE_ON_REMOTE&quot;,
+          &quot;reason&quot;: &quot;merge-proof inspects local git state only; it does not query a remote for durability.&quot;
+        },
+        {
+          &quot;id&quot;: &quot;SCOPE_CREEP_VS_DECLARED_SCOPE&quot;,
+          &quot;reason&quot;: &quot;merge-proof has no declared-scope input to compare the diff against.&quot;
+        }
+      ],
+      &quot;ignoreFile&quot;: null,
+      &quot;changedFiles&quot;: [
+        &quot;src/feature.js&quot;
+      ],
+      &quot;source&quot;: &quot;github-rest-git-metadata&quot;
+    },
+    &quot;evidence&quot;: {
+      &quot;source&quot;: &quot;github-rest&quot;,
+      &quot;startedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+      &quot;observedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+      &quot;consistency&quot;: &quot;STABLE_OBSERVATION&quot;,
+      &quot;identity&quot;: {
+        &quot;repository&quot;: &quot;fixture/public&quot;,
+        &quot;repositoryId&quot;: 1,
+        &quot;visibility&quot;: &quot;public&quot;,
+        &quot;authorization&quot;: &quot;PUBLIC_ANONYMOUS&quot;,
+        &quot;pr&quot;: 1,
+        &quot;headSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+        &quot;headRef&quot;: &quot;feature&quot;,
+        &quot;headRepository&quot;: &quot;fixture/public&quot;,
+        &quot;headRepositoryId&quot;: 1,
+        &quot;baseRef&quot;: &quot;main&quot;,
+        &quot;baseSha&quot;: &quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;,
+        &quot;branchProtected&quot;: true,
+        &quot;prState&quot;: &quot;open&quot;,
+        &quot;merged&quot;: false,
+        &quot;mergeCommitSha&quot;: &quot;cccccccccccccccccccccccccccccccccccccccc&quot;,
+        &quot;authorId&quot;: 1,
+        &quot;githubMergeable&quot;: true,
+        &quot;githubMergeState&quot;: &quot;clean&quot;
+      },
+      &quot;rules&quot;: {
+        &quot;classic&quot;: {
+          &quot;state&quot;: &quot;AVAILABLE&quot;,
+          &quot;value&quot;: {
+            &quot;required_status_checks&quot;: {
+              &quot;strict&quot;: true,
+              &quot;checks&quot;: [
+                {
+                  &quot;context&quot;: &quot;test&quot;,
+                  &quot;app_id&quot;: 10
+                }
+              ]
+            },
+            &quot;required_pull_request_reviews&quot;: {
+              &quot;required_approving_review_count&quot;: 1,
+              &quot;dismiss_stale_reviews&quot;: true
+            }
+          }
+        },
+        &quot;active&quot;: {
+          &quot;state&quot;: &quot;AVAILABLE&quot;,
+          &quot;value&quot;: []
+        }
+      },
+      &quot;git&quot;: {
+        &quot;state&quot;: &quot;AVAILABLE&quot;,
+        &quot;value&quot;: {
+          &quot;headSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+          &quot;baseSha&quot;: &quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;,
+          &quot;mergeBase&quot;: &quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;,
+          &quot;candidateFiles&quot;: [
+            &quot;src/feature.js&quot;
+          ],
+          &quot;baseFiles&quot;: [],
+          &quot;baseAdvanceCommits&quot;: 0,
+          &quot;dates&quot;: {
+            &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+            &quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;: &quot;2026-09-10T12:00:00Z&quot;
+          }
+        }
+      },
+      &quot;target&quot;: {
+        &quot;state&quot;: &quot;AVAILABLE&quot;,
+        &quot;value&quot;: {
+          &quot;kind&quot;: &quot;HEAD_CONTAINS_CURRENT_BASE&quot;,
+          &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+          &quot;headSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+          &quot;baseSha&quot;: &quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;
+        }
+      },
+      &quot;remote&quot;: {
+        &quot;state&quot;: &quot;AVAILABLE&quot;,
+        &quot;value&quot;: {
+          &quot;repositoryId&quot;: 1,
+          &quot;ref&quot;: &quot;feature&quot;,
+          &quot;expectedSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+          &quot;observedSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+          &quot;confirmed&quot;: true
+        }
+      },
+      &quot;checks&quot;: {
+        &quot;state&quot;: &quot;AVAILABLE&quot;,
+        &quot;value&quot;: [
+          {
+            &quot;id&quot;: 10,
+            &quot;name&quot;: &quot;test&quot;,
+            &quot;appId&quot;: 10,
+            &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+            &quot;status&quot;: &quot;completed&quot;,
+            &quot;conclusion&quot;: &quot;skipped&quot;,
+            &quot;startedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+            &quot;completedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+            &quot;suiteId&quot;: 50
+          }
+        ]
+      },
+      &quot;statuses&quot;: {
+        &quot;state&quot;: &quot;AVAILABLE&quot;,
+        &quot;value&quot;: []
+      },
+      &quot;execution&quot;: {
+        &quot;state&quot;: &quot;AVAILABLE&quot;,
+        &quot;value&quot;: [
+          {
+            &quot;runId&quot;: 20,
+            &quot;workflowId&quot;: 30,
+            &quot;attempt&quot;: 1,
+            &quot;runSha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+            &quot;jobId&quot;: 40,
+            &quot;checkId&quot;: 10,
+            &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+            &quot;status&quot;: &quot;completed&quot;,
+            &quot;conclusion&quot;: &quot;success&quot;,
+            &quot;runStatus&quot;: &quot;completed&quot;,
+            &quot;runConclusion&quot;: &quot;success&quot;,
+            &quot;steps&quot;: [
+              {
+                &quot;number&quot;: 1,
+                &quot;status&quot;: &quot;completed&quot;,
+                &quot;conclusion&quot;: &quot;success&quot;,
+                &quot;startedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+                &quot;completedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;
+              }
+            ]
+          }
+        ]
+      },
+      &quot;reviews&quot;: {
+        &quot;state&quot;: &quot;AVAILABLE&quot;,
+        &quot;value&quot;: [
+          {
+            &quot;id&quot;: 60,
+            &quot;userId&quot;: 2,
+            &quot;login&quot;: &quot;reviewer&quot;,
+            &quot;userType&quot;: &quot;User&quot;,
+            &quot;state&quot;: &quot;APPROVED&quot;,
+            &quot;sha&quot;: &quot;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&quot;,
+            &quot;submittedAt&quot;: &quot;2026-09-10T12:00:00Z&quot;,
+            &quot;writePermission&quot;: {
+              &quot;state&quot;: &quot;AVAILABLE&quot;,
+              &quot;value&quot;: true
+            }
+          }
+        ]
+      }
+    },
+    &quot;notChecked&quot;: [
+      &quot;CODE_CORRECTNESS&quot;,
+      &quot;SECURITY&quot;,
+      &quot;WORKFLOW_CHECKOUT_CONTENTS&quot;,
+      &quot;SCOPE_CREEP_VS_DECLARED_SCOPE&quot;,
+      &quot;FUTURE_REMOTE_RETENTION&quot;
+    ],
+    &quot;next&quot;: &quot;Run the required validation against the applicable current state, then re-run proof.&quot;,
+    &quot;limitations&quot;: [
+      &quot;VERIFIED covers only these evidence claims; it does not establish bug-free, secure or production-safe code.&quot;,
+      &quot;GitHub observations are not an atomic transaction or a guarantee of future merge state.&quot;,
+      &quot;Job records establish GitHub-reported execution, not what source a workflow actually checked out.&quot;,
+      &quot;Remote confirmation is point-in-time ref presence, not a future retention guarantee.&quot;
+    ],
+    &quot;example&quot;: &quot;SYNTHETIC_FIXTURE_NOT_CUSTOMER_EVIDENCE&quot;
+  }
+}</pre></details>
+  <small>VERIFIED covers only these evidence claims; it does not establish bug-free, secure or production-safe code.<br>GitHub observations are not an atomic transaction or a guarantee of future merge state.<br>Job records establish GitHub-reported execution, not what source a workflow actually checked out.<br>Remote confirmation is point-in-time ref presence, not a future retention guarantee.<br>Receipt d5be3355-744a-4e42-bbb2-23ccc58c603a</small></main></html>

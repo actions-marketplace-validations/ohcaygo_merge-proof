@@ -1,0 +1,30 @@
+SYNTHETIC FIXTURE — NOT CUSTOMER EVIDENCE
+
+MERGE PROOF
+NOT_PROVEN
+fixture/public #1
+
+Candidate: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+Current base at proof: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+GitHub mergeability: true (clean)
+Applicable validation state: Head includes current base: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+Base movement: 0 commits
+Candidate/base overlap: 0 files
+Required check conclusions satisfied: 1 / 1
+Execution recorded on applicable state: NOT_PROVEN
+Human approval: OBSERVED
+Current required approval: PROVEN
+Remote candidate: CONFIRMED AT OBSERVATION
+Repository requirements: AVAILABLE
+Current receipt status: UNAVAILABLE
+Protected boundary: No designated boundary detected under available path evidence
+
+MISSING EVIDENCE
+Required validation execution is not proven for the applicable current state.
+
+NEXT
+Run the required validation against the applicable current state, then re-run proof.
+
+Nothing in this receipt establishes that the code contains a bug.
+Receipt: d5be3355-744a-4e42-bbb2-23ccc58c603a
+Observed: 2026-09-10T12:00:00Z

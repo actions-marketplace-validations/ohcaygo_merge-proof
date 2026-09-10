@@ -195,3 +195,9 @@ CLI/Action coverage described above; those interfaces retain their current check
 Stripe test payment acceptance and release status are recorded in the factory's
 acceptance report. The factory explicitly leaves remote durability and declared
 scope comparison unimplemented.
+# GitHub exact-state candidate
+
+An additive [GitHub receipt layer](github/README.md) now lives beside the existing
+factory. It collects remote evidence, produces versioned receipts and tracks
+freshness. It is a local/dev candidate, not a deployed or installed GitHub App.
+The CLI and existing Action documented below remain offline and compatible.

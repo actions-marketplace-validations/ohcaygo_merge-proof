@@ -104,3 +104,16 @@ jobs:
         with:
           node-version: '22'
       - run: npm run test:factory
+
+  github-evidence:
+    name: exact-state receipts and Action compatibility
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ['18', '22']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm run test:github

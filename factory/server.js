@@ -54,7 +54,7 @@ function loadConfig() {
     );
   return config;
 }
-function createServer(factory) {
+function createServer(factory, proofService = null) {
   const rates = new Map();
   const config = factory.config;
   const server = http.createServer(async (req, res) => {
@@ -80,14 +80,28 @@ function createServer(factory) {
         const supplied = req.headers["x-mp-proxy-key"];
         ensure(
           typeof supplied === "string" &&
-            Buffer.byteLength(supplied) === Buffer.byteLength(config.proxySecret) &&
-            timingSafeEqual(Buffer.from(supplied), Buffer.from(config.proxySecret)),
-          "PROXY_DENIED", 403,
+            Buffer.byteLength(supplied) ===
+              Buffer.byteLength(config.proxySecret) &&
+            timingSafeEqual(
+              Buffer.from(supplied),
+              Buffer.from(config.proxySecret),
+            ),
+          "PROXY_DENIED",
+          403,
         );
-        ensure(isIP(req.headers["x-mp-client-ip"] || "") !== 0, "INVALID_CLIENT_IP", 400);
+        ensure(
+          isIP(req.headers["x-mp-client-ip"] || "") !== 0,
+          "INVALID_CLIENT_IP",
+          400,
+        );
       }
       const url = new URL(req.url, config.origin);
       ensure(url.origin === config.origin, "INVALID_REQUEST");
+      if (
+        proofService &&
+        (await require("../github/http").handle(proofService, req, res, url))
+      )
+        return;
       if (
         req.method === "GET" &&
         ["/", "/app.js", "/style.css", "/sample"].includes(url.pathname)
@@ -136,7 +150,9 @@ function createServer(factory) {
       }
       const input = raw.length ? JSON.parse(raw) : {};
       if (req.method === "POST" && url.pathname === "/api/eligibility") {
-        const ip = config.proxySecret ? req.headers["x-mp-client-ip"] : req.socket.remoteAddress;
+        const ip = config.proxySecret
+          ? req.headers["x-mp-client-ip"]
+          : req.socket.remoteAddress;
         const now = Date.now();
         const r = rates.get(ip) || { count: 0, time: now };
         if (now - r.time > 3600000) {
@@ -213,8 +229,27 @@ if (require.main === module) {
   });
   factory.purge();
   const sweep = setInterval(() => factory.purge(), 3600000);
-  const server = createServer(factory);
+  // Opt-in extension; existing factory/Stripe routes and default startup stay intact.
+  const appConfigPath = process.env.MP_GITHUB_APP_CONFIG;
+  const appConfig = appConfigPath
+    ? JSON.parse(fs.readFileSync(appConfigPath, "utf8"))
+    : null;
+  const proofService = appConfig
+    ? new (require("../github/service").ProofService)({
+        store,
+        config: { ...appConfig, origin: config.origin },
+      })
+    : null;
+  let proofDrain = Promise.resolve();
+  const proofTimer = proofService
+    ? setInterval(() => {
+        if (!proofService.draining)
+          proofDrain = proofService.drain().catch(() => {});
+      }, 5000)
+    : null;
+  const server = createServer(factory, proofService);
   server.once("error", () => {
+    clearInterval(proofTimer);
     clearInterval(sweep);
     store.close();
     console.error("FACTORY_LISTEN_FAILED");
@@ -226,8 +261,10 @@ if (require.main === module) {
     () => console.log(`Merge-Proof factory: ${config.origin} (${config.mode})`),
   );
   const close = () => {
+    clearInterval(proofTimer);
     server.close(async () => {
       await Promise.allSettled([...factory.jobs]);
+      await proofDrain;
       clearInterval(sweep);
       store.close();
       process.exit(0);
