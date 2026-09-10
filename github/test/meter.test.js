@@ -194,8 +194,10 @@ test("historical scan retries the same reservation after infrastructure failure 
   a.equal(first.state, "RETRY_AVAILABLE");
   a.equal(s.meter.usage(2).remaining, 5);
   unavailable = false;
+  first.result = { rows: [{ state: "UNAVAILABLE" }] };
   const second = s.startScan(2, 1, "fixture/public");
   a.equal(second.id, first.id);
+  a.equal(second.result, null);
   await s.scanJob;
   a.equal(second.state, "COMPLETE");
   a.equal(s.startScan(2, 1, "fixture/public").id, first.id);
@@ -222,4 +224,25 @@ test('active developers require pushed commits; repeated later pushes retain the
  await send({commits:[{id:'a'.repeat(40)}]});
  a.equal(s.meter.usage(2).activeDevelopers.length,1);
  a.equal(s.meter.usage(2).activeDevelopers[0].activity.length,2);
+});
+test('malformed signed lifecycle scopes reject without state mutation', async t => {
+  const h = setup(t);
+  const s = new ProofService({store: h.store, config: {hosted: true, webhookSecret: 's'.repeat(40)}});
+  s.meter.connect(2, 9);
+  const before = JSON.stringify(h.store.data);
+  for (const [event, payload] of [
+    ['installation', {action: 'created'}],
+    ['installation', {action: 'created', installation: {id: 2, account: {id: '9'}}}],
+    ['installation', {action: 'deleted', installation: {id: -2}}],
+    ['installation_repositories', {installation: {id: '2'}}],
+    ['installation_repositories', {installation: {id: 2}, repositories_removed: [null]}],
+  ]) {
+    const raw = Buffer.from(JSON.stringify(payload));
+    await a.rejects(s.webhook(raw, {
+      'x-github-event': event,
+      'x-github-delivery': randomUUID(),
+      'x-hub-signature-256': 'sha256=' + createHmac('sha256', 's'.repeat(40)).update(raw).digest('hex'),
+    }), {code: 'INVALID_WEBHOOK_SCOPE'});
+    a.equal(JSON.stringify(h.store.data), before);
+  }
 });

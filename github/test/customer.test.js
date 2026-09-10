@@ -109,6 +109,12 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
   removed = true;
   a.equal((await request(out.url)).status, 403);
   removed = false;
+  service.scanBusy = true;
+  a.equal((await (await request("/proof/scan", {installation: 2, repository: 1})).json()).error,
+    "SCAN_BUSY");
+  service.scanBusy = false;
+  a.equal((await (await request("/proof/scan/cancel", {installation: 2, repository: 1})).json()).error,
+    "SCAN_REPOSITORY_MISMATCH");
   a.equal((await request("/proof/logout", {})).status, 200);
   a.equal((await request(out.url)).status, 403);
 });

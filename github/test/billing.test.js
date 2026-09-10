@@ -80,6 +80,13 @@ function event(type, id = "evt_1", object = { id: "cs_test" }) {
       .digest("hex")}`,
   ];
 }
+test("checkout rejects absent and revoked installations before provider requests", async () => {
+  const { b, meter } = harness();
+  b.request = async () => { throw Error("provider must not be called"); };
+  await a.rejects(b.checkout(999, "topup", 1), { code: "INSTALLATION_INACTIVE" });
+  meter.disconnect(2);
+  await a.rejects(b.checkout(2, "pro", 1), { code: "INSTALLATION_INACTIVE" });
+});
 test("verified top-up grants exactly five across duplicate events and delivery types", async () => {
   const h = harness();
   await h.b.webhook(...event("checkout.session.completed"));

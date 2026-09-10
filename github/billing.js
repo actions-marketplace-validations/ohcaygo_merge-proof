@@ -52,10 +52,10 @@ class Billing extends Stripe {
   }
   async checkout(installationId, kind, quantity) {
     assert(["pro", "topup"].includes(kind), "INVALID_PURCHASE");
-    const accountKey =
-      this.service.meter.data.installations[installationId].account;
     const account = this.service.meter.account(installationId),
       usage = this.service.meter.usage(installationId);
+    const accountKey =
+      this.service.meter.data.installations[installationId].account;
     if (kind === "pro") {
       assert(
         !account.subscription || account.subscription.periodEnd <= Date.now(),

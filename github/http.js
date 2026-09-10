@@ -330,6 +330,8 @@ async function handle(service, req, res, url) {
       "REVIEW_ACTIVE_DEVELOPERS",
       "CHECKOUT_PENDING",
       "SCAN_TASTE_ALREADY_RESERVED",
+      "SCAN_BUSY",
+      "SCAN_REPOSITORY_MISMATCH",
     ];
     send(e.code === "PROOF_BUSY" ? 409 : 403, {
       error: safe.includes(e.code) ? e.code : "PROOF_UNAVAILABLE_OR_DENIED",

@@ -57,6 +57,7 @@ class ProofService {
       state: "RUNNING",
       completed: 0,
       total: null,
+      result: null,
     });
     this.save();
     this.scanJob = (async () => {
@@ -315,6 +316,8 @@ class ProofService {
     if (event === "ping") return { received: true };
     if (this.meter && event === "installation") {
       const installationId = p.installation?.id;
+      assert(Number.isSafeInteger(installationId) && installationId > 0,
+        "INVALID_WEBHOOK_SCOPE");
       if (["deleted", "suspend"].includes(p.action)) {
         this.meter.disconnect(installationId);
         this.data.queue = this.data.queue.filter(
@@ -326,6 +329,8 @@ class ProofService {
       } else if (
         ["created", "unsuspend", "new_permissions_accepted"].includes(p.action)
       ) {
+        assert(Number.isSafeInteger(p.installation.account?.id) &&
+          p.installation.account.id > 0, "INVALID_WEBHOOK_SCOPE");
         this.meter.connect(installationId, p.installation.account?.id);
       } else return { ignored: true };
       this.data.events.push(id);
@@ -334,6 +339,11 @@ class ProofService {
     }
     if (this.meter && event === "installation_repositories") {
       const installationId = p.installation?.id;
+      assert(Number.isSafeInteger(installationId) && installationId > 0,
+        "INVALID_WEBHOOK_SCOPE");
+      assert(Array.isArray(p.repositories_removed || []) &&
+        (p.repositories_removed || []).every(r => Number.isSafeInteger(r?.id) && r.id > 0),
+        "INVALID_WEBHOOK_SCOPE");
       this.meter.account(installationId);
       for (const removed of p.repositories_removed || []) {
         this.data.queue = this.data.queue.filter(
