@@ -67,7 +67,7 @@ satisfy either trigger. There is no workflow_dispatch entry. Consequently no
 hosted workflow/run/jobs/results or tested merge SHA can truthfully be reported.
 Do not treat zero runs as success or push main to trigger CI.
 
-After authorized draft creation, record `Merge Proof self-check` run ID, URL,
+After authorized draft creation, record `self-check` run ID, URL,
 head SHA and each job result. PR checkout defaults to the synthetic merge ref;
 record checkout SHA/parents from the checkout logs as distinct from the run's
 head SHA. Expected jobs: test Node18/20/22, dogfood existing Action, pilot-report,
@@ -99,3 +99,7 @@ and compares original immutable receipt/stale currentness against changed-head
 re-proof. Its assertion tests are not live App acceptance. Registration/install,
 credentials and live event → evidence → receipt → change → stale/re-proof remain
 unperformed. The draft/hosted-CI approval-policy gate is separate and unresolved.
+
+Published closure code revision: `729fbda1ac27bafc5acc9af443352bde4ff199ca`.
+`git ls-remote` confirmed that SHA on the candidate branch and unchanged main.
+Final self-analysis at that revision remains NOT_PROVEN for the same two paths.
