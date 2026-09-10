@@ -26,10 +26,68 @@ class ProofService {
       completed: [],
     };
     this.data = store.data.github;
+    this.meter = config.hosted ? new (require("./meter").Meter)(store) : null;
+    this.customers = this.meter
+      ? new (require("./customer").Customers)(this)
+      : null;
+    if (this.meter)
+      for (const a of Object.values(this.meter.data.accounts))
+        if (a.scan?.state === "RUNNING") a.scan.state = "INTERRUPTED";
     for (const job of this.data.queue) job.processing = false;
   }
   save() {
     this.store.save();
+  }
+  startScan(installationId, repositoryId, repo) {
+    const account = this.meter.account(installationId);
+    const old = account.scan;
+    if (old) {
+      assert(old.repositoryId === repositoryId, "SCAN_TASTE_ALREADY_RESERVED");
+      if (["RUNNING", "COMPLETE"].includes(old.state)) return old;
+    }
+    assert(!this.scanBusy, "SCAN_BUSY");
+    this.scanBusy = true;
+    const job = (account.scan = {
+      ...old,
+      id: old?.id || randomUUID(),
+      installationId,
+      repositoryId,
+      repo,
+      limit: 5,
+      state: "RUNNING",
+      completed: 0,
+      total: null,
+    });
+    this.save();
+    this.scanJob = (async () => {
+      try {
+        const client = await this.appClient(installationId, repositoryId);
+        await client.authorize(repo, repositoryId);
+        const result = await require("./scan").scan(client, repo, {
+          limit: 5,
+          canceled: () =>
+            job.state === "CANCELED" ||
+            !this.meter.data.installations[installationId]?.active,
+          progress: (completed, total) => {
+            job.completed = completed;
+            job.total = total;
+            this.save();
+          },
+        });
+        if (job.state !== "CANCELED") {
+          job.result = result;
+          job.state = result.rows.some((r) => r.state === "UNAVAILABLE")
+            ? "RETRY_AVAILABLE"
+            : "COMPLETE";
+        }
+      } catch (e) {
+        if (job.state !== "CANCELED") job.state = "RETRY_AVAILABLE";
+      } finally {
+        this.scanBusy = false;
+        this.save();
+      }
+    })();
+    return job;
   }
   async exclusive(fn) {
     assert(!this.busy, "PROOF_BUSY");
@@ -58,6 +116,16 @@ class ProofService {
       );
       assert(Object.keys(this.data.receipts).length < 1000, "RECEIPT_CAPACITY");
       client ||= this.clientFactory({ token });
+      if (this.meter) {
+        this.meter.account(installationId);
+        const repository = await client.get(`/repos/${repo}`);
+        const pull = await client.get(`/repos/${repo}/pulls/${pr}`);
+        this.meter.check(installationId, {
+          repositoryId: repository.id,
+          pr,
+          headSha: pull.head?.sha,
+        });
+      }
       const revision = this.data.revisions[repo.toLowerCase()] || 0;
       const capture = await collect(client, repo, pr, { mergeGroup });
       const receipt = prove(capture);
@@ -71,14 +139,7 @@ class ProofService {
           state: "STALE",
           reason: "EVENT_DURING_COLLECTION",
         });
-      // Failure is diagnostic history, not a completed-proof metering event.
-      this.data.receipts[receipt.receiptId] = {
-        receipt,
-        current,
-        published: publish,
-        installationId,
-      };
-      if (
+      const collectionComplete =
         receipt.verdict !== "FAIL" &&
         capture.consistency === "STABLE_OBSERVATION" &&
         [
@@ -95,7 +156,39 @@ class ProofService {
           (item) =>
             item.state === "AVAILABLE" &&
             !require("./common").hasUnavailable(item),
+        );
+      // No await between allowance validation, debit, receipt, and durable save.
+      const metering = this.meter
+        ? this.meter.complete(
+            installationId,
+            receipt,
+            current,
+            collectionComplete,
+          )
+        : null;
+      this.data.receipts[receipt.receiptId] = {
+        receipt,
+        current,
+        published: publish,
+        installationId,
+        metering,
+      };
+      for (const row of Object.values(this.data.receipts))
+        if (
+          row.receipt.receiptId !== receipt.receiptId &&
+          row.receipt.identity.repositoryId === receipt.identity.repositoryId &&
+          row.receipt.identity.pr === receipt.identity.pr &&
+          row.receipt.identity.headSha !== receipt.identity.headSha
         )
+          row.current = {
+            state: "STALE",
+            reason: "PR_HEAD_CHANGED",
+            next: "RE-PROOF REQUIRED",
+          };
+      if (
+        collectionComplete &&
+        current.state === "CURRENT" &&
+        (!this.meter || metering.charged)
       )
         this.data.completed.push({
           id: randomUUID(),
@@ -111,6 +204,7 @@ class ProofService {
   async access(id, token) {
     const row = this.data.receipts[id];
     assert(row, "NOT_FOUND");
+    if (this.meter) this.meter.account(row.installationId);
     // Every read rechecks visibility/access against immutable repository ID.
     // A public receipt URL is not authorization to a repository made private.
     const client = this.clientFactory({ token: token || null });
@@ -120,6 +214,23 @@ class ProofService {
     );
     assert(token || (row.published && repo.private === false), "ACCESS_DENIED");
     return row;
+  }
+  resumeEntitled() {
+    if (!this.meter) return;
+    for (const sub of Object.values(this.data.subscriptions)) {
+      if (sub.refreshState !== "ALLOWANCE_EXHAUSTED") continue;
+      try {
+        if (
+          this.meter.usage(sub.installationId).remaining > 0 &&
+          !this.data.queue.some(
+            (q) => q.repositoryId === sub.repositoryId && q.pr === sub.pr,
+          )
+        ) {
+          this.data.queue.push({ ...sub });
+          sub.refreshState = "QUEUED";
+        }
+      } catch {} // Revoked installations stay stopped.
+    }
   }
   async read(id, token, { refresh = false } = {}) {
     const row = await this.access(id, token);
@@ -173,7 +284,14 @@ class ProofService {
             reason: "REFRESH_REQUIRED",
             next: "Refresh evidence to establish currentness.",
           };
-    return { receipt: row.receipt, current };
+    return {
+      receipt: row.receipt,
+      current,
+      latestReceiptId:
+        this.data.subscriptions[
+          `${row.receipt.identity.repositoryId}:${row.receipt.identity.pr}`
+        ]?.latestReceiptId || null,
+    };
   }
   async webhook(raw, headers) {
     verifyWebhook(
@@ -191,6 +309,45 @@ class ProofService {
     assert(this.data.events.length < 10000, "DELIVERY_CAPACITY");
     const p = JSON.parse(raw);
     if (event === "ping") return { received: true };
+    if (this.meter && event === "installation") {
+      const installationId = p.installation?.id;
+      if (["deleted", "suspend"].includes(p.action)) {
+        this.meter.disconnect(installationId);
+        this.data.queue = this.data.queue.filter(
+          (q) => q.installationId !== installationId,
+        );
+        for (const [key, s] of Object.entries(this.data.subscriptions))
+          if (s.installationId === installationId)
+            delete this.data.subscriptions[key];
+      } else if (
+        ["created", "unsuspend", "new_permissions_accepted"].includes(p.action)
+      ) {
+        this.meter.connect(installationId, p.installation.account?.id);
+      } else return { ignored: true };
+      this.data.events.push(id);
+      this.save();
+      return { accepted: true };
+    }
+    if (this.meter && event === "installation_repositories") {
+      const installationId = p.installation?.id;
+      this.meter.account(installationId);
+      for (const removed of p.repositories_removed || []) {
+        this.data.queue = this.data.queue.filter(
+          (q) =>
+            q.installationId !== installationId ||
+            q.repositoryId !== removed.id,
+        );
+        for (const [key, s] of Object.entries(this.data.subscriptions))
+          if (
+            s.installationId === installationId &&
+            s.repositoryId === removed.id
+          )
+            delete this.data.subscriptions[key];
+      }
+      this.data.events.push(id);
+      this.save();
+      return { accepted: true };
+    }
     // Own check publication is delivery, not independent CI proof or a refresh trigger.
     if (
       event === "check_run" &&
@@ -211,6 +368,31 @@ class ProofService {
         Number.isSafeInteger(installationId),
       "INVALID_WEBHOOK_SCOPE",
     );
+    if (this.meter) this.meter.account(installationId);
+    if (
+      this.meter &&
+      event === "pull_request" &&
+      p.action === "opened" &&
+      !this.config.serviceIdentityIds?.includes(p.pull_request?.user?.id)
+    )
+      this.meter.activity(
+        installationId,
+        p.pull_request?.user,
+        "PR_OPENED",
+        `${repositoryId}:${p.pull_request?.number}`,
+      );
+    if (
+      this.meter &&
+      event === "push" &&
+      p.sender?.type === "User" &&
+      !this.config.serviceIdentityIds?.includes(p.sender.id)
+    )
+      this.meter.activity(
+        installationId,
+        p.sender,
+        "PUSH",
+        `${repositoryId}:${p.after}`,
+      );
     const supported = [
       "pull_request",
       "pull_request_review",
@@ -350,7 +532,13 @@ class ProofService {
       const sub = this.data.subscriptions[`${job.repositoryId}:${job.pr}`];
       if (sub) sub.latestReceiptId = out.receipt.receiptId;
       this.data.queue.shift();
-    } catch {
+    } catch (error) {
+      if (error.code === "ALLOWANCE_EXHAUSTED") {
+        this.data.queue.shift();
+        const sub = this.data.subscriptions[`${job.repositoryId}:${job.pr}`];
+        if (sub) sub.refreshState = "ALLOWANCE_EXHAUSTED";
+        return;
+      }
       job.attempts = (job.attempts || 0) + 1;
       if (job.attempts >= 3) {
         this.data.queue.shift();

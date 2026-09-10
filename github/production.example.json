@@ -1,0 +1,11 @@
+{
+  "hosted": true,
+  "appId": 0,
+  "clientId": "PRODUCTION_APP_CLIENT_ID",
+  "clientSecret": "SET_PRIVATELY_ON_HOST",
+  "privateKey": "SET_PRIVATELY_ON_HOST",
+  "webhookSecret": "SET_PRIVATELY_ON_HOST_AT_LEAST_32_CHARACTERS",
+  "installUrl": "https://github.com/apps/PRODUCTION_APP_SLUG/installations/new",
+  "publishChecks": true,
+  "serviceIdentityIds": []
+}

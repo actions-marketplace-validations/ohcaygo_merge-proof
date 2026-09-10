@@ -20,7 +20,7 @@ function render(o) {
   order = o;
   text("state", o.state);
   show("eligibility", false);
-  show("payment", !o.payment);
+  show("payment", false);
   show("authorization", !!o.payment && (!o.authorized || o.state === "PAID"));
   show("scope", o.state === "AWAITING_SCOPE_CONFIRMATION");
   show("delivery", o.runs.length > 0);
@@ -165,14 +165,14 @@ act($("refund"), async () =>
 (async () => {
   if (location.hash.startsWith("#access=")) {
     const token = location.hash.slice(8);
-    history.replaceState(null, "", "/");
+    history.replaceState(null, "", "/legacy");
     try {
       render(await api("access", { token }));
     } catch {
       text("message", "This private access link is invalid or has expired.");
     }
   } else {
-    if (location.hash === "#paid") history.replaceState(null, "", "/");
+    if (location.hash === "#paid") history.replaceState(null, "", "/legacy");
     await refresh();
   }
   try {

@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Merge-Proof Standard Evidence Pack</title>
+    <meta
+      name="description"
+      content="A bounded, inspectable record of Git, exact-SHA CI and candidate-bound review evidence for one GitHub pull request."
+    />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <a href="/" class="brand">MERGE-PROOF</a
+        ><span>STANDARD EVIDENCE PACK</span>
+      </header>
+      <section class="intro">
+        <h1>Existing evidence-pack orders</h1>
+        <p>
+          The prior one-time offer is retired. Existing paid orders and
+          fulfillment remain available through your original private access
+          link. Contact support@ohcaygo.com for help.
+        </p>
+      </section>
+      <section id="study" class="limits" aria-labelledby="study-title">
+        <h2 id="study-title">The G1 study</h2>
+        <p>
+          <strong
+            >We analyzed 2037 merged, agent-authored pull requests across 32
+            public repositories. 24.1% triggered one or more evidence-gap
+            conditions under the checks merge-proof implements.</strong
+          >
+        </p>
+        <p>
+          Read that sentence precisely. It is a statement about
+          <strong>missing evidence</strong>, not about defects.
+        </p>
+        <p>
+          This study does NOT claim that 24.1% of agent-authored PRs contained
+          bugs, were broken, were unsafe, or should not have merged. It makes no
+          claim about the correctness of any pull request in the corpus.
+        </p>
+        <ul>
+          <li>
+            1547 VERIFIED (75.9%); 490 NOT_PROVEN (24.1%); 0 FAIL. 42
+            unresolvable PRs were excluded from all rates.
+          </li>
+          <li>
+            BASE_DRIFT_UNVERIFIED: 410 PRs (20.1%). PROTECTED_BOUNDARY: 109 PRs
+            (5.4%). A PR can trigger both.
+          </li>
+          <li>
+            Only 2 of 6 conceptual checks were run. CI_RAN_ON_FINAL_HEAD,
+            HUMAN_APPROVAL_PRESENT, CANDIDATE_DURABLE_ON_REMOTE and
+            SCOPE_CREEP_VS_DECLARED_SCOPE were not implemented and not measured
+            in this study.
+          </li>
+          <li>
+            This is a purposive sample, not a random one. These rates should not
+            be read as rates for GitHub as a whole. All 32 contributing
+            repositories landed in the team stratum; the small/solo stratum is
+            empty.
+          </li>
+          <li>
+            The historical study detects agent co-author trailers in squash
+            merges, with a per-repository cap of 80 PRs. Rebase-merged PRs are
+            missed entirely. This differs from the supported open/two-parent
+            history of the Standard Evidence Pack.
+          </li>
+        </ul>
+        <p>
+          <a
+            href="https://github.com/ohcaygo/merge-proof/blob/main/STUDY.md"
+            target="_blank"
+            rel="noopener"
+            >Full methodology, repository results and limitations ↗</a
+          >
+        </p>
+        <p>
+          <a
+            href="https://github.com/ohcaygo/merge-proof/blob/main/study-data.json"
+            target="_blank"
+            rel="noopener"
+            >Public study data ↗</a
+          >
+        </p>
+      </section>
+      <section class="definitions">
+        <div>
+          <h2>VERIFIED</h2>
+          <p>
+            Implemented checks found no blocking evidence gap. It does not prove
+            correctness.
+          </p>
+        </div>
+        <div>
+          <h2>NOT_PROVEN</h2>
+          <p>
+            Evidence is missing under implemented checks. It does not mean
+            defective code.
+          </p>
+        </div>
+        <div>
+          <h2>FAIL</h2>
+          <p>
+            The verifier could not safely establish a result. Required
+            prerequisites need attention. It does not mean bad code.
+          </p>
+        </div>
+      </section>
+      <section class="offer" hidden>
+        <div>
+          <h2>What you receive</h2>
+          <p>
+            A PDF report, JSON results, capture and evidence manifest, Action
+            handoff Markdown, and one reassessment with a before-and-after diff.
+            Your original report stays intact.
+          </p>
+          <p>
+            Download securely from this page. Access and one reassessment are
+            available for seven days after payment. Save your private access
+            link and download the pack before it expires.
+          </p>
+          <p>No call required. No customer source code is executed.</p>
+          <p>
+            Check eligibility, save your private link, and pay through Stripe.
+            Return here to authorize the public repository and confirm the exact
+            scope. This page shows progress and provides your downloads. Within
+            seven days, prepare your one reassessment of the same PR, confirm
+            its current scope, and download the comparison and Action handoff.
+          </p>
+        </div>
+        <div>
+          <h2>One configured price</h2>
+          <p id="price" class="price">Loading Stripe price…</p>
+          <p>
+            Check eligibility before payment. Stripe confirms the actual
+            transaction amount. A missing-evidence verdict is a delivered
+            result, not a failed run.
+          </p>
+          <p>
+            If delivery fails, retry or request an exception. Undeliverable
+            purchases are escalated to Ryan as <strong>REFUND_REQUIRED</strong>.
+            Refunds are reviewed by Ryan, never issued automatically.
+          </p>
+        </div>
+      </section>
+      <section class="limits">
+        <h2>The limits are part of the result.</h2>
+        <p>
+          One open PR or reconstructable two-parent merge on public GitHub. Full
+          history must fit the bounded runner: repository metadata ≤128 MiB,
+          fetched objects ≤192 MiB, ≤100,000 reachable commits, and a two-minute
+          run limit. Squash/rebase merges, private repositories, and ambiguous
+          history are not supported in this version.
+        </p>
+        <p>
+          You confirm the required CI check names and their GitHub App IDs. This
+          pack checks those requirements and one non-author human collaborator
+          approval. It does not certify all branch rules, CODEOWNERS, test
+          quality, or the eventual merge state of an open PR.
+        </p>
+        <p>
+          This is not bug detection, a security or compliance certification,
+          proof of correctness, or a guarantee of safe code or a safe merge.
+        </p>
+        <p>These remain outside the implemented proof:</p>
+        <ul>
+          <li>
+            <code>CANDIDATE_DURABLE_ON_REMOTE</code> — whether the candidate
+            remains durable on the remote.
+          </li>
+          <li>
+            <code>SCOPE_CREEP_VS_DECLARED_SCOPE</code> — whether changes stay
+            within declared scope.
+          </li>
+        </ul>
+      </section>
+      <section class="work" id="customer">
+        <div class="section-head">
+          <h2>Your evidence pack</h2>
+          <span id="state">START WITH ELIGIBILITY</span>
+        </div>
+        <p id="message" role="status" aria-live="polite"></p>
+        <form id="eligibility" hidden>
+          <label
+            >Public GitHub repository URL<input
+              name="url"
+              type="url"
+              placeholder="https://github.com/owner/repository"
+              required
+              autocomplete="off" /></label
+          ><label
+            >Pull request number<input
+              name="pr"
+              type="number"
+              min="1"
+              required /></label
+          ><label
+            >Required CI checks<textarea
+              name="required"
+              rows="3"
+              placeholder="tests | 15368"
+              required
+            ></textarea>
+          </label>
+          <p class="small">
+            One check per line: exact check name | GitHub App ID. Find both in
+            GitHub’s check-run API. All listed checks must succeed on the
+            relevant SHA. We do not infer your organization’s CI policy.
+          </p>
+          <details>
+            <summary>How to find your required CI checks</summary>
+            <p>
+              Use the check names your repository requires. Open
+              <code
+                >https://api.github.com/repos/OWNER/REPO/commits/SHA/check-runs</code
+              >
+              with your public repository and relevant commit SHA. For each
+              required entry, copy its <code>name</code> and
+              <code>app.id</code> as <code>name | app.id</code>, one per line.
+              Use the candidate head for an open PR or the landed merge commit
+              for a supported merge. Paginate if GitHub returns more results. No
+              token is required. Commit-status-only CI is not supported.
+            </p>
+          </details>
+          <button>Check free eligibility</button>
+          <p class="small">
+            Eligibility checks deliverability only. It does not reveal paid
+            findings or verdicts.
+          </p>
+        </form>
+        <div id="access" hidden>
+          <label
+            >Save this private access link<input id="private-link" readonly
+          /></label>
+          <p class="small">
+            Anyone with this link can access your pack until expiry. Keep it
+            private. It is not sent to Stripe or GitHub.
+          </p>
+        </div>
+        <div id="payment" hidden>
+          <p>
+            Your repository is eligible. Continue to the configured Stripe
+            Payment Link, then return here after payment.
+          </p>
+          <button id="pay">Continue to Stripe</button
+          ><button id="refresh" class="secondary">Check payment status</button>
+        </div>
+        <form id="authorization" hidden>
+          <h3>Confirm your repository</h3>
+          <p>
+            This purchase covers the repository and PR checked above. Confirm
+            permission to analyze this public repository.
+          </p>
+          <label>Repository URL<input name="url" type="url" required /></label
+          ><label
+            >PR number<input name="pr" type="number" min="1" required /></label
+          ><label class="check"
+            ><input type="checkbox" required /> I authorize this
+            public-repository analysis.</label
+          ><button>Authorize and prepare scope</button>
+        </form>
+        <div id="scope" hidden>
+          <h3>Confirm the exact scope</h3>
+          <pre id="scope-details"></pre>
+          <p>
+            The report applies to these captured states and the listed required
+            checks. If the candidate changes before execution, it must be
+            confirmed again.
+          </p>
+          <button id="run">Confirm scope and run</button>
+          <button id="refresh-scope" class="secondary">Refresh scope</button>
+        </div>
+        <div id="delivery" hidden>
+          <h3>Your downloads</h3>
+          <div id="downloads"></div>
+          <button id="reassess">Prepare my one reassessment</button>
+          <p id="expiry" class="small"></p>
+        </div>
+        <div id="failure" hidden>
+          <p id="failure-detail"></p>
+          <button id="retry">Retry with current scope</button
+          ><button id="manual" class="secondary">
+            Request manual exception</button
+          ><button id="refund" class="secondary">
+            Escalate refund to Ryan
+          </button>
+        </div>
+      </section>
+      <footer>
+        <h2>Data and support</h2>
+        <p>
+          Merge-Proof Standard Evidence Pack is from OHCAYGO, owned by Ryan
+          Williams.
+        </p>
+        <p>
+          Public GitHub repositories only. We read repository and PR metadata,
+          full Git history, changed paths, check-run results and review
+          metadata. We do not request PATs, GitHub App installation,
+          private-repository or organization access, or permission to write to
+          your repository. Customer code, hooks and dependencies are not
+          executed.
+        </p>
+        <p>
+          Temporary Git copies are removed after each completed or failed
+          attempt. Reports contain repository and PR identifiers, commit hashes,
+          changed paths, findings, selected CI/review identifiers and evidence
+          states, plus capture and artifact provenance. Source file contents and
+          review bodies are not included. Reports are private to anyone holding
+          your access link; save it securely. There is no automatic email
+          recovery.
+        </p>
+        <p>
+          Downloads and reassessment expire seven days after payment. Report
+          artifacts are removed by the next hourly cleanup or service startup;
+          unpaid eligibility records expire after seven days. Paid order
+          metadata, Stripe transaction references, purchase email, confirmed
+          amount and exception records remain for reconciliation without
+          automatic deletion. Stripe handles checkout and payment details; we do
+          not receive your card number. No analytics or model provider is used
+          by this factory.
+        </p>
+        <p>
+          For a failed attempt, use the retry or exception controls on your pack
+          page. REFUND_REQUIRED is recorded for Ryan to review, never an
+          automatic refund. For billing, lost access or refund questions, email
+          <a href="mailto:support@ohcaygo.com">support@ohcaygo.com</a>. Include
+          your repository/PR and Stripe receipt reference; do not send your
+          private access link, card number or credentials. Support is
+          asynchronous; no call is required. General product questions can use
+          <a
+            href="https://github.com/ohcaygo/merge-proof/issues"
+            target="_blank"
+            rel="noopener"
+            >Merge-Proof GitHub issues</a
+          >. Issues are public: never post access links, payment details or
+          private data.
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>
