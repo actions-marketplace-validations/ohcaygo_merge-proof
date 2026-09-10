@@ -158,3 +158,26 @@ test("quantity increase needs confirmation, changes next invoice without expandi
   a.equal(h.meter.usage(2).includedBalance, 100);
   a.equal(account.nextQuantity, 3);
 });
+test("checkout creation uses exact monthly quantity and redirect cannot activate subscription",async()=>{
+ const h=harness();
+ for(let id=1;id<=2;id++)h.meter.activity(2,{id,type:"User",login:"dev"+id},"PR_OPENED","pr"+id);
+ const requests=[];
+ h.b.request=async(p,form,key)=>{
+   requests.push({p,form,key});
+   if(p==="/prices/price_pro")return {active:true,livemode:false,currency:"usd",unit_amount:2900,recurring:{interval:"month",interval_count:1,usage_type:"licensed"}};
+   if(p==="/customers")return {id:"cus_test"};
+   if(p==="/checkout/sessions")return {id:"cs_pro",url:"https://checkout.stripe.com/c/pay/test"};
+   if(p.startsWith("/checkout/sessions/cs_pro")){
+     const c=Object.values(h.b.data.checkouts).find(c=>c.sessionId==="cs_pro");
+     return {...h.session,id:"cs_pro",client_reference_id:c.id,mode:"subscription",subscription:"sub_test",amount_total:5800,line_items:{data:[{price:{id:"price_pro"},quantity:2}]}};
+   }
+   if(p.startsWith("/subscriptions/"))return h.subscription;
+   throw Error("unexpected endpoint");
+ };
+ await h.b.checkout(2,"pro",2);
+ const form=requests.find(r=>r.p==="/checkout/sessions").form;
+ a.equal(form["line_items[0][quantity]"],"2");a.equal(form.mode,"subscription");a.equal(form.customer,"cus_test");
+ a.equal(h.meter.usage(2).plan,"FREE");
+ await h.b.webhook(...event("checkout.session.completed","evt_pro",{id:"cs_pro"}));
+ a.equal(h.meter.usage(2).plan,"PRO");a.equal(h.meter.usage(2).includedBalance,100);
+});
