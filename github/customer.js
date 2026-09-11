@@ -22,15 +22,29 @@ class Customers {
       .find((x) => x.startsWith(name + "="))
       ?.slice(name.length + 1);
   }
-  start() {
+  // Bounded first-party counts, once per OAuth session and stage. No click IDs,
+  // personal identifiers, referrers, or third-party requests are retained.
+  acquisition(session, stage) {
+    const stages = ['github_connected', 'installation_available', 'receipt_returned'];
+    if (!stages.includes(stage) || !this.service.store) return;
+    session.funnelStages ||= new Set();
+    if (session.funnelStages.has(stage)) return;
+    session.funnelStages.add(stage);
+    const source = ['x', 'other'].includes(session.acquisitionSource) ? session.acquisitionSource : 'direct';
+    const counts = this.service.store.data.acquisition ||= {};
+    counts[source] ||= {};
+    counts[source][stage] = (counts[source][stage] || 0) + 1;
+    this.service.save();
+  }
+  start(source) {
     assert(
       this.config.clientId && this.config.clientSecret,
       "CUSTOMER_LOGIN_NOT_CONFIGURED",
     );
-    for (const [k, v] of this.states) if (v < Date.now()) this.states.delete(k);
+    for (const [k, v] of this.states) if (v.expiresAt < Date.now()) this.states.delete(k);
     assert(this.states.size < 1000, "LOGIN_BUSY");
     const state = random();
-    this.states.set(digest(state), Date.now() + 600000);
+    this.states.set(digest(state), { expiresAt: Date.now() + 600000, source: ['x', 'other'].includes(source) ? source : 'direct' });
     const url = new URL("https://github.com/login/oauth/authorize");
     url.search = new URLSearchParams({
       client_id: this.config.clientId,
@@ -43,9 +57,10 @@ class Customers {
     const state = url.searchParams.get("state"),
       cookie = this.value(req, "mp_login");
     assert(
-      state && state === cookie && this.states.get(digest(state)) > Date.now(),
+      state && state === cookie && this.states.get(digest(state))?.expiresAt > Date.now(),
       "LOGIN_STATE_INVALID",
     );
+    const acquisitionSource = this.states.get(digest(state)).source;
     this.states.delete(digest(state));
     assert(!url.searchParams.has("error"), "LOGIN_CANCELED");
     const code = url.searchParams.get("code");
@@ -78,10 +93,12 @@ class Customers {
     assert(this.sessions.size < 1000, "LOGIN_BUSY");
     const id = random();
     this.sessions.set(digest(id), {
+      acquisitionSource,
       token: data.access_token,
       userId: user.id,
       expiresAt: Date.now() + Math.min(data.expires_in || 3600, 3600) * 1000,
     });
+    this.acquisition(this.sessions.get(digest(id)), "github_connected");
     return this.cookie("mp_session", id, 3600);
   }
   session(req) {

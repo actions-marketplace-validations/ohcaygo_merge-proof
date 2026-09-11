@@ -242,3 +242,7 @@ footer {
     display: none;
   }
 }
+
+.primary-cta { display:inline-block; padding:14px 22px; border-radius:3px; background:#205b4d; color:#fff; font-weight:700; text-decoration:none; text-align:center; }
+.journey { margin-top:18px; }
+@media(max-width:650px) { .primary-cta { width:100%; } }

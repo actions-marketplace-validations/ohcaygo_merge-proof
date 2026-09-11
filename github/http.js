@@ -16,7 +16,7 @@ async function handle(service, req, res, url) {
   try {
     const customers = service.customers;
     if (customers && req.method === "GET" && url.pathname === "/proof/login") {
-      const login = customers.start();
+      const login = customers.start(url.searchParams.get("source"));
       res.setHeader("Set-Cookie", login.cookie);
       res.writeHead(302, { Location: login.url });
       res.end();
@@ -99,6 +99,7 @@ async function handle(service, req, res, url) {
       }
       if (url.pathname === "/proof/installations" && req.method === "GET") {
         const installations = await customers.installations(session);
+        if (installations.length) customers.acquisition(session, "installation_available");
         send(200, {
           installations: installations.map((i) => ({
             id: i.id,
@@ -203,6 +204,7 @@ async function handle(service, req, res, url) {
           service.data.subscriptions[key].latestReceiptId =
             out.receipt.receiptId;
           service.save();
+          customers.acquisition(session, "receipt_returned");
           send(201, {
             ...out,
             url: `/proof/receipts/${out.receipt.receiptId}`,

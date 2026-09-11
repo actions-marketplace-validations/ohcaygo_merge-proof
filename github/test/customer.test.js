@@ -67,7 +67,7 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
     fs.rmSync(root, { recursive: true, force: true });
   });
   const origin = service.config.origin;
-  const login = await fetch(origin + "/proof/login", { redirect: "manual" });
+  const login = await fetch(origin + "/proof/login?source=x", { redirect: "manual" });
   a.equal(login.status, 302);
   const state = new URL(login.headers.get("location")).searchParams.get(
     "state",
@@ -100,6 +100,9 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
   a.equal(response.status, 201);
   const out = await response.json();
   a.equal(service.meter.usage(2).used, 1);
+  a.deepEqual(store.data.acquisition, {x: {github_connected: 1, installation_available: 1, receipt_returned: 1}});
+  await request("/proof/installations");
+  a.equal(store.data.acquisition.x.installation_available, 1);
   a.equal((await request(out.url, false, false)).status, 403);
   a.equal((await request(out.url)).status, 200);
   a.equal((await request(out.url + "/refresh", {})).status, 200);
@@ -139,4 +142,20 @@ test("OAuth state is cookie-bound, expires, and cannot be replayed", async () =>
   const req = { headers: { cookie: start.cookie.split(";")[0] } };
   await c.callback(req, url);
   await a.rejects(c.callback(req, url), /LOGIN_STATE_INVALID/);
+});
+test('acquisition is coarse, bounded, deduplicated per session and excludes arbitrary input', () => {
+  const service={config:{clientId:'x',clientSecret:'y',origin:'https://example.test'},store:{data:{}},save(){}};
+  const c=new Customers(service);
+  for(const source of ['x','other','direct','user@example.com?click_id=secret']) {
+    const login=c.start(source);
+    const state=new URL(login.url).searchParams.get('state');
+    const stored=c.states.get(require('node:crypto').createHash('sha256').update(state).digest('hex'));
+    a.equal(stored.source, ['x','other'].includes(source)?source:'direct');
+    const session={acquisitionSource:stored.source};
+    for(const stage of ['github_connected','installation_available','receipt_returned','invalid']) {
+      c.acquisition(session,stage);c.acquisition(session,stage);
+    }
+  }
+  a.deepEqual(service.store.data.acquisition,{x:{github_connected:1,installation_available:1,receipt_returned:1},other:{github_connected:1,installation_available:1,receipt_returned:1},direct:{github_connected:2,installation_available:2,receipt_returned:2}});
+  a.doesNotMatch(JSON.stringify(service.store.data), /secret|example|click_id/);
 });
