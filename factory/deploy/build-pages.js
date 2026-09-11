@@ -23,6 +23,8 @@ for (const name of [
   "landing.js",
   "legacy.html",
   "style.css",
+  "brand.css",
+  "ohcaygo-mark.png",
 ])
   fs.copyFileSync(
     path.join(__dirname, "../public", name),

@@ -31,6 +31,14 @@ test("new visitors see Pro, retired checkout fails closed, historical access sti
   config.origin = `http://127.0.0.1:${server.address().port}`;
   const root = await (await fetch(config.origin)).text();
   a.match(root, /\$29\/month/);
+  // The built-in server must serve every same-origin landing asset, not a 404 HTML response.
+  for (const [, asset] of root.matchAll(/(?:src|href)="(\/[^"#?]+\.(?:css|js|png))"/g)) {
+    const response = await fetch(config.origin + asset);
+    a.equal(response.status, 200, asset);
+    const expectedType = asset.endsWith(".png") ? "image/png" : asset.endsWith(".css") ? "text/css" : "text/javascript";
+    a.ok(response.headers.get("content-type").startsWith(expectedType), asset);
+    a.ok((await response.arrayBuffer()).byteLength > 0, asset);
+  }
   a.doesNotMatch(root, /\$5,000|Loading Stripe/);
   const offer = await (await fetch(config.origin + "/api/offer")).json();
   a.equal(offer.available, false);

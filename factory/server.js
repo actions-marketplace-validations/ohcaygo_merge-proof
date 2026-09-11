@@ -15,6 +15,7 @@ const types = {
   ".js": "text/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8",
   ".pdf": "application/pdf",
+  ".png": "image/png",
   ".json": "application/json",
   ".md": "text/markdown; charset=utf-8",
 };
@@ -135,6 +136,8 @@ function createServer(factory, proofService = null) {
           "/landing.js",
           "/legacy",
           "/style.css",
+          "/brand.css",
+          "/ohcaygo-mark.png",
           "/sample",
         ].includes(url.pathname)
       ) {
