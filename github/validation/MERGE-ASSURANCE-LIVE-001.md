@@ -247,3 +247,67 @@ No additional broad review or feature work is needed.
 Rollback is the retained brand-615308b release and preserved state. Before any
 future rollback from enforcing policies to old neutral-emitting code, inspect
 live policies: do not silently weaken required gates. Advisory remains default.
+
+## Production completed — 2026-09-12 03:35:50 UTC
+
+Ryan explicitly authorized the production App update and deployment of
+`a14a28bbf35d34f1fee379459b801dd93f6108fb`. The preceding owner blocker is resolved.
+FINAL: COMPLETE. No new feature work or additional broad review.
+
+Production App 4901537 now has Merge queues read-only and merge_group subscribed.
+Only those two settings changed. The existing installation 160741988 accepted
+the update; selected repository access is still exactly dupageinspect-beep/vera-mvp.
+No new installations or repositories; development App remains isolated to
+ ohcaygo/merge-proof. The existing App-level members:read permission is unchanged;
+installation permissions are actions/administration/contents/metadata/pull_requests/
+statuses/merge_queues read, checks write. No queue-write permission.
+
+Deployed through the existing immutable release and systemd path at 03:32:44 UTC:
+`/opt/merge-proof/current` -> `/opt/merge-proof/releases/assurance-a14a28b`.
+DEPLOYED_COMMIT is the exact accepted SHA. Archive SHA256:
+`d6e351a65211993b57c33da586ecf51bc036189cc56dfc7e98ebd3f7ad031e16`.
+Local/host archive hashes agree; deployed files match the Linux-tested acceptance
+directory exactly (only the deployment SHA marker is additional). Service active.
+Pages, pricing and billing configuration were not changed.
+
+Rollback release retained: `/opt/merge-proof/releases/brand-615308b`.
+State backups taken while service stopped, before promotion:
+`/var/lib/merge-proof/backups/pre-assurance-a14a28b/{factory,pro}`.
+Existing live state remains in place. Original receipt hashes and full meter hash
+are unchanged after deployment and smoke proof. Existing policy map remains empty,
+so advisory is still the default. The previously absent merge ledger was initialized
+to an empty ledger (0 records), with nothing deleted or rewritten.
+
+Production checks actually performed:
+- Public landing page, proof page and client script returned HTTP 200.
+- Anonymous gate/merge-list/private-receipt requests returned HTTP 403.
+- Normal GitHub login completed; account and repository selection showed only the
+  existing installation. Gate controls and merge records rendered on the signed-in
+  page. Report only remained selected; no policy was changed.
+- Existing subscribed PR16 produced receipt
+  `d14e6cf4-3e9c-4f35-920f-7923c4f6b6ba`, issued 03:34:34.690 UTC.
+  Verdict NOT_PROVEN, currentness UNAVAILABLE, gaps RULES_UNAVAILABLE,
+  APPLICABLE_MERGE_STATE_UNAVAILABLE and BASE_DRIFT_UNVERIFIED.
+  Policy ADVISORY, no blocking, no proof debit (NOT_BILLABLE_COMPLETION).
+  This manual hosted proof returned a receipt; it did not publish a new GitHub check.
+- The receipt rendered observed Copilot/App authorship and explicit unknown review/
+  workflow actors. No coding-tool attribution was inferred from a human account.
+- GitHub redelivered genuine signed installation event
+  `719a8e00-ae5a-11f1-97e0-baa13bc0c69c` after deployment. Production webhook delivery
+  at 03:35:34.964 UTC returned 202, OK. No fake webhook was generated.
+- Exact candidate Linux GitHub suite remains 144/144; unchanged CLI/reports/factory
+  retain their original complete Linux passes. No redundant broad test/review run.
+
+Live enforcing gate and queue behavior were proven on the isolated authorized
+acceptance repository before promotion. No new production queue or blocking policy
+was enabled merely for a smoke test. The production installed repository currently
+has unavailable rules and a dirty PR; these evidence gaps are reported rather than
+changed or falsely passed. Atomic decision-time currentness and ruleset-only
+protection remain the previously documented limitations.
+
+Automatic operation: installed/subscribed PR events invalidate current views,
+queue re-proof, publish checks, retry publication and preserve merge records.
+Customers still must explicitly opt into enforcing policy and require the check
+in GitHub; deployment did not opt anybody in. Pricing remains $29 / 50 / $5-for-5,
+free tier and Pro funnel unchanged. No real-money transaction. Ryan action: NONE.
+NEXT: STOP.

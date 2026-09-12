@@ -1,0 +1,71 @@
+{
+  "at": "2026-09-12T03:35:50.353Z",
+  "sha": "a14a28bbf35d34f1fee379459b801dd93f6108fb",
+  "release": "/opt/merge-proof/releases/assurance-a14a28b",
+  "originalReceiptsUnchanged": true,
+  "meterUnchanged": true,
+  "policyUnchanged": true,
+  "mergeRecords": 0,
+  "latest": {
+    "id": "d14e6cf4-3e9c-4f35-920f-7923c4f6b6ba",
+    "verdict": "NOT_PROVEN",
+    "gaps": [
+      "RULES_UNAVAILABLE",
+      "APPLICABLE_MERGE_STATE_UNAVAILABLE",
+      "BASE_DRIFT_UNVERIFIED"
+    ],
+    "current": {
+      "state": "UNAVAILABLE",
+      "historicalVerdict": "NOT_PROVEN",
+      "changed": [],
+      "unavailable": [
+        "rules",
+        "target",
+        "execution"
+      ],
+      "asOf": "2026-09-12T03:34:34.690Z",
+      "next": "REFRESH REQUIRED"
+    },
+    "gate": {
+      "version": 1,
+      "preset": "ADVISORY",
+      "enforced": false,
+      "boundaries": false,
+      "conclusion": "neutral",
+      "satisfied": null,
+      "blocking": [],
+      "reported": [
+        "APPLICABLE_MERGE_STATE_UNAVAILABLE",
+        "BASE_DRIFT_UNVERIFIED",
+        "RULES_UNAVAILABLE"
+      ],
+      "currentness": "UNAVAILABLE",
+      "verdict": "NOT_PROVEN",
+      "boundaryEscalation": null,
+      "mergeConsequence": "Merge Proof is set to report only. This result does not block the merge."
+    },
+    "metering": {
+      "charged": false,
+      "reason": "NOT_BILLABLE_COMPLETION"
+    },
+    "check": null
+  },
+  "deliveries": [
+    {
+      "event": "installation",
+      "action": "new_permissions_accepted",
+      "status": "OK",
+      "statusCode": 202,
+      "guid": "719a8e00-ae5a-11f1-97e0-baa13bc0c69c",
+      "deliveredAt": "2026-09-12T03:35:34.964Z"
+    },
+    {
+      "event": "installation",
+      "action": "new_permissions_accepted",
+      "status": "OK",
+      "statusCode": 202,
+      "guid": "719a8e00-ae5a-11f1-97e0-baa13bc0c69c",
+      "deliveredAt": "2026-09-12T03:31:31.058Z"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "contentType": "text/html; charset=utf-8",
+    "bodyBytes": 14185,
+    "hasPricing": true,
+    "hasGate": false,
+    "hasMerges": false
+  },
+  {
+    "path": "/proof/",
+    "status": 200,
+    "contentType": "text/html; charset=utf-8",
+    "bodyBytes": 7292,
+    "hasPricing": true,
+    "hasGate": false,
+    "hasMerges": false
+  },
+  {
+    "path": "/proof/app.js",
+    "status": 200,
+    "contentType": "application/javascript",
+    "bodyBytes": 9425,
+    "hasPricing": false,
+    "hasGate": false,
+    "hasMerges": false
+  },
+  {
+    "path": "/proof/gate?repo=dupageinspect-beep%2Fvera-mvp",
+    "status": 403,
+    "contentType": "application/json",
+    "bodyBytes": 26,
+    "hasPricing": false,
+    "hasGate": false,
+    "hasMerges": false
+  },
+  {
+    "path": "/proof/merges?repo=dupageinspect-beep%2Fvera-mvp",
+    "status": 403,
+    "contentType": "application/json",
+    "bodyBytes": 26,
+    "hasPricing": false,
+    "hasGate": false,
+    "hasMerges": false
+  },
+  {
+    "path": "/proof/receipts/74957701-3e7f-4017-912f-f6989d77caf7?format=json",
+    "status": 403,
+    "contentType": "application/json",
+    "bodyBytes": 26,
+    "hasPricing": false,
+    "hasGate": false,
+    "hasMerges": false
+  }
+]
