@@ -1,6 +1,8 @@
 # MERGE-PROOF-RULESET-FIRST-CLASS-001
 
-FINAL: BLOCKED — one owner-only GitHub ruleset action.
+FINAL: PASS — deployed and verified after real ruleset-only acceptance.
+
+The closure below supersedes the historical owner-action checkpoint in this file.
 
 Candidate: `671b6e9f2ea45f9265b47675ffdfdaa65e309a85`, branch
 `codex/ruleset-first-class-001`. No production promotion or main-branch push.
@@ -109,3 +111,72 @@ updates, ALLGREEN other-entry evidence, unknown rules, and unavailable/partial
 provider evidence. These do not become VERIFIED merely because checks pass.
 
 NEXT: Ryan adds the prepared temporary base to the existing ruleset targets.
+
+
+## Final closure — 2026-09-12 15:45 UTC
+
+Ryan added the prepared base as a second target on existing ruleset 23000277.
+No new ruleset was created. The original target and requirements remain intact.
+Live collection confirmed protected:true, explicit classic absence, and the
+applicable ruleset checks/HEADGREEN queue with no unsupported requirements.
+
+Real acceptance: https://github.com/ohcaygo/merge-proof/pull/8
+- Failing head: `3a8d888db9de75fe9530c79bdbe68a872ae0eb9c`.
+  Validation check 103577389292 failed. Receipt
+  `2276d87d-d1fb-46b1-9f3c-2c6c670a8720` was NOT_PROVEN/CURRENT solely for
+  CURRENT_STATE_EXECUTION_NOT_PROVEN; no RULES_UNAVAILABLE. Merge Proof check
+  103577518352 failed; GitHub mergeable_state was blocked.
+- Changed only acceptance/state.txt from pending to ready. Satisfied head:
+  `90bfb0edf7d26f932c22a3ac4bd139f2496dd65d`. Validation check 103577604536 passed.
+  Receipt `322d1fd2-a7ae-4dc3-b993-cfd383de81dc` was VERIFIED/CURRENT with no
+  gaps; Merge Proof check 103577692815 passed; GitHub reported clean.
+  Signed synchronize/check/workflow events automatically staled old receipts
+  and re-proved the new head. Remediation described the failed check and the
+  event-driven rerun accurately.
+- First queue attempt was safely removed after an event invalidated currentness
+  during publication. No protections or conclusions were weakened. After the
+  ordinary PR re-proved, normal queue admission was retried.
+- Final group `cc273b4759383a6c72873e74552a5ee1b31f7cb0` had successful actual
+  validation check 103578108204 (workflow run 34703059496). Receipt
+  `56b3ff3e-4e1b-4851-afa8-db635c858ad3` was VERIFIED/CURRENT with matching live
+  queue selection and no gaps. Head check 103578173319 and group check
+  103578174151 both published success. GitHub merged through its queue into
+  only the temporary base at that exact group SHA, 2026-09-12T15:43:28Z.
+- Signed merge events preserved durable merge record
+  `60a25a46-0655-4da5-874c-29d0c191a96e`, PROOF_BOUND_TO_MERGED_STATE. Historical
+  verdict is retained; decision-time currentness remains honestly unavailable
+  because no atomic GitHub merge decision was observed. Receipts became STALE
+  after the merge event. Same-head/group retries added no second debit.
+
+No source changes followed candidate 671b6e9. Its previously recorded Linux
+170 GitHub, 37 factory, 26 CLI and 9 report tests remain applicable. No additional
+review was required or claimed. The GitHub connector could not create the PR
+(403); the authorized owner browser session created it without expanding App
+permissions. Queue admission used GitHub's ordinary UI with no bypass.
+
+Production is now `/opt/merge-proof/releases/ruleset-671b6e9`, exact SHA
+`671b6e9f2ea45f9265b47675ffdfdaa65e309a85`. Existing immutable archive and release
+symlink/systemd path used; authenticated backend asset and public application
+asset both passed, service active. Deployed collector/rules hashes matched the
+Linux-tested source. Production configuration and Pages were unchanged.
+
+Deployed-code verification made fresh real ruleset-only and classic reads and
+replayed the captured real failed/satisfied/group evidence with matching
+verdicts. Identity boundary: production App 4901537 is installed on vera-mvp;
+it is not installed on this acceptance repo. The first verification probe used
+the wrong installation and failed; it was corrected by running the deployed
+code with the existing acceptance App 4899448's short-lived read-only scoped
+token, transported through process stdin and never written to disk. No App
+installation or permission changed. This is deployed-code verification plus
+public HTTP health, not a production-App customer acceptance event.
+
+Backup `/var/lib/merge-proof/backups/pre-ruleset-671b6e9/{factory,pro}` was taken
+with the service stopped. All immutable production receipt bodies, policies,
+meter and merge ledger matched the backup after promotion. Meter hash remains
+`523e7444055da17433cbd2c75bd303ffaf74acbc959557cf167fb53c58d212ac`.
+Rollback: point `/opt/merge-proof/current` to retained
+`/opt/merge-proof/releases/remediation-caf4d9d` and restart merge-proof, preserving
+live state. No money transaction or billing/pricing/funnel change occurred.
+
+Evidence: `ruleset-first-class-001/live/`. Earlier pending-owner instructions are
+historical and superseded. No remaining owner action. NEXT: STOP.

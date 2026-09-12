@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "summary": "A required check did not pass on this version.",
+  "mergeConsequence": {
+    "state": "BLOCKED",
+    "text": "Blocked by your Merge Proof policy at this observation. GitHub must receive the reported check result to enforce it."
+  },
+  "items": [
+    {
+      "reasonCode": "CURRENT_STATE_EXECUTION_NOT_PROVEN",
+      "summary": "A required check did not pass on this version.",
+      "whatHappened": "A required check did not pass on this version.",
+      "whyItMatters": "Merge Proof reports the conclusion GitHub recorded. It does not judge the code itself.",
+      "nextAction": "Fix what the failing check reported and let it run again.",
+      "automaticRecheck": {
+        "state": "EVENT_DRIVEN",
+        "events": [
+          "check_run",
+          "check_suite",
+          "status",
+          "workflow_run"
+        ],
+        "text": "Yes — Merge Proof queues a recheck when it receives a relevant check or workflow event for this tracked pull request. Completion depends on available access, evidence and allowance."
+      },
+      "mergeConsequence": {
+        "state": "BLOCKED",
+        "text": "Blocked by your Merge Proof policy at this observation. GitHub must receive the reported check result to enforce it."
+      },
+      "policyBlocksGap": true
+    }
+  ]
+}

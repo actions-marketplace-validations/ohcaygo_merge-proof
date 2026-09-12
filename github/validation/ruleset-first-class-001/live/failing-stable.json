@@ -1,0 +1,371 @@
+{
+  "groupChecks": null,
+  "observedAt": "2026-09-12T15:38:43.656Z",
+  "pr": 8,
+  "head": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+  "base": "fac0f4ef30c6ca3477793ddda5296c1c22e9722d",
+  "baseRef": "codex/ruleset-only-acceptance-base",
+  "mergeable": true,
+  "mergeableState": "blocked",
+  "merged": false,
+  "draft": false,
+  "rules": [
+    {
+      "type": "deletion",
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "ohcaygo/merge-proof",
+      "ruleset_id": 23000277
+    },
+    {
+      "type": "non_fast_forward",
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "ohcaygo/merge-proof",
+      "ruleset_id": 23000277
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": false,
+        "do_not_enforce_on_create": false,
+        "required_status_checks": [
+          {
+            "context": "assurance acceptance validation",
+            "integration_id": 15368
+          },
+          {
+            "context": "Merge Proof exact-state receipt",
+            "integration_id": 4899448
+          }
+        ]
+      },
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "ohcaygo/merge-proof",
+      "ruleset_id": 23000277
+    },
+    {
+      "type": "merge_queue",
+      "parameters": {
+        "merge_method": "MERGE",
+        "max_entries_to_build": 1,
+        "min_entries_to_merge": 1,
+        "max_entries_to_merge": 1,
+        "min_entries_to_merge_wait_minutes": 5,
+        "grouping_strategy": "HEADGREEN",
+        "check_response_timeout_minutes": 60
+      },
+      "ruleset_source_type": "Repository",
+      "ruleset_source": "ohcaygo/merge-proof",
+      "ruleset_id": 23000277
+    }
+  ],
+  "checks": [
+    {
+      "id": 103577518352,
+      "name": "Merge Proof exact-state receipt",
+      "sha": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "status": "completed",
+      "conclusion": "failure",
+      "appId": 4899448,
+      "url": "https://github.com/ohcaygo/merge-proof/runs/103577518352"
+    },
+    {
+      "id": 103577451696,
+      "name": "merge-proof checks itself",
+      "sha": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "url": "https://github.com/ohcaygo/merge-proof/actions/runs/34702788058/job/103577451696"
+    },
+    {
+      "id": 103577389454,
+      "name": "tests (node 18)",
+      "sha": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "url": "https://github.com/ohcaygo/merge-proof/actions/runs/34702788058/job/103577389454"
+    },
+    {
+      "id": 103577389406,
+      "name": "exact-state receipts and Action compatibility (18)",
+      "sha": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "url": "https://github.com/ohcaygo/merge-proof/actions/runs/34702788058/job/103577389406"
+    },
+    {
+      "id": 103577389385,
+      "name": "exact-state receipts and Action compatibility (22)",
+      "sha": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "url": "https://github.com/ohcaygo/merge-proof/actions/runs/34702788058/job/103577389385"
+    },
+    {
+      "id": 103577389369,
+      "name": "tests (node 20)",
+      "sha": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "url": "https://github.com/ohcaygo/merge-proof/actions/runs/34702788058/job/103577389369"
+    },
+    {
+      "id": 103577389368,
+      "name": "tests (node 22)",
+      "sha": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "url": "https://github.com/ohcaygo/merge-proof/actions/runs/34702788058/job/103577389368"
+    },
+    {
+      "id": 103577389353,
+      "name": "skinny factory acceptance (synthetic Stripe, real Git and PDF)",
+      "sha": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "url": "https://github.com/ohcaygo/merge-proof/actions/runs/34702788058/job/103577389353"
+    },
+    {
+      "id": 103577389335,
+      "name": "public pilot HTML and PDF",
+      "sha": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "url": "https://github.com/ohcaygo/merge-proof/actions/runs/34702788058/job/103577389335"
+    },
+    {
+      "id": 103577389292,
+      "name": "assurance acceptance validation",
+      "sha": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "status": "completed",
+      "conclusion": "failure",
+      "appId": 15368,
+      "url": "https://github.com/ohcaygo/merge-proof/actions/runs/34702788055/job/103577389292"
+    },
+    {
+      "id": 103577389218,
+      "name": "dependency surface stays empty",
+      "sha": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "url": "https://github.com/ohcaygo/merge-proof/actions/runs/34702788058/job/103577389218"
+    }
+  ],
+  "receipts": [
+    {
+      "receiptId": "6d94596d-54ad-4b18-a80c-a8c297a18dde",
+      "issuedAt": "2026-09-12T15:37:39.336Z",
+      "head": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "verdict": "NOT_PROVEN",
+      "gaps": [
+        "EVIDENCE_CHANGED_DURING_COLLECTION",
+        "CURRENT_STATE_EXECUTION_NOT_PROVEN"
+      ],
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:check_run",
+        "asOf": "2026-09-12T15:38:04.880Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "gate": {
+        "version": 1,
+        "preset": "REPOSITORY_REQUIREMENTS",
+        "enforced": true,
+        "boundaries": false,
+        "conclusion": "failure",
+        "satisfied": false,
+        "blocking": [
+          "CURRENT_STATE_EXECUTION_NOT_PROVEN",
+          "EVIDENCE_CHANGED_DURING_COLLECTION",
+          "RECEIPT_STALE"
+        ],
+        "reported": [],
+        "currentness": "STALE",
+        "verdict": "NOT_PROVEN",
+        "boundaryEscalation": null,
+        "mergeConsequence": "Merge Proof reports failure under this policy. If the repository requires this check, it blocks the merge until the listed evidence is established."
+      },
+      "checkId": 103577423016,
+      "checkIds": [
+        103577423016
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "a8838313-448e-45c3-a3f7-58c6fb08f570",
+      "issuedAt": "2026-09-12T15:37:52.956Z",
+      "head": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "verdict": "NOT_PROVEN",
+      "gaps": [
+        "EVIDENCE_CHANGED_DURING_COLLECTION",
+        "CURRENT_STATE_EXECUTION_NOT_PROVEN"
+      ],
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:check_run",
+        "asOf": "2026-09-12T15:38:04.880Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "gate": {
+        "version": 1,
+        "preset": "REPOSITORY_REQUIREMENTS",
+        "enforced": true,
+        "boundaries": false,
+        "conclusion": "failure",
+        "satisfied": false,
+        "blocking": [
+          "CURRENT_STATE_EXECUTION_NOT_PROVEN",
+          "EVIDENCE_CHANGED_DURING_COLLECTION",
+          "RECEIPT_STALE"
+        ],
+        "reported": [],
+        "currentness": "STALE",
+        "verdict": "NOT_PROVEN",
+        "boundaryEscalation": null,
+        "mergeConsequence": "Merge Proof reports failure under this policy. If the repository requires this check, it blocks the merge until the listed evidence is established."
+      },
+      "checkId": 103577452775,
+      "checkIds": [
+        103577452775
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "af41647e-981b-4af6-9744-108c27d63374",
+      "issuedAt": "2026-09-12T15:38:08.857Z",
+      "head": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "verdict": "NOT_PROVEN",
+      "gaps": [
+        "EVIDENCE_CHANGED_DURING_COLLECTION",
+        "CURRENT_STATE_EXECUTION_NOT_PROVEN"
+      ],
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "changed": [],
+        "unavailable": [],
+        "asOf": "2026-09-12T15:38:08.857Z",
+        "next": "Current at this observation only.",
+        "reason": "EVENT_DURING_COLLECTION"
+      },
+      "gate": {
+        "version": 1,
+        "preset": "REPOSITORY_REQUIREMENTS",
+        "enforced": true,
+        "boundaries": false,
+        "conclusion": "failure",
+        "satisfied": false,
+        "blocking": [
+          "CURRENT_STATE_EXECUTION_NOT_PROVEN",
+          "EVIDENCE_CHANGED_DURING_COLLECTION",
+          "RECEIPT_STALE"
+        ],
+        "reported": [],
+        "currentness": "STALE",
+        "verdict": "NOT_PROVEN",
+        "boundaryEscalation": null,
+        "mergeConsequence": "Merge Proof reports failure under this policy. If the repository requires this check, it blocks the merge until the listed evidence is established."
+      },
+      "checkId": 103577485727,
+      "checkIds": [
+        103577485727
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "2276d87d-d1fb-46b1-9f3c-2c6c670a8720",
+      "issuedAt": "2026-09-12T15:38:24.240Z",
+      "head": "3a8d888db9de75fe9530c79bdbe68a872ae0eb9c",
+      "verdict": "NOT_PROVEN",
+      "gaps": [
+        "CURRENT_STATE_EXECUTION_NOT_PROVEN"
+      ],
+      "current": {
+        "state": "CURRENT",
+        "historicalVerdict": "NOT_PROVEN",
+        "changed": [],
+        "unavailable": [],
+        "asOf": "2026-09-12T15:38:24.240Z",
+        "next": "Current at this observation only."
+      },
+      "gate": {
+        "version": 1,
+        "preset": "REPOSITORY_REQUIREMENTS",
+        "enforced": true,
+        "boundaries": false,
+        "conclusion": "failure",
+        "satisfied": false,
+        "blocking": [
+          "CURRENT_STATE_EXECUTION_NOT_PROVEN"
+        ],
+        "reported": [],
+        "currentness": "CURRENT",
+        "verdict": "NOT_PROVEN",
+        "boundaryEscalation": null,
+        "mergeConsequence": "Merge Proof reports failure under this policy. If the repository requires this check, it blocks the merge until the listed evidence is established."
+      },
+      "checkId": 103577518352,
+      "checkIds": [
+        103577518352
+      ],
+      "metering": {
+        "key": "[160648161,1352881392,8,\"3a8d888db9de75fe9530c79bdbe68a872ae0eb9c\"]",
+        "charged": true,
+        "reason": "FREE_TASTE"
+      }
+    }
+  ],
+  "meter": {
+    "accounts": {
+      "github:323341515": {
+        "freeUsed": 1,
+        "scan": null,
+        "activity": [
+          {
+            "userId": 299822117,
+            "login": "dupageinspect-beep",
+            "kind": "PR_OPENED",
+            "evidence": "1352881392:8",
+            "at": 1789227441573
+          }
+        ],
+        "periods": {},
+        "topups": {},
+        "topupUsed": 0
+      }
+    },
+    "installations": {
+      "160648161": {
+        "account": "github:323341515",
+        "active": true
+      }
+    },
+    "proofs": {
+      "[160648161,1352881392,8,\"3a8d888db9de75fe9530c79bdbe68a872ae0eb9c\"]": {
+        "receiptId": "2276d87d-d1fb-46b1-9f3c-2c6c670a8720",
+        "at": "2026-09-12T15:38:24.240Z",
+        "account": "github:323341515",
+        "source": "FREE_TASTE"
+      }
+    }
+  }
+}
