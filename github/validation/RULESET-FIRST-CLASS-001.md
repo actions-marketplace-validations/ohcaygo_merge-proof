@@ -67,12 +67,22 @@ with its pull_request target updated. Read-only live evidence confirms this new
 branch has no classic protection and no applicable rules yet. No acceptance PR
 or enforcing check has been published for this mission yet.
 
-RYAN ACTION: In https://github.com/ohcaygo/merge-proof/settings/rules import
-`ruleset-first-class-001/owner-ruleset.json` and save it Active. This creates one
-new ruleset targeting only the new temporary base, with no bypass actors, the
-two existing publisher-bound required checks and existing HEADGREEN queue
-parameters. The JSON was derived from the actual existing acceptance ruleset.
-Do not change the existing ruleset or any classic protection.
+RYAN ACTION (updated after live reinspection): Edit the existing Active ruleset
+"Merge assurance temporary acceptance" (23000277) at
+https://github.com/ohcaygo/merge-proof/settings/rules/23000277 and add
+`refs/heads/codex/ruleset-only-acceptance-base` to its included branch targets.
+Keep the existing target and all requirements. Do not create another ruleset.
+
+The earlier owner-ruleset.json import proposal is superseded and must not be
+executed. Ryan explicitly instructed reuse of the existing ruleset.
+
+Live reinspection confirmed the existing ruleset still targets only
+`refs/heads/codex/merge-assurance-acceptance-base`; its updated_at remains
+2026-09-12T03:17:19.008Z. That branch still has classic protection rule
+`BPR_kwDOUKNU8M4E86W-`, requiring assurance acceptance validation from App 15368.
+The prepared ruleset-only branch remains unprotected with no applicable rules
+and explicit GraphQL branchProtectionRule:null. Active status by itself does
+not establish ruleset-only configuration. No new live acceptance was claimed.
 
 Ruleset administration is explicitly outside this mission's delegated scope.
 The App retains Administration: read; no additional authority is requested.
@@ -98,4 +108,4 @@ code scanning, review threads/teams, code-owner and last-push evidence, restrict
 updates, ALLGREEN other-entry evidence, unknown rules, and unavailable/partial
 provider evidence. These do not become VERIFIED merely because checks pass.
 
-NEXT: Ryan imports and activates the prepared ruleset on the temporary base.
+NEXT: Ryan adds the prepared temporary base to the existing ruleset targets.
