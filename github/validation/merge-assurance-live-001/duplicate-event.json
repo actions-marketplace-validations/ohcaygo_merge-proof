@@ -1,0 +1,74 @@
+{
+  "observedAt": "2026-09-12T03:24:30.627Z",
+  "meterUnchanged": true,
+  "proofKeys": [
+    "[160648161,1352881392,6,\"515fff8628c9c01e524d6f5332c73be583d3ea5a\"]",
+    "[160648161,1352881392,6,\"40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633\"]",
+    "[160648161,1352881392,7,\"a1d231ef58e03a10a2506a9121d6febb01ea87d6\"]"
+  ],
+  "partialRows": [
+    {
+      "receiptId": "99a3fce5-8998-489b-9216-cc624ea3f9a1",
+      "checkIds": [
+        103490126827
+      ],
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "VERIFIED",
+        "changed": [],
+        "unavailable": [],
+        "asOf": "2026-09-12T03:23:39.644Z",
+        "next": "Current at this observation only.",
+        "reason": "EVENT_DURING_COLLECTION"
+      },
+      "verdict": "VERIFIED",
+      "group": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2"
+    },
+    {
+      "receiptId": "a4698a1b-6327-493c-9ae3-2bd811ca547a",
+      "checkIds": [
+        103490229595
+      ],
+      "current": {
+        "state": "CURRENT",
+        "historicalVerdict": "VERIFIED",
+        "changed": [],
+        "unavailable": [],
+        "asOf": "2026-09-12T03:24:29.697Z",
+        "next": "Current at this observation only."
+      },
+      "verdict": "VERIFIED",
+      "group": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2"
+    }
+  ],
+  "queue": [
+    {
+      "repo": "ohcaygo/merge-proof",
+      "repositoryId": 1352881392,
+      "pr": 7,
+      "installationId": 160648161,
+      "latestReceiptId": "041c3a53-35bc-48c6-a557-993868dbd8f5",
+      "mergeGroup": {
+        "head_sha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+        "head_ref": "refs/heads/gh-readonly-queue/codex/merge-assurance-acceptance-base/pr-7-908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+        "base_sha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+        "base_ref": "refs/heads/codex/merge-assurance-acceptance-base"
+      },
+      "processing": false,
+      "retryAt": 1789183500080
+    },
+    {
+      "repo": "ohcaygo/merge-proof",
+      "repositoryId": 1352881392,
+      "pr": 7,
+      "installationId": 160648161,
+      "latestReceiptId": "041c3a53-35bc-48c6-a557-993868dbd8f5",
+      "mergeGroup": {
+        "head_sha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+        "head_ref": "refs/heads/gh-readonly-queue/codex/merge-assurance-acceptance-base/pr-7-908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+        "base_sha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+        "base_ref": "refs/heads/codex/merge-assurance-acceptance-base"
+      }
+    }
+  ]
+}

@@ -1,0 +1,2313 @@
+{
+  "at": "2026-09-12T03:27:14.441Z",
+  "candidate": "a14a28bbf35d34f1fee379459b801dd93f6108fb",
+  "originalReceiptsUnchanged": true,
+  "proofKeys": [
+    "[160648161,1352881392,6,\"515fff8628c9c01e524d6f5332c73be583d3ea5a\"]",
+    "[160648161,1352881392,6,\"40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633\"]",
+    "[160648161,1352881392,7,\"a1d231ef58e03a10a2506a9121d6febb01ea87d6\"]"
+  ],
+  "freeUsed": 3,
+  "records": [
+    {
+      "schemaVersion": 1,
+      "recordId": "59f0a93f-115a-4746-858c-3d3ac62c3874",
+      "identity": "1352881392:6:908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+      "recordedAt": "2026-09-12T03:21:09.983Z",
+      "installationId": 160648161,
+      "repository": "ohcaygo/merge-proof",
+      "repositoryId": 1352881392,
+      "pr": 6,
+      "title": null,
+      "baseRef": "codex/merge-assurance-acceptance-base",
+      "mergedAt": "2026-09-12T03:21:08Z",
+      "mergeCommitSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+      "mergedHeadSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+      "mergedBy": {
+        "id": 299822117,
+        "login": "dupageinspect-beep",
+        "type": "User",
+        "kind": "HUMAN_ACCOUNT",
+        "botLoginSuffix": false
+      },
+      "proof": {
+        "receiptId": "d2e01651-1b0b-4335-81b6-910f26254dc4",
+        "state": "PROOF_BOUND_TO_MERGED_STATE",
+        "plain": "This receipt was produced for the exact commit that was merged.",
+        "boundToMergedState": true,
+        "verdict": "VERIFIED",
+        "fingerprint": "da14e0412281e33421ad9c7837819bf2ae14df24bad01b01ad07d4a9da5d843a",
+        "policyName": "github-exact-state-v1",
+        "issuedAt": "2026-09-12T03:20:35.865Z",
+        "receiptHeadSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+        "baseShaAtProof": "fcd71a87abd8db0b49541579db882db002c0a278",
+        "currentnessAtMerge": {
+          "state": "UNAVAILABLE",
+          "reason": "MERGE_DECISION_NOT_ATOMICALLY_OBSERVED",
+          "asOf": null
+        },
+        "currentnessAtDelivery": {
+          "state": "STALE",
+          "historicalVerdict": "VERIFIED",
+          "reason": "GITHUB_EVENT:push",
+          "asOf": "2026-09-12T03:21:09.123Z",
+          "next": "RE-PROOF REQUIRED"
+        },
+        "publicationObservedAt": "2026-09-12T03:20:36.905Z",
+        "gateObservation": "Published policy result, not an assertion of GitHub's decision at merge time.",
+        "receiptSnapshot": {
+          "schemaVersion": 2,
+          "receiptId": "d2e01651-1b0b-4335-81b6-910f26254dc4",
+          "tool": {
+            "name": "merge-proof",
+            "version": "0.1.0"
+          },
+          "policy": "github-exact-state-v1",
+          "verdict": "VERIFIED",
+          "issuedAt": "2026-09-12T03:20:35.865Z",
+          "identity": {
+            "repository": "ohcaygo/merge-proof",
+            "repositoryId": 1352881392,
+            "visibility": "public",
+            "authorization": "GITHUB_TOKEN",
+            "pr": 6,
+            "headSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+            "headRef": "codex/merge-assurance-acceptance-pr",
+            "headRepository": "ohcaygo/merge-proof",
+            "headRepositoryId": 1352881392,
+            "baseRef": "codex/merge-assurance-acceptance-base",
+            "baseSha": "fcd71a87abd8db0b49541579db882db002c0a278",
+            "branchProtected": true,
+            "prState": "open",
+            "merged": false,
+            "mergeCommitSha": "8ad5a9ca1064002982e0011cfd11cace67385a65",
+            "authorId": 299822117,
+            "author": {
+              "id": 299822117,
+              "login": "dupageinspect-beep",
+              "type": "User"
+            },
+            "mergedBy": null,
+            "githubMergeable": true,
+            "githubMergeState": "blocked"
+          },
+          "fingerprint": "da14e0412281e33421ad9c7837819bf2ae14df24bad01b01ad07d4a9da5d843a",
+          "freshness": {
+            "state": "CURRENT",
+            "asOf": "2026-09-12T03:20:35.865Z",
+            "meaning": "Current only at the recorded observation; later views must recheck evidence."
+          },
+          "summary": {
+            "queueStage": "MERGE_GROUP",
+            "ci": {
+              "target": {
+                "state": "AVAILABLE",
+                "value": {
+                  "kind": "MERGE_GROUP",
+                  "sha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                  "headSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                  "baseSha": "fcd71a87abd8db0b49541579db882db002c0a278",
+                  "ref": "refs/heads/gh-readonly-queue/codex/merge-assurance-acceptance-base/pr-6-fcd71a87abd8db0b49541579db882db002c0a278",
+                  "selection": {
+                    "state": "AVAILABLE",
+                    "value": {
+                      "id": "MQE_lQDOUKNU8M8AAAABDONTec4ABCbezgLRMV4",
+                      "state": "AWAITING_CHECKS",
+                      "headSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                      "baseSha": "fcd71a87abd8db0b49541579db882db002c0a278",
+                      "candidateSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633"
+                    }
+                  }
+                }
+              },
+              "state": "PROVEN",
+              "required": [
+                {
+                  "name": "assurance acceptance validation",
+                  "appId": 15368,
+                  "state": "EXECUTION_RECORDED",
+                  "accepted": true,
+                  "acceptanceSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                  "checkId": 103489660636,
+                  "conclusion": "success",
+                  "executionRecorded": true,
+                  "workflowJobs": [
+                    {
+                      "runId": 34670075208,
+                      "workflowId": 356260202,
+                      "attempt": 1,
+                      "runSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                      "actor": {
+                        "id": 299822117,
+                        "login": "dupageinspect-beep",
+                        "type": "User"
+                      },
+                      "triggeringActor": {
+                        "id": 299822117,
+                        "login": "dupageinspect-beep",
+                        "type": "User"
+                      },
+                      "jobId": 103489660636,
+                      "checkId": 103489660636,
+                      "sha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                      "status": "completed",
+                      "conclusion": "success",
+                      "runStatus": "completed",
+                      "runConclusion": "success",
+                      "steps": [
+                        {
+                          "number": 1,
+                          "status": "completed",
+                          "conclusion": "success",
+                          "startedAt": "2026-09-12T03:20:01Z",
+                          "completedAt": "2026-09-12T03:20:01Z"
+                        },
+                        {
+                          "number": 2,
+                          "status": "completed",
+                          "conclusion": "success",
+                          "startedAt": "2026-09-12T03:20:01Z",
+                          "completedAt": "2026-09-12T03:20:02Z"
+                        },
+                        {
+                          "number": 3,
+                          "status": "completed",
+                          "conclusion": "success",
+                          "startedAt": "2026-09-12T03:20:02Z",
+                          "completedAt": "2026-09-12T03:20:02Z"
+                        },
+                        {
+                          "number": 6,
+                          "status": "completed",
+                          "conclusion": "success",
+                          "startedAt": "2026-09-12T03:20:02Z",
+                          "completedAt": "2026-09-12T03:20:02Z"
+                        },
+                        {
+                          "number": 7,
+                          "status": "completed",
+                          "conclusion": "success",
+                          "startedAt": "2026-09-12T03:20:02Z",
+                          "completedAt": "2026-09-12T03:20:02Z"
+                        }
+                      ]
+                    }
+                  ],
+                  "observedCheck": {
+                    "id": 103489660636,
+                    "name": "assurance acceptance validation",
+                    "appId": 15368,
+                    "appSlug": "github-actions",
+                    "sha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "startedAt": "2026-09-12T03:20:00Z",
+                    "completedAt": "2026-09-12T03:20:03Z",
+                    "suiteId": 93917967079
+                  },
+                  "observedStatus": null
+                }
+              ],
+              "selfReference": {
+                "context": "Merge Proof exact-state receipt",
+                "ruleAppId": 4899448,
+                "boundToThisApp": true,
+                "state": "SELF_CHECK_NOT_INDEPENDENT_EVIDENCE",
+                "note": "This repository requires Merge Proof's own check, bound to this App. The requirement is this receipt; it is not counted as evidence about the change."
+              },
+              "acceptedCount": 1,
+              "executionCount": 1
+            },
+            "approval": {
+              "state": "NOT_APPLICABLE",
+              "observed": [],
+              "current": [],
+              "required": 0
+            },
+            "remote": {
+              "state": "AVAILABLE",
+              "value": {
+                "repositoryId": 1352881392,
+                "ref": "codex/merge-assurance-acceptance-pr",
+                "expectedSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                "observedSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                "confirmed": true
+              }
+            },
+            "rules": {
+              "state": "AVAILABLE",
+              "checks": [
+                {
+                  "name": "assurance acceptance validation",
+                  "appId": 15368
+                },
+                {
+                  "name": "Merge Proof exact-state receipt",
+                  "appId": 4899448
+                }
+              ],
+              "approvals": 0,
+              "strict": false,
+              "dismissStale": false,
+              "lastPush": false,
+              "codeOwners": false,
+              "mergeQueue": true,
+              "unsupported": []
+            },
+            "target": {
+              "state": "AVAILABLE",
+              "value": {
+                "kind": "MERGE_GROUP",
+                "sha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                "headSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                "baseSha": "fcd71a87abd8db0b49541579db882db002c0a278",
+                "ref": "refs/heads/gh-readonly-queue/codex/merge-assurance-acceptance-base/pr-6-fcd71a87abd8db0b49541579db882db002c0a278",
+                "selection": {
+                  "state": "AVAILABLE",
+                  "value": {
+                    "id": "MQE_lQDOUKNU8M8AAAABDONTec4ABCbezgLRMV4",
+                    "state": "AWAITING_CHECKS",
+                    "headSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                    "baseSha": "fcd71a87abd8db0b49541579db882db002c0a278",
+                    "candidateSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633"
+                  }
+                }
+              }
+            },
+            "actors": {
+              "state": "AVAILABLE",
+              "prAuthor": {
+                "id": 299822117,
+                "login": "dupageinspect-beep",
+                "type": "User",
+                "kind": "HUMAN_ACCOUNT",
+                "botLoginSuffix": false
+              },
+              "mergedBy": null,
+              "commitAuthors": [
+                {
+                  "id": 299822117,
+                  "login": "dupageinspect-beep",
+                  "type": "User",
+                  "kind": "HUMAN_ACCOUNT",
+                  "botLoginSuffix": false
+                }
+              ],
+              "commitCommitters": [
+                {
+                  "id": 299822117,
+                  "login": "dupageinspect-beep",
+                  "type": "User",
+                  "kind": "HUMAN_ACCOUNT",
+                  "botLoginSuffix": false
+                }
+              ],
+              "commitsObserved": 2,
+              "commitsTruncated": false,
+              "signedCommits": 0,
+              "reviewers": [],
+              "checkPublishers": [
+                {
+                  "appId": 15368,
+                  "slug": "github-actions",
+                  "kind": "APP"
+                }
+              ],
+              "workflowActors": [
+                {
+                  "id": 299822117,
+                  "login": "dupageinspect-beep",
+                  "type": "User",
+                  "kind": "HUMAN_ACCOUNT",
+                  "botLoginSuffix": false
+                }
+              ],
+              "authorship": [
+                {
+                  "id": 299822117,
+                  "login": "dupageinspect-beep",
+                  "type": "User",
+                  "kind": "HUMAN_ACCOUNT",
+                  "botLoginSuffix": false
+                }
+              ],
+              "nonHumanAuthorship": [],
+              "agentIdentity": "NONE_OBSERVED",
+              "limitation": "GitHub records the account that acted, not the tool it was driven by. A coding agent run with a person's own credentials is recorded as that person; only an agent acting as its own GitHub App or bot account is separately identifiable here."
+            },
+            "gate": {
+              "context": "Merge Proof exact-state receipt",
+              "appId": 4899448,
+              "required": true,
+              "boundToThisApp": true,
+              "independentRequiredChecks": 1,
+              "requiredChecks": [
+                {
+                  "name": "assurance acceptance validation",
+                  "appId": 15368
+                }
+              ],
+              "approvalsRequired": 0,
+              "readiness": {
+                "state": "READY",
+                "blockers": []
+              },
+              "unsupported": []
+            }
+          },
+          "gaps": [],
+          "local": {
+            "schemaVersion": 1,
+            "tool": {
+              "name": "merge-proof",
+              "version": "0.1.0"
+            },
+            "verdict": "VERIFIED",
+            "repository": {
+              "path": "ohcaygo/merge-proof",
+              "shallow": false
+            },
+            "refs": {
+              "base": {
+                "ref": "fcd71a87abd8db0b49541579db882db002c0a278",
+                "sha": "fcd71a87abd8db0b49541579db882db002c0a278",
+                "date": "2026-09-12T02:47:33Z"
+              },
+              "head": {
+                "ref": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                "date": "2026-09-12T03:02:13Z"
+              },
+              "forkPoint": {
+                "sha": "fcd71a87abd8db0b49541579db882db002c0a278",
+                "date": "2026-09-12T02:47:33Z"
+              }
+            },
+            "metrics": {
+              "baseAdvanceCommits": 0,
+              "baseAgeDays": 0,
+              "candidateFileCount": 1,
+              "baseChangedFileCount": 0,
+              "overlapCount": 0,
+              "excludedCount": 0
+            },
+            "findings": [],
+            "advisories": [],
+            "excluded": [],
+            "notChecked": [
+              {
+                "id": "CI_RAN_ON_FINAL_HEAD",
+                "reason": "merge-proof does not read CI results; it cannot tell which commit was tested."
+              },
+              {
+                "id": "HUMAN_APPROVAL_PRESENT",
+                "reason": "merge-proof does not read reviews or approvals."
+              },
+              {
+                "id": "CANDIDATE_DURABLE_ON_REMOTE",
+                "reason": "merge-proof inspects local git state only; it does not query a remote for durability."
+              },
+              {
+                "id": "SCOPE_CREEP_VS_DECLARED_SCOPE",
+                "reason": "merge-proof has no declared-scope input to compare the diff against."
+              }
+            ],
+            "ignoreFile": null,
+            "changedFiles": [
+              "acceptance/purpose.txt"
+            ],
+            "source": "github-rest-git-metadata"
+          },
+          "evidence": {
+            "identity": {
+              "repository": "ohcaygo/merge-proof",
+              "repositoryId": 1352881392,
+              "visibility": "public",
+              "authorization": "GITHUB_TOKEN",
+              "pr": 6,
+              "headSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+              "headRef": "codex/merge-assurance-acceptance-pr",
+              "headRepository": "ohcaygo/merge-proof",
+              "headRepositoryId": 1352881392,
+              "baseRef": "codex/merge-assurance-acceptance-base",
+              "baseSha": "fcd71a87abd8db0b49541579db882db002c0a278",
+              "branchProtected": true,
+              "prState": "open",
+              "merged": false,
+              "mergeCommitSha": "8ad5a9ca1064002982e0011cfd11cace67385a65",
+              "authorId": 299822117,
+              "author": {
+                "id": 299822117,
+                "login": "dupageinspect-beep",
+                "type": "User"
+              },
+              "mergedBy": null,
+              "githubMergeable": true,
+              "githubMergeState": "blocked"
+            },
+            "rules": {
+              "classic": {
+                "state": "AVAILABLE",
+                "value": {
+                  "required_signatures": {
+                    "enabled": false
+                  },
+                  "required_linear_history": {
+                    "enabled": false
+                  },
+                  "required_status_checks": {
+                    "strict": false,
+                    "contexts": [
+                      "assurance acceptance validation"
+                    ],
+                    "checks": [
+                      {
+                        "context": "assurance acceptance validation",
+                        "app_id": 15368
+                      }
+                    ]
+                  },
+                  "required_pull_request_reviews": null,
+                  "required_conversation_resolution": {
+                    "enabled": false
+                  }
+                }
+              },
+              "active": {
+                "state": "AVAILABLE",
+                "value": [
+                  {
+                    "type": "deletion",
+                    "ruleset_id": 23000277,
+                    "ruleset_source_type": "Repository",
+                    "parameters": null
+                  },
+                  {
+                    "type": "non_fast_forward",
+                    "ruleset_id": 23000277,
+                    "ruleset_source_type": "Repository",
+                    "parameters": null
+                  },
+                  {
+                    "type": "required_status_checks",
+                    "ruleset_id": 23000277,
+                    "ruleset_source_type": "Repository",
+                    "parameters": {
+                      "strict_required_status_checks_policy": false,
+                      "do_not_enforce_on_create": false,
+                      "required_status_checks": [
+                        {
+                          "context": "assurance acceptance validation",
+                          "integration_id": 15368
+                        },
+                        {
+                          "context": "Merge Proof exact-state receipt",
+                          "integration_id": 4899448
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "merge_queue",
+                    "ruleset_id": 23000277,
+                    "ruleset_source_type": "Repository",
+                    "parameters": {
+                      "merge_method": "MERGE",
+                      "max_entries_to_build": 1,
+                      "min_entries_to_merge": 1,
+                      "max_entries_to_merge": 1,
+                      "min_entries_to_merge_wait_minutes": 5,
+                      "grouping_strategy": "HEADGREEN",
+                      "check_response_timeout_minutes": 60
+                    }
+                  }
+                ]
+              }
+            },
+            "git": {
+              "state": "AVAILABLE",
+              "value": {
+                "headSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                "baseSha": "fcd71a87abd8db0b49541579db882db002c0a278",
+                "mergeBase": "fcd71a87abd8db0b49541579db882db002c0a278",
+                "candidateFiles": [
+                  "acceptance/purpose.txt"
+                ],
+                "baseFiles": [],
+                "baseAdvanceCommits": 0,
+                "dates": {
+                  "fcd71a87abd8db0b49541579db882db002c0a278": "2026-09-12T02:47:33Z",
+                  "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633": "2026-09-12T03:02:13Z"
+                }
+              }
+            },
+            "target": {
+              "state": "AVAILABLE",
+              "value": {
+                "kind": "MERGE_GROUP",
+                "sha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                "headSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                "baseSha": "fcd71a87abd8db0b49541579db882db002c0a278",
+                "ref": "refs/heads/gh-readonly-queue/codex/merge-assurance-acceptance-base/pr-6-fcd71a87abd8db0b49541579db882db002c0a278",
+                "selection": {
+                  "state": "AVAILABLE",
+                  "value": {
+                    "id": "MQE_lQDOUKNU8M8AAAABDONTec4ABCbezgLRMV4",
+                    "state": "AWAITING_CHECKS",
+                    "headSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                    "baseSha": "fcd71a87abd8db0b49541579db882db002c0a278",
+                    "candidateSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633"
+                  }
+                }
+              }
+            },
+            "remote": {
+              "state": "AVAILABLE",
+              "value": {
+                "repositoryId": 1352881392,
+                "ref": "codex/merge-assurance-acceptance-pr",
+                "expectedSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                "observedSha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                "confirmed": true
+              }
+            },
+            "checks": {
+              "state": "AVAILABLE",
+              "value": [
+                {
+                  "id": 103487422721,
+                  "name": "assurance acceptance validation",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:02:22Z",
+                  "completedAt": "2026-09-12T03:02:29Z",
+                  "suiteId": 93915992917
+                },
+                {
+                  "id": 103487422860,
+                  "name": "public pilot HTML and PDF",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:02:22Z",
+                  "completedAt": "2026-09-12T03:02:31Z",
+                  "suiteId": 93915992994
+                },
+                {
+                  "id": 103487422934,
+                  "name": "skinny factory acceptance (synthetic Stripe, real Git and PDF)",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:02:22Z",
+                  "completedAt": "2026-09-12T03:02:43Z",
+                  "suiteId": 93915992994
+                },
+                {
+                  "id": 103487422944,
+                  "name": "tests (node 22)",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:02:22Z",
+                  "completedAt": "2026-09-12T03:02:30Z",
+                  "suiteId": 93915992994
+                },
+                {
+                  "id": 103487422958,
+                  "name": "tests (node 18)",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:02:22Z",
+                  "completedAt": "2026-09-12T03:02:36Z",
+                  "suiteId": 93915992994
+                },
+                {
+                  "id": 103487422972,
+                  "name": "exact-state receipts and Action compatibility (22)",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:02:22Z",
+                  "completedAt": "2026-09-12T03:02:29Z",
+                  "suiteId": 93915992994
+                },
+                {
+                  "id": 103487422978,
+                  "name": "exact-state receipts and Action compatibility (18)",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:02:22Z",
+                  "completedAt": "2026-09-12T03:02:36Z",
+                  "suiteId": 93915992994
+                },
+                {
+                  "id": 103487422994,
+                  "name": "tests (node 20)",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:02:22Z",
+                  "completedAt": "2026-09-12T03:02:36Z",
+                  "suiteId": 93915992994
+                },
+                {
+                  "id": 103487423009,
+                  "name": "dependency surface stays empty",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:02:22Z",
+                  "completedAt": "2026-09-12T03:02:27Z",
+                  "suiteId": 93915992994
+                },
+                {
+                  "id": 103487459354,
+                  "name": "merge-proof checks itself",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:02:38Z",
+                  "completedAt": "2026-09-12T03:02:46Z",
+                  "suiteId": 93915992994
+                },
+                {
+                  "id": 103489660636,
+                  "name": "assurance acceptance validation",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:20:00Z",
+                  "completedAt": "2026-09-12T03:20:03Z",
+                  "suiteId": 93917967079
+                }
+              ]
+            },
+            "statuses": {
+              "state": "AVAILABLE",
+              "value": []
+            },
+            "execution": {
+              "state": "AVAILABLE",
+              "value": [
+                {
+                  "runId": 34670075208,
+                  "workflowId": 356260202,
+                  "attempt": 1,
+                  "runSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                  "actor": {
+                    "id": 299822117,
+                    "login": "dupageinspect-beep",
+                    "type": "User"
+                  },
+                  "triggeringActor": {
+                    "id": 299822117,
+                    "login": "dupageinspect-beep",
+                    "type": "User"
+                  },
+                  "jobId": 103489660636,
+                  "checkId": 103489660636,
+                  "sha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "runStatus": "completed",
+                  "runConclusion": "success",
+                  "steps": [
+                    {
+                      "number": 1,
+                      "status": "completed",
+                      "conclusion": "success",
+                      "startedAt": "2026-09-12T03:20:01Z",
+                      "completedAt": "2026-09-12T03:20:01Z"
+                    },
+                    {
+                      "number": 2,
+                      "status": "completed",
+                      "conclusion": "success",
+                      "startedAt": "2026-09-12T03:20:01Z",
+                      "completedAt": "2026-09-12T03:20:02Z"
+                    },
+                    {
+                      "number": 3,
+                      "status": "completed",
+                      "conclusion": "success",
+                      "startedAt": "2026-09-12T03:20:02Z",
+                      "completedAt": "2026-09-12T03:20:02Z"
+                    },
+                    {
+                      "number": 6,
+                      "status": "completed",
+                      "conclusion": "success",
+                      "startedAt": "2026-09-12T03:20:02Z",
+                      "completedAt": "2026-09-12T03:20:02Z"
+                    },
+                    {
+                      "number": 7,
+                      "status": "completed",
+                      "conclusion": "success",
+                      "startedAt": "2026-09-12T03:20:02Z",
+                      "completedAt": "2026-09-12T03:20:02Z"
+                    }
+                  ]
+                }
+              ]
+            },
+            "reviews": {
+              "state": "AVAILABLE",
+              "value": []
+            },
+            "actors": {
+              "state": "AVAILABLE",
+              "value": {
+                "author": {
+                  "id": 299822117,
+                  "login": "dupageinspect-beep",
+                  "type": "User"
+                },
+                "mergedBy": null,
+                "truncated": false,
+                "commits": [
+                  {
+                    "sha": "515fff8628c9c01e524d6f5332c73be583d3ea5a",
+                    "author": {
+                      "id": 299822117,
+                      "login": "dupageinspect-beep",
+                      "type": "User"
+                    },
+                    "committer": {
+                      "id": 299822117,
+                      "login": "dupageinspect-beep",
+                      "type": "User"
+                    },
+                    "verified": false,
+                    "verificationReason": "unsigned"
+                  },
+                  {
+                    "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+                    "author": {
+                      "id": 299822117,
+                      "login": "dupageinspect-beep",
+                      "type": "User"
+                    },
+                    "committer": {
+                      "id": 299822117,
+                      "login": "dupageinspect-beep",
+                      "type": "User"
+                    },
+                    "verified": false,
+                    "verificationReason": "unsigned"
+                  }
+                ]
+              }
+            },
+            "source": "github-rest",
+            "startedAt": "2026-09-12T03:20:21.997Z",
+            "observedAt": "2026-09-12T03:20:35.865Z",
+            "consistency": "STABLE_OBSERVATION"
+          },
+          "notChecked": [
+            "CODE_CORRECTNESS",
+            "SECURITY",
+            "WORKFLOW_CHECKOUT_CONTENTS",
+            "SCOPE_CREEP_VS_DECLARED_SCOPE",
+            "FUTURE_REMOTE_RETENTION",
+            "WHICH_TOOL_OR_MODEL_PRODUCED_THE_CODE",
+            "MERGE_PROOF_OWN_REQUIRED_CHECK"
+          ],
+          "next": "Evidence established for the recorded state and policy. Recheck before merging.",
+          "limitations": [
+            "VERIFIED covers only these evidence claims; it does not establish bug-free, secure or production-safe code.",
+            "GitHub observations are not an atomic transaction or a guarantee of future merge state.",
+            "Job records establish GitHub-reported execution, not what source a workflow actually checked out.",
+            "Remote confirmation is point-in-time ref presence, not a future retention guarantee.",
+            "GitHub records the account that acted, not the tool it was driven by. A coding agent run with a person's own credentials is recorded as that person; only an agent acting as its own GitHub App or bot account is separately identifiable here."
+          ]
+        },
+        "gaps": [],
+        "requiredChecks": [
+          {
+            "name": "assurance acceptance validation",
+            "appId": 15368
+          },
+          {
+            "name": "Merge Proof exact-state receipt",
+            "appId": 4899448
+          }
+        ],
+        "unsupportedRequirements": [],
+        "requiredApprovals": 0,
+        "currentApprovals": [],
+        "checkEvidence": {
+          "state": "PROVEN",
+          "acceptedCount": 1,
+          "executionCount": 1
+        },
+        "protectedBoundaries": [],
+        "actors": {
+          "state": "AVAILABLE",
+          "prAuthor": {
+            "id": 299822117,
+            "login": "dupageinspect-beep",
+            "type": "User",
+            "kind": "HUMAN_ACCOUNT",
+            "botLoginSuffix": false
+          },
+          "mergedBy": null,
+          "commitAuthors": [
+            {
+              "id": 299822117,
+              "login": "dupageinspect-beep",
+              "type": "User",
+              "kind": "HUMAN_ACCOUNT",
+              "botLoginSuffix": false
+            }
+          ],
+          "commitCommitters": [
+            {
+              "id": 299822117,
+              "login": "dupageinspect-beep",
+              "type": "User",
+              "kind": "HUMAN_ACCOUNT",
+              "botLoginSuffix": false
+            }
+          ],
+          "commitsObserved": 2,
+          "commitsTruncated": false,
+          "signedCommits": 0,
+          "reviewers": [],
+          "checkPublishers": [
+            {
+              "appId": 15368,
+              "slug": "github-actions",
+              "kind": "APP"
+            }
+          ],
+          "workflowActors": [
+            {
+              "id": 299822117,
+              "login": "dupageinspect-beep",
+              "type": "User",
+              "kind": "HUMAN_ACCOUNT",
+              "botLoginSuffix": false
+            }
+          ],
+          "authorship": [
+            {
+              "id": 299822117,
+              "login": "dupageinspect-beep",
+              "type": "User",
+              "kind": "HUMAN_ACCOUNT",
+              "botLoginSuffix": false
+            }
+          ],
+          "nonHumanAuthorship": [],
+          "agentIdentity": "NONE_OBSERVED",
+          "limitation": "GitHub records the account that acted, not the tool it was driven by. A coding agent run with a person's own credentials is recorded as that person; only an agent acting as its own GitHub App or bot account is separately identifiable here."
+        },
+        "gate": {
+          "preset": "REPOSITORY_REQUIREMENTS",
+          "enforced": true,
+          "conclusion": "success",
+          "satisfied": true,
+          "blocking": [],
+          "reported": []
+        }
+      },
+      "immutable": "This record preserves pre-merge evidence available when the merge event was received. Decision-time currentness remains unavailable unless independently established. Later evidence does not change it."
+    },
+    {
+      "schemaVersion": 1,
+      "recordId": "830afb86-752b-4c1f-acc6-d978daca6ddd",
+      "identity": "1352881392:7:4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+      "recordedAt": "2026-09-12T03:25:54.072Z",
+      "installationId": 160648161,
+      "repository": "ohcaygo/merge-proof",
+      "repositoryId": 1352881392,
+      "pr": 7,
+      "title": null,
+      "baseRef": "codex/merge-assurance-acceptance-base",
+      "mergedAt": "2026-09-12T03:25:52Z",
+      "mergeCommitSha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+      "mergedHeadSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+      "mergedBy": {
+        "id": 299822117,
+        "login": "dupageinspect-beep",
+        "type": "User",
+        "kind": "HUMAN_ACCOUNT",
+        "botLoginSuffix": false
+      },
+      "proof": {
+        "receiptId": "d3902dc7-2d63-42d7-a023-cc2495dcee00",
+        "state": "PROOF_BOUND_TO_MERGED_STATE",
+        "plain": "This receipt was produced for the exact commit that was merged.",
+        "boundToMergedState": true,
+        "verdict": "VERIFIED",
+        "fingerprint": "f8a888c4dc3e02f3927035d2679041620f4ce20308fe723d4eabb7dfb9e91a16",
+        "policyName": "github-exact-state-v1",
+        "issuedAt": "2026-09-12T03:25:39.862Z",
+        "receiptHeadSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+        "baseShaAtProof": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+        "currentnessAtMerge": {
+          "state": "UNAVAILABLE",
+          "reason": "MERGE_DECISION_NOT_ATOMICALLY_OBSERVED",
+          "asOf": null
+        },
+        "currentnessAtDelivery": {
+          "state": "STALE",
+          "historicalVerdict": "VERIFIED",
+          "reason": "GITHUB_EVENT:merge_group",
+          "asOf": "2026-09-12T03:25:53.102Z",
+          "next": "RE-PROOF REQUIRED"
+        },
+        "publicationObservedAt": "2026-09-12T03:25:40.621Z",
+        "gateObservation": "Published policy result, not an assertion of GitHub's decision at merge time.",
+        "receiptSnapshot": {
+          "schemaVersion": 2,
+          "receiptId": "d3902dc7-2d63-42d7-a023-cc2495dcee00",
+          "tool": {
+            "name": "merge-proof",
+            "version": "0.1.0"
+          },
+          "policy": "github-exact-state-v1",
+          "verdict": "VERIFIED",
+          "issuedAt": "2026-09-12T03:25:39.862Z",
+          "identity": {
+            "repository": "ohcaygo/merge-proof",
+            "repositoryId": 1352881392,
+            "visibility": "public",
+            "authorization": "GITHUB_TOKEN",
+            "pr": 7,
+            "headSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+            "headRef": "codex/merge-assurance-acceptance-retry",
+            "headRepository": "ohcaygo/merge-proof",
+            "headRepositoryId": 1352881392,
+            "baseRef": "codex/merge-assurance-acceptance-base",
+            "baseSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+            "branchProtected": true,
+            "prState": "open",
+            "merged": false,
+            "mergeCommitSha": "daa38b13696047652433dfad733e5c965e95964a",
+            "authorId": 299822117,
+            "author": {
+              "id": 299822117,
+              "login": "dupageinspect-beep",
+              "type": "User"
+            },
+            "mergedBy": null,
+            "githubMergeable": true,
+            "githubMergeState": "clean"
+          },
+          "fingerprint": "f8a888c4dc3e02f3927035d2679041620f4ce20308fe723d4eabb7dfb9e91a16",
+          "freshness": {
+            "state": "CURRENT",
+            "asOf": "2026-09-12T03:25:39.862Z",
+            "meaning": "Current only at the recorded observation; later views must recheck evidence."
+          },
+          "summary": {
+            "queueStage": "MERGE_GROUP",
+            "ci": {
+              "target": {
+                "state": "AVAILABLE",
+                "value": {
+                  "kind": "MERGE_GROUP",
+                  "sha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+                  "headSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                  "baseSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                  "ref": "refs/heads/gh-readonly-queue/codex/merge-assurance-acceptance-base/pr-7-908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                  "selection": {
+                    "state": "AVAILABLE",
+                    "value": {
+                      "id": "MQE_lQDOUKNU8M8AAAABDOT6Gs4ABCbezgLRMfo",
+                      "state": "AWAITING_CHECKS",
+                      "headSha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+                      "baseSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                      "candidateSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6"
+                    }
+                  }
+                }
+              },
+              "state": "PROVEN",
+              "required": [
+                {
+                  "name": "assurance acceptance validation",
+                  "appId": 15368,
+                  "state": "EXECUTION_RECORDED",
+                  "accepted": true,
+                  "acceptanceSha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+                  "checkId": 103490083836,
+                  "conclusion": "success",
+                  "executionRecorded": true,
+                  "workflowJobs": [
+                    {
+                      "runId": 34670226414,
+                      "workflowId": 356260202,
+                      "attempt": 1,
+                      "runSha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+                      "actor": {
+                        "id": 299822117,
+                        "login": "dupageinspect-beep",
+                        "type": "User"
+                      },
+                      "triggeringActor": {
+                        "id": 299822117,
+                        "login": "dupageinspect-beep",
+                        "type": "User"
+                      },
+                      "jobId": 103490083836,
+                      "checkId": 103490083836,
+                      "sha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+                      "status": "completed",
+                      "conclusion": "success",
+                      "runStatus": "completed",
+                      "runConclusion": "success",
+                      "steps": [
+                        {
+                          "number": 1,
+                          "status": "completed",
+                          "conclusion": "success",
+                          "startedAt": "2026-09-12T03:23:24Z",
+                          "completedAt": "2026-09-12T03:23:25Z"
+                        },
+                        {
+                          "number": 2,
+                          "status": "completed",
+                          "conclusion": "success",
+                          "startedAt": "2026-09-12T03:23:25Z",
+                          "completedAt": "2026-09-12T03:23:26Z"
+                        },
+                        {
+                          "number": 3,
+                          "status": "completed",
+                          "conclusion": "success",
+                          "startedAt": "2026-09-12T03:23:26Z",
+                          "completedAt": "2026-09-12T03:23:26Z"
+                        },
+                        {
+                          "number": 6,
+                          "status": "completed",
+                          "conclusion": "success",
+                          "startedAt": "2026-09-12T03:23:26Z",
+                          "completedAt": "2026-09-12T03:23:26Z"
+                        },
+                        {
+                          "number": 7,
+                          "status": "completed",
+                          "conclusion": "success",
+                          "startedAt": "2026-09-12T03:23:26Z",
+                          "completedAt": "2026-09-12T03:23:26Z"
+                        }
+                      ]
+                    }
+                  ],
+                  "observedCheck": {
+                    "id": 103490083836,
+                    "name": "assurance acceptance validation",
+                    "appId": 15368,
+                    "appSlug": "github-actions",
+                    "sha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "startedAt": "2026-09-12T03:23:22Z",
+                    "completedAt": "2026-09-12T03:23:29Z",
+                    "suiteId": 93918341331
+                  },
+                  "observedStatus": null
+                }
+              ],
+              "selfReference": {
+                "context": "Merge Proof exact-state receipt",
+                "ruleAppId": 4899448,
+                "boundToThisApp": true,
+                "state": "SELF_CHECK_NOT_INDEPENDENT_EVIDENCE",
+                "note": "This repository requires Merge Proof's own check, bound to this App. The requirement is this receipt; it is not counted as evidence about the change."
+              },
+              "acceptedCount": 1,
+              "executionCount": 1
+            },
+            "approval": {
+              "state": "NOT_APPLICABLE",
+              "observed": [],
+              "current": [],
+              "required": 0
+            },
+            "remote": {
+              "state": "AVAILABLE",
+              "value": {
+                "repositoryId": 1352881392,
+                "ref": "codex/merge-assurance-acceptance-retry",
+                "expectedSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                "observedSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                "confirmed": true
+              }
+            },
+            "rules": {
+              "state": "AVAILABLE",
+              "checks": [
+                {
+                  "name": "assurance acceptance validation",
+                  "appId": 15368
+                },
+                {
+                  "name": "Merge Proof exact-state receipt",
+                  "appId": 4899448
+                }
+              ],
+              "approvals": 0,
+              "strict": false,
+              "dismissStale": false,
+              "lastPush": false,
+              "codeOwners": false,
+              "mergeQueue": true,
+              "unsupported": []
+            },
+            "target": {
+              "state": "AVAILABLE",
+              "value": {
+                "kind": "MERGE_GROUP",
+                "sha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+                "headSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                "baseSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                "ref": "refs/heads/gh-readonly-queue/codex/merge-assurance-acceptance-base/pr-7-908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                "selection": {
+                  "state": "AVAILABLE",
+                  "value": {
+                    "id": "MQE_lQDOUKNU8M8AAAABDOT6Gs4ABCbezgLRMfo",
+                    "state": "AWAITING_CHECKS",
+                    "headSha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+                    "baseSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                    "candidateSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6"
+                  }
+                }
+              }
+            },
+            "actors": {
+              "state": "AVAILABLE",
+              "prAuthor": {
+                "id": 299822117,
+                "login": "dupageinspect-beep",
+                "type": "User",
+                "kind": "HUMAN_ACCOUNT",
+                "botLoginSuffix": false
+              },
+              "mergedBy": null,
+              "commitAuthors": [
+                {
+                  "id": 299822117,
+                  "login": "dupageinspect-beep",
+                  "type": "User",
+                  "kind": "HUMAN_ACCOUNT",
+                  "botLoginSuffix": false
+                }
+              ],
+              "commitCommitters": [
+                {
+                  "id": 299822117,
+                  "login": "dupageinspect-beep",
+                  "type": "User",
+                  "kind": "HUMAN_ACCOUNT",
+                  "botLoginSuffix": false
+                }
+              ],
+              "commitsObserved": 1,
+              "commitsTruncated": false,
+              "signedCommits": 0,
+              "reviewers": [],
+              "checkPublishers": [
+                {
+                  "appId": 15368,
+                  "slug": "github-actions",
+                  "kind": "APP"
+                }
+              ],
+              "workflowActors": [
+                {
+                  "id": 299822117,
+                  "login": "dupageinspect-beep",
+                  "type": "User",
+                  "kind": "HUMAN_ACCOUNT",
+                  "botLoginSuffix": false
+                }
+              ],
+              "authorship": [
+                {
+                  "id": 299822117,
+                  "login": "dupageinspect-beep",
+                  "type": "User",
+                  "kind": "HUMAN_ACCOUNT",
+                  "botLoginSuffix": false
+                }
+              ],
+              "nonHumanAuthorship": [],
+              "agentIdentity": "NONE_OBSERVED",
+              "limitation": "GitHub records the account that acted, not the tool it was driven by. A coding agent run with a person's own credentials is recorded as that person; only an agent acting as its own GitHub App or bot account is separately identifiable here."
+            },
+            "gate": {
+              "context": "Merge Proof exact-state receipt",
+              "appId": 4899448,
+              "required": true,
+              "boundToThisApp": true,
+              "independentRequiredChecks": 1,
+              "requiredChecks": [
+                {
+                  "name": "assurance acceptance validation",
+                  "appId": 15368
+                }
+              ],
+              "approvalsRequired": 0,
+              "readiness": {
+                "state": "READY",
+                "blockers": []
+              },
+              "unsupported": []
+            }
+          },
+          "gaps": [],
+          "local": {
+            "schemaVersion": 1,
+            "tool": {
+              "name": "merge-proof",
+              "version": "0.1.0"
+            },
+            "verdict": "VERIFIED",
+            "repository": {
+              "path": "ohcaygo/merge-proof",
+              "shallow": false
+            },
+            "refs": {
+              "base": {
+                "ref": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                "sha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                "date": "2026-09-12T03:19:39Z"
+              },
+              "head": {
+                "ref": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                "sha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                "date": "2026-09-12T03:21:36Z"
+              },
+              "forkPoint": {
+                "sha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                "date": "2026-09-12T03:19:39Z"
+              }
+            },
+            "metrics": {
+              "baseAdvanceCommits": 0,
+              "baseAgeDays": 0,
+              "candidateFileCount": 1,
+              "baseChangedFileCount": 0,
+              "overlapCount": 0,
+              "excludedCount": 0
+            },
+            "findings": [],
+            "advisories": [],
+            "excluded": [],
+            "notChecked": [
+              {
+                "id": "CI_RAN_ON_FINAL_HEAD",
+                "reason": "merge-proof does not read CI results; it cannot tell which commit was tested."
+              },
+              {
+                "id": "HUMAN_APPROVAL_PRESENT",
+                "reason": "merge-proof does not read reviews or approvals."
+              },
+              {
+                "id": "CANDIDATE_DURABLE_ON_REMOTE",
+                "reason": "merge-proof inspects local git state only; it does not query a remote for durability."
+              },
+              {
+                "id": "SCOPE_CREEP_VS_DECLARED_SCOPE",
+                "reason": "merge-proof has no declared-scope input to compare the diff against."
+              }
+            ],
+            "ignoreFile": null,
+            "changedFiles": [
+              "acceptance/retry.txt"
+            ],
+            "source": "github-rest-git-metadata"
+          },
+          "evidence": {
+            "identity": {
+              "repository": "ohcaygo/merge-proof",
+              "repositoryId": 1352881392,
+              "visibility": "public",
+              "authorization": "GITHUB_TOKEN",
+              "pr": 7,
+              "headSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+              "headRef": "codex/merge-assurance-acceptance-retry",
+              "headRepository": "ohcaygo/merge-proof",
+              "headRepositoryId": 1352881392,
+              "baseRef": "codex/merge-assurance-acceptance-base",
+              "baseSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+              "branchProtected": true,
+              "prState": "open",
+              "merged": false,
+              "mergeCommitSha": "daa38b13696047652433dfad733e5c965e95964a",
+              "authorId": 299822117,
+              "author": {
+                "id": 299822117,
+                "login": "dupageinspect-beep",
+                "type": "User"
+              },
+              "mergedBy": null,
+              "githubMergeable": true,
+              "githubMergeState": "clean"
+            },
+            "rules": {
+              "classic": {
+                "state": "AVAILABLE",
+                "value": {
+                  "required_signatures": {
+                    "enabled": false
+                  },
+                  "required_linear_history": {
+                    "enabled": false
+                  },
+                  "required_status_checks": {
+                    "strict": false,
+                    "contexts": [
+                      "assurance acceptance validation"
+                    ],
+                    "checks": [
+                      {
+                        "context": "assurance acceptance validation",
+                        "app_id": 15368
+                      }
+                    ]
+                  },
+                  "required_pull_request_reviews": null,
+                  "required_conversation_resolution": {
+                    "enabled": false
+                  }
+                }
+              },
+              "active": {
+                "state": "AVAILABLE",
+                "value": [
+                  {
+                    "type": "deletion",
+                    "ruleset_id": 23000277,
+                    "ruleset_source_type": "Repository",
+                    "parameters": null
+                  },
+                  {
+                    "type": "non_fast_forward",
+                    "ruleset_id": 23000277,
+                    "ruleset_source_type": "Repository",
+                    "parameters": null
+                  },
+                  {
+                    "type": "required_status_checks",
+                    "ruleset_id": 23000277,
+                    "ruleset_source_type": "Repository",
+                    "parameters": {
+                      "strict_required_status_checks_policy": false,
+                      "do_not_enforce_on_create": false,
+                      "required_status_checks": [
+                        {
+                          "context": "assurance acceptance validation",
+                          "integration_id": 15368
+                        },
+                        {
+                          "context": "Merge Proof exact-state receipt",
+                          "integration_id": 4899448
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "merge_queue",
+                    "ruleset_id": 23000277,
+                    "ruleset_source_type": "Repository",
+                    "parameters": {
+                      "merge_method": "MERGE",
+                      "max_entries_to_build": 1,
+                      "min_entries_to_merge": 1,
+                      "max_entries_to_merge": 1,
+                      "min_entries_to_merge_wait_minutes": 5,
+                      "grouping_strategy": "HEADGREEN",
+                      "check_response_timeout_minutes": 60
+                    }
+                  }
+                ]
+              }
+            },
+            "git": {
+              "state": "AVAILABLE",
+              "value": {
+                "headSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                "baseSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                "mergeBase": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                "candidateFiles": [
+                  "acceptance/retry.txt"
+                ],
+                "baseFiles": [],
+                "baseAdvanceCommits": 0,
+                "dates": {
+                  "908048bf3045a5100e8a3f66d5ae6d67d573e81c": "2026-09-12T03:19:39Z",
+                  "a1d231ef58e03a10a2506a9121d6febb01ea87d6": "2026-09-12T03:21:36Z"
+                }
+              }
+            },
+            "target": {
+              "state": "AVAILABLE",
+              "value": {
+                "kind": "MERGE_GROUP",
+                "sha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+                "headSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                "baseSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                "ref": "refs/heads/gh-readonly-queue/codex/merge-assurance-acceptance-base/pr-7-908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                "selection": {
+                  "state": "AVAILABLE",
+                  "value": {
+                    "id": "MQE_lQDOUKNU8M8AAAABDOT6Gs4ABCbezgLRMfo",
+                    "state": "AWAITING_CHECKS",
+                    "headSha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+                    "baseSha": "908048bf3045a5100e8a3f66d5ae6d67d573e81c",
+                    "candidateSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6"
+                  }
+                }
+              }
+            },
+            "remote": {
+              "state": "AVAILABLE",
+              "value": {
+                "repositoryId": 1352881392,
+                "ref": "codex/merge-assurance-acceptance-retry",
+                "expectedSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                "observedSha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                "confirmed": true
+              }
+            },
+            "checks": {
+              "state": "AVAILABLE",
+              "value": [
+                {
+                  "id": 103489944945,
+                  "name": "dependency surface stays empty",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:22:15Z",
+                  "completedAt": "2026-09-12T03:22:20Z",
+                  "suiteId": 93918219313
+                },
+                {
+                  "id": 103489945019,
+                  "name": "tests (node 18)",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:22:15Z",
+                  "completedAt": "2026-09-12T03:22:27Z",
+                  "suiteId": 93918219313
+                },
+                {
+                  "id": 103489945026,
+                  "name": "tests (node 22)",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:22:16Z",
+                  "completedAt": "2026-09-12T03:22:24Z",
+                  "suiteId": 93918219313
+                },
+                {
+                  "id": 103489945027,
+                  "name": "public pilot HTML and PDF",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:22:15Z",
+                  "completedAt": "2026-09-12T03:22:36Z",
+                  "suiteId": 93918219313
+                },
+                {
+                  "id": 103489945032,
+                  "name": "assurance acceptance validation",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:22:15Z",
+                  "completedAt": "2026-09-12T03:22:21Z",
+                  "suiteId": 93918219423
+                },
+                {
+                  "id": 103489945034,
+                  "name": "exact-state receipts and Action compatibility (18)",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:22:15Z",
+                  "completedAt": "2026-09-12T03:22:32Z",
+                  "suiteId": 93918219313
+                },
+                {
+                  "id": 103489945044,
+                  "name": "exact-state receipts and Action compatibility (22)",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:22:15Z",
+                  "completedAt": "2026-09-12T03:22:22Z",
+                  "suiteId": 93918219313
+                },
+                {
+                  "id": 103489945050,
+                  "name": "tests (node 20)",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:22:15Z",
+                  "completedAt": "2026-09-12T03:22:25Z",
+                  "suiteId": 93918219313
+                },
+                {
+                  "id": 103489945116,
+                  "name": "skinny factory acceptance (synthetic Stripe, real Git and PDF)",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:22:15Z",
+                  "completedAt": "2026-09-12T03:22:24Z",
+                  "suiteId": 93918219313
+                },
+                {
+                  "id": 103489975267,
+                  "name": "merge-proof checks itself",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:22:30Z",
+                  "completedAt": "2026-09-12T03:22:35Z",
+                  "suiteId": 93918219313
+                },
+                {
+                  "id": 103490083836,
+                  "name": "assurance acceptance validation",
+                  "appId": 15368,
+                  "appSlug": "github-actions",
+                  "sha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-12T03:23:22Z",
+                  "completedAt": "2026-09-12T03:23:29Z",
+                  "suiteId": 93918341331
+                }
+              ]
+            },
+            "statuses": {
+              "state": "AVAILABLE",
+              "value": []
+            },
+            "execution": {
+              "state": "AVAILABLE",
+              "value": [
+                {
+                  "runId": 34670226414,
+                  "workflowId": 356260202,
+                  "attempt": 1,
+                  "runSha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+                  "actor": {
+                    "id": 299822117,
+                    "login": "dupageinspect-beep",
+                    "type": "User"
+                  },
+                  "triggeringActor": {
+                    "id": 299822117,
+                    "login": "dupageinspect-beep",
+                    "type": "User"
+                  },
+                  "jobId": 103490083836,
+                  "checkId": 103490083836,
+                  "sha": "4e9b81a04729b5ef68fa9f8485452a56898ad1e2",
+                  "status": "completed",
+                  "conclusion": "success",
+                  "runStatus": "completed",
+                  "runConclusion": "success",
+                  "steps": [
+                    {
+                      "number": 1,
+                      "status": "completed",
+                      "conclusion": "success",
+                      "startedAt": "2026-09-12T03:23:24Z",
+                      "completedAt": "2026-09-12T03:23:25Z"
+                    },
+                    {
+                      "number": 2,
+                      "status": "completed",
+                      "conclusion": "success",
+                      "startedAt": "2026-09-12T03:23:25Z",
+                      "completedAt": "2026-09-12T03:23:26Z"
+                    },
+                    {
+                      "number": 3,
+                      "status": "completed",
+                      "conclusion": "success",
+                      "startedAt": "2026-09-12T03:23:26Z",
+                      "completedAt": "2026-09-12T03:23:26Z"
+                    },
+                    {
+                      "number": 6,
+                      "status": "completed",
+                      "conclusion": "success",
+                      "startedAt": "2026-09-12T03:23:26Z",
+                      "completedAt": "2026-09-12T03:23:26Z"
+                    },
+                    {
+                      "number": 7,
+                      "status": "completed",
+                      "conclusion": "success",
+                      "startedAt": "2026-09-12T03:23:26Z",
+                      "completedAt": "2026-09-12T03:23:26Z"
+                    }
+                  ]
+                }
+              ]
+            },
+            "reviews": {
+              "state": "AVAILABLE",
+              "value": []
+            },
+            "actors": {
+              "state": "AVAILABLE",
+              "value": {
+                "author": {
+                  "id": 299822117,
+                  "login": "dupageinspect-beep",
+                  "type": "User"
+                },
+                "mergedBy": null,
+                "truncated": false,
+                "commits": [
+                  {
+                    "sha": "a1d231ef58e03a10a2506a9121d6febb01ea87d6",
+                    "author": {
+                      "id": 299822117,
+                      "login": "dupageinspect-beep",
+                      "type": "User"
+                    },
+                    "committer": {
+                      "id": 299822117,
+                      "login": "dupageinspect-beep",
+                      "type": "User"
+                    },
+                    "verified": false,
+                    "verificationReason": "unsigned"
+                  }
+                ]
+              }
+            },
+            "source": "github-rest",
+            "startedAt": "2026-09-12T03:25:25.541Z",
+            "observedAt": "2026-09-12T03:25:39.862Z",
+            "consistency": "STABLE_OBSERVATION"
+          },
+          "notChecked": [
+            "CODE_CORRECTNESS",
+            "SECURITY",
+            "WORKFLOW_CHECKOUT_CONTENTS",
+            "SCOPE_CREEP_VS_DECLARED_SCOPE",
+            "FUTURE_REMOTE_RETENTION",
+            "WHICH_TOOL_OR_MODEL_PRODUCED_THE_CODE",
+            "MERGE_PROOF_OWN_REQUIRED_CHECK"
+          ],
+          "next": "Evidence established for the recorded state and policy. Recheck before merging.",
+          "limitations": [
+            "VERIFIED covers only these evidence claims; it does not establish bug-free, secure or production-safe code.",
+            "GitHub observations are not an atomic transaction or a guarantee of future merge state.",
+            "Job records establish GitHub-reported execution, not what source a workflow actually checked out.",
+            "Remote confirmation is point-in-time ref presence, not a future retention guarantee.",
+            "GitHub records the account that acted, not the tool it was driven by. A coding agent run with a person's own credentials is recorded as that person; only an agent acting as its own GitHub App or bot account is separately identifiable here."
+          ]
+        },
+        "gaps": [],
+        "requiredChecks": [
+          {
+            "name": "assurance acceptance validation",
+            "appId": 15368
+          },
+          {
+            "name": "Merge Proof exact-state receipt",
+            "appId": 4899448
+          }
+        ],
+        "unsupportedRequirements": [],
+        "requiredApprovals": 0,
+        "currentApprovals": [],
+        "checkEvidence": {
+          "state": "PROVEN",
+          "acceptedCount": 1,
+          "executionCount": 1
+        },
+        "protectedBoundaries": [],
+        "actors": {
+          "state": "AVAILABLE",
+          "prAuthor": {
+            "id": 299822117,
+            "login": "dupageinspect-beep",
+            "type": "User",
+            "kind": "HUMAN_ACCOUNT",
+            "botLoginSuffix": false
+          },
+          "mergedBy": null,
+          "commitAuthors": [
+            {
+              "id": 299822117,
+              "login": "dupageinspect-beep",
+              "type": "User",
+              "kind": "HUMAN_ACCOUNT",
+              "botLoginSuffix": false
+            }
+          ],
+          "commitCommitters": [
+            {
+              "id": 299822117,
+              "login": "dupageinspect-beep",
+              "type": "User",
+              "kind": "HUMAN_ACCOUNT",
+              "botLoginSuffix": false
+            }
+          ],
+          "commitsObserved": 1,
+          "commitsTruncated": false,
+          "signedCommits": 0,
+          "reviewers": [],
+          "checkPublishers": [
+            {
+              "appId": 15368,
+              "slug": "github-actions",
+              "kind": "APP"
+            }
+          ],
+          "workflowActors": [
+            {
+              "id": 299822117,
+              "login": "dupageinspect-beep",
+              "type": "User",
+              "kind": "HUMAN_ACCOUNT",
+              "botLoginSuffix": false
+            }
+          ],
+          "authorship": [
+            {
+              "id": 299822117,
+              "login": "dupageinspect-beep",
+              "type": "User",
+              "kind": "HUMAN_ACCOUNT",
+              "botLoginSuffix": false
+            }
+          ],
+          "nonHumanAuthorship": [],
+          "agentIdentity": "NONE_OBSERVED",
+          "limitation": "GitHub records the account that acted, not the tool it was driven by. A coding agent run with a person's own credentials is recorded as that person; only an agent acting as its own GitHub App or bot account is separately identifiable here."
+        },
+        "gate": {
+          "preset": "REPOSITORY_REQUIREMENTS",
+          "enforced": true,
+          "conclusion": "success",
+          "satisfied": true,
+          "blocking": [],
+          "reported": []
+        }
+      },
+      "immutable": "This record preserves pre-merge evidence available when the merge event was received. Decision-time currentness remains unavailable unless independently established. Later evidence does not change it."
+    }
+  ],
+  "receipts": [
+    {
+      "receiptId": "a89cd16e-ee2c-46e8-9f5d-d7280e3daea5",
+      "verdict": "NOT_PROVEN",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103485904902
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "fab46858-5c47-4eb5-bad4-d8497fdc8965",
+      "verdict": "NOT_PROVEN",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103485939585
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "5e98444d-d0cd-4fcb-adb3-cadc2ff19b6f",
+      "verdict": "NOT_PROVEN",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103485971721
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "87216960-56a7-41c0-b27f-34703368c13f",
+      "verdict": "NOT_PROVEN",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103486001857
+      ],
+      "metering": {
+        "key": "[160648161,1352881392,6,\"515fff8628c9c01e524d6f5332c73be583d3ea5a\"]",
+        "charged": true,
+        "reason": "FREE_TASTE"
+      }
+    },
+    {
+      "receiptId": "fe7cba62-5957-4fc2-b407-ca512d7d2020",
+      "verdict": "NOT_PROVEN",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103487149968
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "b3f79e86-844b-4c81-b283-4d5f11eaed8e",
+      "verdict": "NOT_PROVEN",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103487455889
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "3d655a3b-5b0d-4c69-bce6-f51c9226c5a8",
+      "verdict": "NOT_PROVEN",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103487497521
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "8f2b39f9-5cd0-4256-8cca-03c93f974f6a",
+      "verdict": "VERIFIED",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "VERIFIED",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103487537071
+      ],
+      "metering": {
+        "key": "[160648161,1352881392,6,\"40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633\"]",
+        "charged": true,
+        "reason": "FREE_TASTE"
+      }
+    },
+    {
+      "receiptId": "6f9c03e8-4486-409a-8e35-8a523ca9ee0c",
+      "verdict": "VERIFIED",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "VERIFIED",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103487580759
+      ],
+      "metering": {
+        "key": "[160648161,1352881392,6,\"40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633\"]",
+        "charged": false,
+        "reason": "ALREADY_ACCOUNTED"
+      }
+    },
+    {
+      "receiptId": "cbd4de41-9fe5-475a-a469-821d875c1651",
+      "verdict": "NOT_PROVEN",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103489368583
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "a29869e0-9638-41a8-a21c-810d6909e363",
+      "verdict": "NOT_PROVEN",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103489428838
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "3a9d631e-7a4a-469e-a371-f5b25b27041d",
+      "verdict": "VERIFIED",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "VERIFIED",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103489604696
+      ],
+      "metering": {
+        "key": "[160648161,1352881392,6,\"40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633\"]",
+        "charged": false,
+        "reason": "ALREADY_ACCOUNTED"
+      }
+    },
+    {
+      "receiptId": "1254988a-a9ad-42bc-acc2-3b3d8d3d1e18",
+      "verdict": "VERIFIED",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "VERIFIED",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103489690197
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "d2e01651-1b0b-4335-81b6-910f26254dc4",
+      "verdict": "VERIFIED",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "VERIFIED",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103489745374,
+        103489746706
+      ],
+      "metering": {
+        "key": "[160648161,1352881392,6,\"40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633\"]",
+        "charged": false,
+        "reason": "ALREADY_ACCOUNTED"
+      }
+    },
+    {
+      "receiptId": "620b8d80-927f-4395-8e56-7fd65a226c34",
+      "verdict": "NOT_PROVEN",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103489845771
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "09552582-95a2-4610-b917-d1b62a9501c3",
+      "verdict": "NOT_PROVEN",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103489970406
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "6dffb76d-aee0-4935-b4c8-bb943ab10e76",
+      "verdict": "NOT_PROVEN",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "NOT_PROVEN",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103490003206
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "e91affbe-6e79-478a-9cb3-bacf58f076df",
+      "verdict": "VERIFIED",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "VERIFIED",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103490035578
+      ],
+      "metering": {
+        "key": "[160648161,1352881392,7,\"a1d231ef58e03a10a2506a9121d6febb01ea87d6\"]",
+        "charged": true,
+        "reason": "FREE_TASTE"
+      }
+    },
+    {
+      "receiptId": "041c3a53-35bc-48c6-a557-993868dbd8f5",
+      "verdict": "VERIFIED",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "VERIFIED",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103490078713
+      ],
+      "metering": {
+        "key": "[160648161,1352881392,7,\"a1d231ef58e03a10a2506a9121d6febb01ea87d6\"]",
+        "charged": false,
+        "reason": "ALREADY_ACCOUNTED"
+      }
+    },
+    {
+      "receiptId": "99a3fce5-8998-489b-9216-cc624ea3f9a1",
+      "verdict": "VERIFIED",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "VERIFIED",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103490126827
+      ],
+      "checkDelivery": "UNAVAILABLE",
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    },
+    {
+      "receiptId": "a4698a1b-6327-493c-9ae3-2bd811ca547a",
+      "verdict": "VERIFIED",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "VERIFIED",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103490229595
+      ],
+      "checkDelivery": "UNAVAILABLE",
+      "metering": {
+        "key": "[160648161,1352881392,7,\"a1d231ef58e03a10a2506a9121d6febb01ea87d6\"]",
+        "charged": false,
+        "reason": "ALREADY_ACCOUNTED"
+      }
+    },
+    {
+      "receiptId": "2ad3bd49-91e0-4647-a2df-30decdc32d17",
+      "verdict": "VERIFIED",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "VERIFIED",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103490336971,
+        103490337803
+      ],
+      "metering": {
+        "key": "[160648161,1352881392,7,\"a1d231ef58e03a10a2506a9121d6febb01ea87d6\"]",
+        "charged": false,
+        "reason": "ALREADY_ACCOUNTED"
+      }
+    },
+    {
+      "receiptId": "d3902dc7-2d63-42d7-a023-cc2495dcee00",
+      "verdict": "VERIFIED",
+      "current": {
+        "state": "STALE",
+        "historicalVerdict": "VERIFIED",
+        "reason": "GITHUB_EVENT:pull_request",
+        "asOf": "2026-09-12T03:25:54.403Z",
+        "next": "RE-PROOF REQUIRED"
+      },
+      "checkIds": [
+        103490375071,
+        103490375804
+      ],
+      "metering": {
+        "key": "[160648161,1352881392,7,\"a1d231ef58e03a10a2506a9121d6febb01ea87d6\"]",
+        "charged": false,
+        "reason": "ALREADY_ACCOUNTED"
+      }
+    },
+    {
+      "receiptId": "75362fcb-6b9f-4a21-b021-67f25cf50405",
+      "verdict": "NOT_PROVEN",
+      "current": {
+        "state": "UNAVAILABLE",
+        "historicalVerdict": "NOT_PROVEN",
+        "changed": [],
+        "unavailable": [
+          "target",
+          "execution"
+        ],
+        "asOf": "2026-09-12T03:26:12.218Z",
+        "next": "REFRESH REQUIRED"
+      },
+      "checkIds": [
+        103490438319
+      ],
+      "metering": {
+        "charged": false,
+        "reason": "NOT_BILLABLE_COMPLETION"
+      }
+    }
+  ]
+}

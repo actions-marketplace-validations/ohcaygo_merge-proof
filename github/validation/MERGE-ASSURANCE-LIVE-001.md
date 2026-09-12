@@ -141,3 +141,109 @@ After that update, verify the App API and installation grant, enable queue only
 for the temporary acceptance target, enqueue the harmless PR and observe exact
 queue/head checks, stale/current behavior, partial publication/retry and debit
 idempotence. MERGE_GROUP LIVE remains NOT_PROVEN; no public deployment is ready.
+
+## Final live acceptance — 2026-09-12 03:28 UTC
+
+This section supersedes the earlier owner checkpoints. REQUIRED GATE LIVE: PASS.
+MERGE_GROUP LIVE: PASS. Production promotion is owner-blocked; production is unchanged.
+
+Final code candidate: `a14a28bbf35d34f1fee379459b801dd93f6108fb`.
+The only code change since reviewed/fixed `3551c9c` resolves a live queue admission
+circular dependency: ordinary PR evidence must satisfy the head check before
+GitHub creates a merge group. Admission receipts explicitly identify
+`ADMISSION_ONLY` and `MERGE_QUEUE_GROUP_NOT_YET_PROVEN`. They publish only on the
+PR head. Real group events select the group commit and require its own execution
+and live queue selection evidence. They publish on both commit identities.
+No new broad review was run. The affected Linux GitHub suite passed 144/144 on
+Node 20.19.2, exit 0. Original candidate Linux CLI 26/26, reports 9/9, GitHub
+143/143 and factory 37/37 remain valid for unchanged code. Focused local
+collector/proof/gate suites passed 98/98 before adding the admission regression;
+that regression and the entire updated GitHub suite passed on Linux.
+
+### App and repository scope
+
+Development App 4899448, installation 160648161 accepted `merge_queues: read`
+and `merge_group`. Final repository access is selected repositories, exactly
+`ohcaygo/merge-proof`. Existing permissions remain actions/administration/contents/
+metadata/pull_requests/statuses read and checks write. No queue-write access.
+See `app-accepted.json`. No repositories were added.
+
+Ruleset 23000277 targets only `codex/merge-assurance-acceptance-base`, remains
+active with no bypass, restricts deletion and force pushes, and retains both
+required checks bound to GitHub Actions 15368 and Merge Proof Dev 4899448.
+Queue: HEADGREEN, build concurrency 1, min/max group size 1, merge commit,
+60-minute check timeout. Matching classic protection remains. No default branch
+or unrelated protection changed. Ruleset-only protection remains a known
+fail-closed RULES_UNAVAILABLE limitation; it was not expanded in this task.
+
+### First real merge group
+
+PR https://github.com/ohcaygo/merge-proof/pull/6
+Signed event `d3b7cff0-ae58-11f1-895c-6d8fbf40987d`, checks_requested, accepted.
+Group `908048bf3045a5100e8a3f66d5ae6d67d573e81c`; PR head
+`40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633`.
+Receipt `d2e01651-1b0b-4335-81b6-910f26254dc4`: VERIFIED, CURRENT, no gaps.
+Head check 103489745374 and group check 103489746706 both success.
+Group workflow check 103489660636 success with actual GitHub job execution.
+GitHub reported clean then automatically merged via queue into the temporary
+base at that exact group SHA. The acceptance PR and branches remain preserved;
+no production/default branch work was merged. Earlier blocked/satisfied required
+gate evidence remains in required-blocking.json and required-satisfied.json.
+
+### Recovery, real redelivery, and debit accounting
+
+PR https://github.com/ohcaygo/merge-proof/pull/7 adds only acceptance/retry.txt
+against the same temporary target. Head `a1d231ef58e03a10a2506a9121d6febb01ea87d6`.
+Signed event `4c167aa0-ae59-11f1-9023-bd0c2454a6d2`, group
+`4e9b81a04729b5ef68fa9f8485452a56898ad1e2`.
+A test-harness outage rejected only outbound group-check POSTs (503), without
+altering event signatures, GitHub evidence, policy, or source candidate.
+Partial publication persisted PR-head check 103490126827 and later 103490229595;
+group check remained absent, so the queue could not complete. The service kept
+its normal retry job. GitHub App API redelivered the genuine event, exact delivery
+ID `3842242091461640192`, HTTP 202. Receiver returned duplicate:true and the full
+meter state was unchanged. Removing the simulated outage let the normal retry
+publish both checks; final receipt d3902dc7-2d63-42d7-a023-cc2495dcee00 was VERIFIED,
+CURRENT, with head check 103490375071 and group check 103490375804 success.
+GitHub subsequently merged the harmless acceptance PR through its queue.
+
+Retries can retain multiple historical check/receipt records; their outcomes
+converge and same-head proofs do not create another debit. The isolated meter
+contains exactly three keys: PR6 old head, PR6 corrected head, PR7 head. freeUsed=3.
+This is isolated free-test accounting, not production usage or money.
+Check-name collision protection remains covered by the affected full suite,
+including foreign-App binding and ambiguous same-name tests; live required
+contexts retained exact App bindings. No foreign-App check was manufactured.
+
+### Durable history and attribution
+
+Both merges have immutable records with full pre-merge receipt snapshots,
+exact landed group SHA binding, actual actor account, required evidence, policy,
+publication timestamp, and gaps. Decision-time currentness remains UNAVAILABLE
+because no atomic merge-decision observation exists; delivery-time staleness is
+separate. Every pre-queue historical receipt hash is unchanged. Later push/group
+changes marked live views STALE without rewriting the old verdicts. Actor account
+is dupageinspect-beep; the code does not infer Codex/Claude from that human account.
+See final-integrity.json and signed-event-and-recovery.log.
+
+### Production boundary and exact owner action
+
+Production remains `/opt/merge-proof/releases/brand-615308b`, source
+`615308b7933504dfc450c22bb3c9534db7eb83cf`. Service active, existing live state,
+pricing, free tier, Pro funnel and rollback untouched. Candidate is tested in
+`/opt/merge-proof/acceptance/a14a28b`; it is not publicly deployed.
+
+The production App `ohcaygo-merge-proof` (4901537) still lacks the queue event.
+The owner form is prepared at
+https://github.com/settings/apps/ohcaygo-merge-proof/permissions with ONLY
+Merge queues Read-only and Merge group subscription added, no repository access
+changes. Saving was rejected by automatic approval review because the explicit
+App-update authorization covered the development App, not the production App.
+No save occurred. Ryan must authorize/save this exact production App update;
+then verify its existing installation accepts it, preserve repository scope,
+and promote a14a28b through the existing immutable-release symlink/service path.
+No additional broad review or feature work is needed.
+
+Rollback is the retained brand-615308b release and preserved state. Before any
+future rollback from enforcing policies to old neutral-emitting code, inspect
+live policies: do not silently weaken required gates. Advisory remains default.
