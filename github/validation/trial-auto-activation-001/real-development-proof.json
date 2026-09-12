@@ -1,0 +1,37 @@
+{
+  "stateDir": "/var/folders/zt/cb0tw7l969q_yzl9jt4htlfr0000gn/T/trial-real-proof-qoICg6",
+  "app": "existing development App, read only",
+  "productionStateTouched": false,
+  "before": "AWAITING_FIRST_PROOF",
+  "after": "TRIAL",
+  "activation": {
+    "160648161:1352881392": {
+      "installationId": 160648161,
+      "repositoryId": 1352881392,
+      "repo": "ohcaygo/merge-proof",
+      "complete": true
+    }
+  },
+  "receipts": [
+    {
+      "id": "b8d3d6ef-21ec-42f3-967e-2643fb8bed69",
+      "verdict": "NOT_PROVEN",
+      "current": "CURRENT",
+      "metering": {
+        "key": "[160648161,1352881392,4,\"4b6e8246f88a25b99ed307c1a062afbadf29c08f\"]",
+        "charged": true,
+        "reason": "TRIAL"
+      },
+      "gaps": [
+        "NO_REQUIRED_VALIDATION_CONFIGURED",
+        "PROTECTED_BOUNDARY"
+      ]
+    }
+  ],
+  "trial": {
+    "startedAt": 1789238995168,
+    "endsAt": 1789843795168,
+    "receiptId": "b8d3d6ef-21ec-42f3-967e-2643fb8bed69"
+  },
+  "queue": 0
+}
