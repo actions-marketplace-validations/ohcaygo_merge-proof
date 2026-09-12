@@ -89,3 +89,55 @@ Observer: /private/tmp/merge-assurance-observe.js.
 Receiver session 76850; Smee session 84319 (may need status verification on resume).
 Git worktree for temporary branches: /private/tmp/merge-assurance-live-acceptance.
 Production ledgers, pricing, Pro funnel, rollback and advisory defaults untouched.
+
+## September 12 continuation — required gate observed
+
+This section supersedes the owner-authentication checkpoint above. Ryan completed
+GitHub confirmation. Ruleset 23000277 is Active, matches only the temporary base,
+has no bypass actors, and binds both required checks to their actual publishers.
+
+REQUIRED GATE LIVE: PASS for the supported combined classic/ruleset configuration.
+At 2026-09-12T03:01:20.169Z, GitHub returned mergeable_state=blocked for old head
+515fff8628c9c01e524d6f5332c73be583d3ea5a. Required Merge Proof check 103487149968
+was failure, and the actual acceptance validation also failed. Receipt fe7cba62-
+5957-4fc2-b407-ca512d7d2020 remained NOT_PROVEN. No false VERIFIED was emitted.
+
+Concrete limitation found: when the branch has only a ruleset, GitHub returns 404
+for classic protection, even with the authorized App. Candidate 3551c9c records
+RULES_UNAVAILABLE for that ambiguity. This is fail-closed but prevents satisfied
+proof for ruleset-only installations. No code or acceptance criterion was weakened.
+For continued testing, added a classic protection rule with the exact same two
+checks and no admin bypass, only on the temporary base. The ruleset stayed intact;
+GitHub itself labels the new classic rule as fully covered by the ruleset. This
+proves the supported configuration, not ruleset-only readiness. The limitation
+must remain part of the production decision.
+
+Changed only acceptance/state.txt from pending to ready in temporary PR commit
+40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633. Actual workflow run 34669282147,
+job 103487422721 succeeded. Signed events automatically staled old-head receipts
+and re-proved the new head. Receipt 6f9c03e8-4486-409a-8e35-8a523ca9ee0c is
+VERIFIED with no gaps and CURRENT at observation; Merge Proof check 103487580759
+concluded success on that exact head. At 2026-09-12T03:04:38.279Z GitHub reported
+mergeable_state=clean and both required contexts success. PR #6 remains unmerged.
+
+The isolated meter holds exactly two proof keys, one for each head, and freeUsed=2.
+Repeated current-head receipts have ALREADY_ACCOUNTED, zero further debit. Original
+old-head verdicts remain NOT_PROVEN and currentness is STALE. Pre-queue receipt
+hashes are preserved for later immutability comparison. See required-blocking.json,
+required-satisfied.json and pre-queue-integrity.json.
+
+## Exact remaining owner action
+
+App page: https://github.com/settings/apps/ohcaygo-merge-proof-dev/permissions
+Confirmed visually: Merge queues currently had No access, and Merge group was
+unavailable until selecting Read-only. Prepared the unsaved form with ONLY
+Merge queues = Read-only and Merge group event checked, plus an explanatory note.
+No App update has been submitted. Owner must click Save changes and, if prompted,
+approve that permission update for the existing ohcaygo installation (160648161).
+This is required to receive a real signed merge_group event. No queue-write access
+or production App change is requested.
+
+After that update, verify the App API and installation grant, enable queue only
+for the temporary acceptance target, enqueue the harmless PR and observe exact
+queue/head checks, stale/current behavior, partial publication/retry and debit
+idempotence. MERGE_GROUP LIVE remains NOT_PROVEN; no public deployment is ready.

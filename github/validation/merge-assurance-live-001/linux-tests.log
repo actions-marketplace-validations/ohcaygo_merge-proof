@@ -1,0 +1,978 @@
+Running as unit: merge-assurance-3551c9c-tests.service; invocation ID: b934ff7be31548eb86cca929fa0333cc
+v20.19.2
+
+> merge-proof@0.1.0 test
+> node test/run.js && node test/pilot-report.js
+
+  PASS  CLI help lists usage, verdicts and exit codes
+  PASS  CLI rejects an unknown option with exit code 1
+  PASS  CLI rejects an invalid --fail-on value
+  PASS  VERIFIED when the base moved only in files the candidate did not touch
+  PASS  NOT_PROVEN on base drift in an overlapping file
+  PASS  base drift finding answers all four output-quality questions
+  PASS  FAIL when the base ref cannot be resolved
+  PASS  FAIL when no merge base exists between the two refs
+  PASS  FAIL when the path is not a git repository
+  PASS  shallow clone fails closed and never returns VERIFIED
+  PASS  NOT_PROVEN when the candidate changes a migration
+  PASS  each blocking protected category is detected
+  PASS  ci-deploy is advisory only and does not change the verdict
+  PASS  a stale base alone is advisory and does not produce NOT_PROVEN
+  PASS  generated artifacts are excluded from drift overlap
+  PASS  .mergeproofignore suppresses drift in ignored paths
+  PASS  .mergeproofignore negation re-includes a path
+  PASS  --json emits a parseable result with schema, verdict and coverage
+  PASS  default run is diagnostic: NOT_PROVEN still exits 0
+  PASS  --fail-on not-proven exits 2 on NOT_PROVEN and 0 on VERIFIED
+  PASS  --fail-on fail exits 3 on FAIL but 0 on NOT_PROVEN
+  PASS  human output always states what is not checked
+  PASS  action.yml is valid composite-action metadata with minimal permissions
+  PASS  action.yml pins third-party actions and requests no write scope beyond pull-requests
+  PASS  package declares no runtime or dev dependencies
+  PASS  source makes no network, model or telemetry calls
+
+26/26 tests passed
+  PASS  public Kiota sample counts and all 77 records survive rendering
+  PASS  unresolvable records and recorded FAIL are visible without inventing verdicts
+  PASS  full collector dataset retains distinct landed commits for a repeated PR number
+  PASS  invalid, empty, duplicate and contradictory evidence is rejected
+  PASS  CLI writes HTML to paths with spaces and preserves source bytes
+  PASS  missing browser fails visibly and removes an older PDF
+  PASS  export closes a browser that stays alive after completing the PDF
+  PASS  CLI rejects malformed JSON, missing scope, unknown flags and input/output collision
+  PASS  real analyzer CLI JSON flows to a report for all three verdicts
+
+9/9 pilot report tests passed
+
+> merge-proof@0.1.0 test:github
+> node --test github/test/*.test.js
+
+TAP version 13
+# Subtest: live observer preserves old verdict and requires new head and stale history
+ok 1 - live observer preserves old verdict and requires new head and stale history
+  ---
+  duration_ms: 17.481569
+  ...
+# Subtest: checkout rejects absent and revoked installations before provider requests
+ok 2 - checkout rejects absent and revoked installations before provider requests
+  ---
+  duration_ms: 10.667339
+  ...
+# Subtest: verified top-up grants exactly five across duplicate events and delivery types
+ok 3 - verified top-up grants exactly five across duplicate events and delivery types
+  ---
+  duration_ms: 5.806117
+  ...
+# Subtest: unpaid, wrong quantity, invalid signature grant nothing
+ok 4 - unpaid, wrong quantity, invalid signature grant nothing
+  ---
+  duration_ms: 2.062423
+  ...
+# Subtest: two paid developers get 100 monthly proofs, duplicate invoices preserve usage, topups survive renewal
+ok 5 - two paid developers get 100 monthly proofs, duplicate invoices preserve usage, topups survive renewal
+  ---
+  duration_ms: 2.978241
+  ...
+# Subtest: human identity dedups across installations, bots and guessed attribution excluded
+ok 6 - human identity dedups across installations, bots and guessed attribution excluded
+  ---
+  duration_ms: 1.821179
+  ...
+# Subtest: quantity increase needs confirmation, changes next invoice without expanding current allowance
+ok 7 - quantity increase needs confirmation, changes next invoice without expanding current allowance
+  ---
+  duration_ms: 3.575931
+  ...
+# Subtest: checkout creation uses exact monthly quantity and redirect cannot activate subscription
+ok 8 - checkout creation uses exact monthly quantity and redirect cannot activate subscription
+  ---
+  duration_ms: 4.269034
+  ...
+# Subtest: renewal allowance follows paid invoice quantity, not mutable next-invoice quantity
+ok 9 - renewal allowance follows paid invoice quantity, not mutable next-invoice quantity
+  ---
+  duration_ms: 1.47944
+  ...
+# Subtest: quantity reconciliation never reverses a newly requested provider cancellation
+ok 10 - quantity reconciliation never reverses a newly requested provider cancellation
+  ---
+  duration_ms: 1.740845
+  ...
+# Subtest: sandbox ledger cannot be reopened with live billing
+ok 11 - sandbox ledger cannot be reopened with live billing
+  ---
+  duration_ms: 1.193584
+  ...
+# Subtest: optional provider test clock attaches only to sandbox customer creation
+ok 12 - optional provider test clock attaches only to sandbox customer creation
+  ---
+  duration_ms: 1.927028
+  ...
+# Subtest: classic required_signatures is preserved, blocks unsupported proof and stales history
+ok 13 - classic required_signatures is preserved, blocks unsupported proof and stales history
+  ---
+  duration_ms: 279.254246
+  ...
+# Subtest: classic required_linear_history is preserved, blocks unsupported proof and stales history
+ok 14 - classic required_linear_history is preserved, blocks unsupported proof and stales history
+  ---
+  duration_ms: 92.49968
+  ...
+# Subtest: real collector projects REST metadata into a complete proof with no source or review bodies
+ok 15 - real collector projects REST metadata into a complete proof with no source or review bodies
+  ---
+  duration_ms: 57.368223
+  ...
+# Subtest: classic protection 404 on protected branch is unavailable, never absent
+ok 16 - classic protection 404 on protected branch is unavailable, never absent
+  ---
+  duration_ms: 14.780789
+  ...
+# Subtest: unprotected branch with 404 and empty active rules is confirmed no classic rule
+ok 17 - unprotected branch with 404 and empty active rules is confirmed no classic rule
+  ---
+  duration_ms: 16.91449
+  ...
+# Subtest: 300-file compare boundary fails closed
+ok 18 - 300-file compare boundary fails closed
+  ---
+  duration_ms: 27.669049
+  ...
+# Subtest: changed check between collections is detected
+ok 19 - changed check between collections is detected
+  ---
+  duration_ms: 18.907494
+  ...
+# Subtest: pagination limit and request budget never imply empty evidence
+ok 20 - pagination limit and request budget never imply empty evidence
+  ---
+  duration_ms: 4.411826
+  ...
+# Subtest: test merge requires exact parents and current ref
+ok 21 - test merge requires exact parents and current ref
+  ---
+  duration_ms: 71.578313
+  ...
+# Subtest: merge group requires live ref and ancestor evidence, never branch-name guess
+ok 22 - merge group requires live ref and ancestor evidence, never branch-name guess
+  ---
+  duration_ms: 32.230989
+  ...
+# Subtest: remote ref mismatch is recorded without losing historical identity
+ok 23 - remote ref mismatch is recorded without losing historical identity
+  ---
+  duration_ms: 20.333412
+  ...
+# Subtest: current queue selection must match live GraphQL entry; old group remains unproven
+ok 24 - current queue selection must match live GraphQL entry; old group remains unproven
+  ---
+  duration_ms: 85.349664
+  ...
+# Subtest: remote metadata reader produces same local findings as real full Git history
+ok 25 - remote metadata reader produces same local findings as real full Git history
+  ---
+  duration_ms: 427.668187
+  ...
+# Subtest: existing composite Action shell runs real CLI unchanged, outputs JSON/markdown and enforces exit 2
+ok 26 - existing composite Action shell runs real CLI unchanged, outputs JSON/markdown and enforces exit 2
+  ---
+  duration_ms: 1550.643474
+  ...
+# Subtest: customer OAuth login, authorized repository, receipt, free meter, private access and logout HTTP journey
+ok 27 - customer OAuth login, authorized repository, receipt, free meter, private access and logout HTTP journey
+  ---
+  duration_ms: 840.497716
+  ...
+# Subtest: OAuth state is cookie-bound, expires, and cannot be replayed
+ok 28 - OAuth state is cookie-bound, expires, and cannot be replayed
+  ---
+  duration_ms: 4.482594
+  ...
+# Subtest: acquisition is coarse, bounded, deduplicated per session and excludes arbitrary input
+ok 29 - acquisition is coarse, bounded, deduplicated per session and excludes arbitrary input
+  ---
+  duration_ms: 2.92662
+  ...
+# Subtest: optional GitHub check reports same verdict and cannot be its own CI evidence
+ok 30 - optional GitHub check reports same verdict and cannot be its own CI evidence
+  ---
+  duration_ms: 63.356773
+  ...
+# Subtest: Pages forwards proof receipts and raw App webhook signature using existing proxy boundary
+ok 31 - Pages forwards proof receipts and raw App webhook signature using existing proxy boundary
+  ---
+  duration_ms: 150.987118
+  ...
+# Subtest: a skipped workflow step is visible but not full execution proof
+ok 32 - a skipped workflow step is visible but not full execution proof
+  ---
+  duration_ms: 1.700254
+  ...
+# Subtest: Pages upload manifest sends proof routes to the existing worker
+ok 33 - Pages upload manifest sends proof routes to the existing worker
+  ---
+  duration_ms: 3.766154
+  ...
+# Subtest: an enforcing policy never reports a conclusion GitHub treats as a pass
+ok 34 - an enforcing policy never reports a conclusion GitHub treats as a pass
+  ---
+  duration_ms: 26.615716
+  ...
+# Subtest: a proof that could not complete blocks an enforcing gate and never passes
+ok 35 - a proof that could not complete blocks an enforcing gate and never passes
+  ---
+  duration_ms: 1.578692
+  ...
+# Subtest: an unrecognised gap blocks by default rather than becoming advisory
+ok 36 - an unrecognised gap blocks by default rather than becoming advisory
+  ---
+  duration_ms: 2.731702
+  ...
+# Subtest: a stale or unrefreshed receipt can never satisfy an enforcing gate
+ok 37 - a stale or unrefreshed receipt can never satisfy an enforcing gate
+  ---
+  duration_ms: 2.188374
+  ...
+# Subtest: a superseded published check is retracted with a blocking conclusion
+ok 38 - a superseded published check is retracted with a blocking conclusion
+  ---
+  duration_ms: 305.017488
+  ...
+# Subtest: a new head produces a new check bound to the new commit
+ok 39 - a new head produces a new check bound to the new commit
+  ---
+  duration_ms: 131.194782
+  ...
+# Subtest: a merge group is reported on the group commit as well as the pull request head
+ok 40 - a merge group is reported on the group commit as well as the pull request head
+  ---
+  duration_ms: 13.280595
+  ...
+# Subtest: a required check named the same as ours but owned by another app is named as a collision
+ok 41 - a required check named the same as ours but owned by another app is named as a collision
+  ---
+  duration_ms: 22.357202
+  ...
+# Subtest: requiring Merge Proof's own check is detected and does not deadlock the gate
+ok 42 - requiring Merge Proof's own check is detected and does not deadlock the gate
+  ---
+  duration_ms: 1.978181
+  ...
+# Subtest: policy defaults derive from the requirements the repository already sets
+ok 43 - policy defaults derive from the requirements the repository already sets
+  ---
+  duration_ms: 0.744803
+  ...
+# Subtest: a branch with nothing to prove is refused as a gate instead of passing
+ok 44 - a branch with nothing to prove is refused as a gate instead of passing
+  ---
+  duration_ms: 7.739117
+  ...
+# Subtest: a requirement Merge Proof cannot establish is declared before it is enabled
+ok 45 - a requirement Merge Proof cannot establish is declared before it is enabled
+  ---
+  duration_ms: 1.278362
+  ...
+# Subtest: unreadable repository rules are an explicit gap and never a silent pass
+ok 46 - unreadable repository rules are an explicit gap and never a silent pass
+  ---
+  duration_ms: 7.869955
+  ...
+# Subtest: setup instructions never claim automation Merge Proof is not permitted
+ok 47 - setup instructions never claim automation Merge Proof is not permitted
+  ---
+  duration_ms: 1.246149
+  ...
+# Subtest: protected boundaries are reported by default and enforced only when chosen
+ok 48 - protected boundaries are reported by default and enforced only when chosen
+  ---
+  duration_ms: 6.809076
+  ...
+# Subtest: the stricter boundary preset is satisfied by a second current approval
+ok 49 - the stricter boundary preset is satisfied by a second current approval
+  ---
+  duration_ms: 6.024865
+  ...
+# Subtest: NOT_PROVEN says what is missing, why, what to do and whether it blocks
+ok 50 - NOT_PROVEN says what is missing, why, what to do and whether it blocks
+  ---
+  duration_ms: 2.361932
+  ...
+# Subtest: an old check result is explained as an old version, not as a failure
+ok 51 - an old check result is explained as an old version, not as a failure
+  ---
+  duration_ms: 3.638979
+  ...
+# Subtest: the published check body carries the plain explanation and the consequence
+ok 52 - the published check body carries the plain explanation and the consequence
+  ---
+  duration_ms: 1.801939
+  ...
+# Subtest: observed human, app and bot identities are recorded from GitHub evidence
+ok 53 - observed human, app and bot identities are recorded from GitHub evidence
+  ---
+  duration_ms: 1.985409
+  ...
+# Subtest: unknown actors stay unknown and are never guessed
+ok 54 - unknown actors stay unknown and are never guessed
+  ---
+  duration_ms: 2.544276
+  ...
+# Subtest: no free-text commit, review or check content is collected as actor evidence
+ok 55 - no free-text commit, review or check content is collected as actor evidence
+  ---
+  duration_ms: 1.538561
+  ...
+# Subtest: a completed merge is preserved immutably with what was known at the time
+ok 56 - a completed merge is preserved immutably with what was known at the time
+  ---
+  duration_ms: 28.114982
+  ...
+# Subtest: a merge of a commit no receipt covers is recorded as exactly that
+ok 57 - a merge of a commit no receipt covers is recorded as exactly that
+  ---
+  duration_ms: 76.493825
+  ...
+# Subtest: a merge with no proof at all is recorded without inventing one
+ok 58 - a merge with no proof at all is recorded without inventing one
+  ---
+  duration_ms: 2.038227
+  ...
+# Subtest: the ledger filters, states its own completeness and refuses another repository
+ok 59 - the ledger filters, states its own completeness and refuses another repository
+  ---
+  duration_ms: 8.335694
+  ...
+# Subtest: the gate adds no billable proof: a re-proof of the same head is zero debit
+ok 60 - the gate adds no billable proof: a re-proof of the same head is zero debit
+  ---
+  duration_ms: 174.691437
+  ...
+# Subtest: policy selection is bounded, defaults to report-only and is recorded
+ok 61 - policy selection is bounded, defaults to report-only and is recorded
+  ---
+  duration_ms: 6.656574
+  ...
+# Subtest: a receipt stored by the previous version still renders, evaluates and ledgers
+ok 62 - a receipt stored by the previous version still renders, evaluates and ledgers
+  ---
+  duration_ms: 9.037975
+  ...
+# Subtest: a store snapshot missing the new keys boots without losing anything
+ok 63 - a store snapshot missing the new keys boots without losing anything
+  ---
+  duration_ms: 2.695428
+  ...
+# Subtest: policy activation invalidates and queues existing checks without another event
+ok 64 - policy activation invalidates and queues existing checks without another event
+  ---
+  duration_ms: 43.862221
+  ...
+# Subtest: unknown App identity cannot waive an explicitly publisher-bound requirement
+ok 65 - unknown App identity cannot waive an explicitly publisher-bound requirement
+  ---
+  duration_ms: 1.77185
+  ...
+# Subtest: partial publication persists the first identity before the second request fails
+ok 66 - partial publication persists the first identity before the second request fails
+  ---
+  duration_ms: 2.685249
+  ...
+# Subtest: a signed event during publication immediately retracts the returned check
+ok 67 - a signed event during publication immediately retracts the returned check
+  ---
+  duration_ms: 18.122487
+  ...
+# Subtest: delayed merge delivery never borrows a receipt issued after the merge
+ok 68 - delayed merge delivery never borrows a receipt issued after the merge
+  ---
+  duration_ms: 19.977336
+  ...
+# Subtest: ledger snapshot remains detached from receipt mutation and capacity is explicit
+ok 69 - ledger snapshot remains detached from receipt mutation and capacity is explicit
+  ---
+  duration_ms: 502.631448
+  ...
+# Subtest: failed enforcing retraction remains pending and recovers without another webhook
+ok 70 - failed enforcing retraction remains pending and recovers without another webhook
+  ---
+  duration_ms: 61.414967
+  ...
+# Subtest: five unique heads exhaust free taste, old keys refresh after restart, repositories do not collide
+ok 71 - five unique heads exhaust free taste, old keys refresh after restart, repositories do not collide
+  ---
+  duration_ms: 19.881666
+  ...
+# Subtest: FAIL, failed collection and stale completion debit zero
+ok 72 - FAIL, failed collection and stale completion debit zero
+  ---
+  duration_ms: 3.220057
+  ...
+# Subtest: real proof service snapshot commits receipt and debit together; same head reruns once
+ok 73 - real proof service snapshot commits receipt and debit together; same head reruns once
+  ---
+  duration_ms: 312.911803
+  ...
+# Subtest: overlapping workers cannot double-debit; second writer cannot open durable store
+ok 74 - overlapping workers cannot double-debit; second writer cannot open durable store
+  ---
+  duration_ms: 69.14047
+  ...
+# Subtest: signed hosted lifecycle: install, five heads, stale immutable history, sixth pauses and same-head refresh stays free
+ok 75 - signed hosted lifecycle: install, five heads, stale immutable history, sixth pauses and same-head refresh stays free
+  ---
+  duration_ms: 328.420515
+  ...
+# Subtest: historical scan retries the same reservation after infrastructure failure and never consumes live taste
+ok 76 - historical scan retries the same reservation after infrastructure failure and never consumes live taste
+  ---
+  duration_ms: 5.586301
+  ...
+# Subtest: active developers require pushed commits; repeated later pushes retain their own event evidence
+ok 77 - active developers require pushed commits; repeated later pushes retain their own event evidence
+  ---
+  duration_ms: 5.62398
+  ...
+# Subtest: malformed signed lifecycle scopes reject without state mutation
+ok 78 - malformed signed lifecycle scopes reject without state mutation
+  ---
+  duration_ms: 8.438191
+  ...
+# Subtest: current head includes base, required executed CI, eligible approval and remote ref verify
+ok 79 - current head includes base, required executed CI, eligible approval and remote ref verify
+  ---
+  duration_ms: 34.671204
+  ...
+# Subtest: obsolete green SHA never verifies through omission
+ok 80 - obsolete green SHA never verifies through omission
+  ---
+  duration_ms: 7.659652
+  ...
+# Subtest: missing check never verifies through omission
+ok 81 - missing check never verifies through omission
+  ---
+  duration_ms: 2.484995
+  ...
+# Subtest: check read denied never verifies through omission
+ok 82 - check read denied never verifies through omission
+  ---
+  duration_ms: 2.007387
+  ...
+# Subtest: status read denied never verifies through omission
+ok 83 - status read denied never verifies through omission
+  ---
+  duration_ms: 1.979168
+  ...
+# Subtest: rules denied never verifies through omission
+ok 84 - rules denied never verifies through omission
+  ---
+  duration_ms: 2.112242
+  ...
+# Subtest: rulesets denied never verifies through omission
+ok 85 - rulesets denied never verifies through omission
+  ---
+  duration_ms: 1.942461
+  ...
+# Subtest: no required checks never verifies through omission
+ok 86 - no required checks never verifies through omission
+  ---
+  duration_ms: 6.622654
+  ...
+# Subtest: required workflow unsupported never verifies through omission
+ok 87 - required workflow unsupported never verifies through omission
+  ---
+  duration_ms: 3.738628
+  ...
+# Subtest: stale approval after push never verifies through omission
+ok 88 - stale approval after push never verifies through omission
+  ---
+  duration_ms: 2.744533
+  ...
+# Subtest: dismissed review never verifies through omission
+ok 89 - dismissed review never verifies through omission
+  ---
+  duration_ms: 2.358719
+  ...
+# Subtest: review permission unknown never verifies through omission
+ok 90 - review permission unknown never verifies through omission
+  ---
+  duration_ms: 5.682923
+  ...
+# Subtest: PR author approval never verifies through omission
+ok 91 - PR author approval never verifies through omission
+  ---
+  duration_ms: 2.134589
+  ...
+# Subtest: bot approval never verifies through omission
+ok 92 - bot approval never verifies through omission
+  ---
+  duration_ms: 6.493751
+  ...
+# Subtest: last push approval rule never verifies through omission
+ok 93 - last push approval rule never verifies through omission
+  ---
+  duration_ms: 6.838763
+  ...
+# Subtest: code owner rule never verifies through omission
+ok 94 - code owner rule never verifies through omission
+  ---
+  duration_ms: 2.634348
+  ...
+# Subtest: remote missing never verifies through omission
+ok 95 - remote missing never verifies through omission
+  ---
+  duration_ms: 6.261174
+  ...
+# Subtest: remote unavailable never verifies through omission
+ok 96 - remote unavailable never verifies through omission
+  ---
+  duration_ms: 6.452197
+  ...
+# Subtest: remote wrong SHA never verifies through omission
+ok 97 - remote wrong SHA never verifies through omission
+  ---
+  duration_ms: 1.945646
+  ...
+# Subtest: target other base never verifies through omission
+ok 98 - target other base never verifies through omission
+  ---
+  duration_ms: 6.25855
+  ...
+# Subtest: capture race never verifies through omission
+ok 99 - capture race never verifies through omission
+  ---
+  duration_ms: 2.331812
+  ...
+# Subtest: merge queue without group never verifies through omission
+ok 100 - merge queue without group never verifies through omission
+  ---
+  duration_ms: 4.591989
+  ...
+# Subtest: skipped distinct from execution proof
+ok 101 - skipped distinct from execution proof
+  ---
+  duration_ms: 3.677737
+  ...
+# Subtest: neutral distinct from execution proof
+ok 102 - neutral distinct from execution proof
+  ---
+  duration_ms: 1.283446
+  ...
+# Subtest: failure distinct from execution proof
+ok 103 - failure distinct from execution proof
+  ---
+  duration_ms: 1.283791
+  ...
+# Subtest: cancelled distinct from execution proof
+ok 104 - cancelled distinct from execution proof
+  ---
+  duration_ms: 1.243456
+  ...
+# Subtest: timed_out distinct from execution proof
+ok 105 - timed_out distinct from execution proof
+  ---
+  duration_ms: 8.415727
+  ...
+# Subtest: pending rerun supersedes old successful check
+ok 106 - pending rerun supersedes old successful check
+  ---
+  duration_ms: 1.754668
+  ...
+# Subtest: check success alone, status success alone, wrong job SHA and empty steps cannot establish execution
+ok 107 - check success alone, status success alone, wrong job SHA and empty steps cannot establish execution
+  ---
+  duration_ms: 3.914913
+  ...
+# Subtest: same context across multiple Apps is ambiguous
+ok 108 - same context across multiple Apps is ambiguous
+  ---
+  duration_ms: 1.400744
+  ...
+# Subtest: base movement with overlap preserves BASE_DRIFT_UNVERIFIED even with remote execution
+ok 109 - base movement with overlap preserves BASE_DRIFT_UNVERIFIED even with remote execution
+  ---
+  duration_ms: 1.322921
+  ...
+# Subtest: base movement without overlap keeps STALE_BASE advisory and can prove combined state
+ok 110 - base movement without overlap keeps STALE_BASE advisory and can prove combined state
+  ---
+  duration_ms: 1.318541
+  ...
+# Subtest: protected boundary keeps local meaning; unavailable history fails closed
+ok 111 - protected boundary keeps local meaning; unavailable history fails closed
+  ---
+  duration_ms: 2.635305
+  ...
+# Subtest: merge group execution binds group SHA; head success cannot substitute
+ok 112 - merge group execution binds group SHA; head success cannot substitute
+  ---
+  duration_ms: 2.675731
+  ...
+# Subtest: review comments do not erase approval, latest decision and count apply
+ok 113 - review comments do not erase approval, latest decision and count apply
+  ---
+  duration_ms: 3.355916
+  ...
+# Subtest: no approval requirement is explicitly not applicable
+ok 114 - no approval requirement is explicitly not applicable
+  ---
+  duration_ms: 1.371187
+  ...
+# Subtest: head change stales historical receipt without mutation
+ok 115 - head change stales historical receipt without mutation
+  ---
+  duration_ms: 3.583455
+  ...
+# Subtest: base change stales historical receipt without mutation
+ok 116 - base change stales historical receipt without mutation
+  ---
+  duration_ms: 2.885892
+  ...
+# Subtest: check change stales historical receipt without mutation
+ok 117 - check change stales historical receipt without mutation
+  ---
+  duration_ms: 13.424734
+  ...
+# Subtest: rules change stales historical receipt without mutation
+ok 118 - rules change stales historical receipt without mutation
+  ---
+  duration_ms: 7.262986
+  ...
+# Subtest: approval change stales historical receipt without mutation
+ok 119 - approval change stales historical receipt without mutation
+  ---
+  duration_ms: 8.379816
+  ...
+# Subtest: remote change stales historical receipt without mutation
+ok 120 - remote change stales historical receipt without mutation
+  ---
+  duration_ms: 7.200548
+  ...
+# Subtest: group change stales historical receipt without mutation
+ok 121 - group change stales historical receipt without mutation
+  ---
+  duration_ms: 8.209834
+  ...
+# Subtest: timestamp alone does not expire proof; failed refresh preserves prior verdict
+ok 122 - timestamp alone does not expire proof; failed refresh preserves prior verdict
+  ---
+  duration_ms: 8.73994
+  ...
+# Subtest: rules are intersected and unsupported evidence is explicit
+ok 123 - rules are intersected and unsupported evidence is explicit
+  ---
+  duration_ms: 45.250716
+  ...
+# Subtest: human and JSON render same underlying receipt and escape untrusted strings
+ok 124 - human and JSON render same underlying receipt and escape untrusted strings
+  ---
+  duration_ms: 6.060007
+  ...
+# Subtest: ALLGREEN requirements for other merge-group entries cannot be silently waived
+ok 125 - ALLGREEN requirements for other merge-group entries cannot be silently waived
+  ---
+  duration_ms: 2.708279
+  ...
+# Subtest: issuance currentness and fresh human envelope agree when required sources are unavailable
+ok 126 - issuance currentness and fresh human envelope agree when required sources are unavailable
+  ---
+  duration_ms: 2.850135
+  ...
+# Subtest: nested unavailable reviewer permission or queue selection cannot advertise CURRENT
+ok 127 - nested unavailable reviewer permission or queue selection cannot advertise CURRENT
+  ---
+  duration_ms: 5.116236
+  ...
+# Subtest: historical scan uses actual proof and local semantics but never substitutes current policy for historical policy
+ok 128 - historical scan uses actual proof and local semantics but never substitutes current policy for historical policy
+  ---
+  duration_ms: 255.003302
+  ...
+# Subtest: unsupported historical shape and invalid bound remain unavailable
+ok 129 - unsupported historical shape and invalid bound remain unavailable
+  ---
+  duration_ms: 16.161675
+  ...
+# Subtest: persisted proof, public share access, default unrefreshed view and fresh read
+ok 130 - persisted proof, public share access, default unrefreshed view and fresh read
+  ---
+  duration_ms: 263.687417
+  ...
+# Subtest: private receipt requires current repository access; publication refused
+ok 131 - private receipt requires current repository access; publication refused
+  ---
+  duration_ms: 140.121462
+  ...
+# Subtest: public-to-private visibility transition closes shared permalink
+ok 132 - public-to-private visibility transition closes shared permalink
+  ---
+  duration_ms: 32.948049
+  ...
+# Subtest: refresh failure does not erase historical VERIFIED; head change stales it
+ok 133 - refresh failure does not erase historical VERIFIED; head change stales it
+  ---
+  duration_ms: 46.787487
+  ...
+# Subtest: signed webhook automatically queues and completes receipt; duplicate is idempotent and unsigned denied
+ok 134 - signed webhook automatically queues and completes receipt; duplicate is idempotent and unsigned denied
+  ---
+  duration_ms: 66.493369
+  ...
+# Subtest: failed App refresh preserves history, bounded retries and no completed event
+ok 135 - failed App refresh preserves history, bounded retries and no completed event
+  ---
+  duration_ms: 3.09309
+  ...
+# Subtest: HTTP journey produces mobile HTML and same JSON; unauthorized private evidence denied
+ok 136 - HTTP journey produces mobile HTML and same JSON; unauthorized private evidence denied
+  ---
+  duration_ms: 311.516133
+  ...
+# Subtest: App JWT is signed, short lived and installation token limited to exact repository and read permissions
+ok 137 - App JWT is signed, short lived and installation token limited to exact repository and read permissions
+  ---
+  duration_ms: 180.103149
+  ...
+# Subtest: source-unavailable receipt is retained without completed-proof event
+ok 138 - source-unavailable receipt is retained without completed-proof event
+  ---
+  duration_ms: 46.966716
+  ...
+# Subtest: optional App check delivery stales the previous check and ignores its own events
+ok 139 - optional App check delivery stales the previous check and ignores its own events
+  ---
+  duration_ms: 114.628568
+  ...
+# Subtest: receipt and pending refresh survive an actual store close/reopen
+ok 140 - receipt and pending refresh survive an actual store close/reopen
+  ---
+  duration_ms: 48.091911
+  ...
+# Subtest: event during an active proof stales it and retains a subsequent refresh job
+ok 141 - event during an active proof stales it and retains a subsequent refresh job
+  ---
+  duration_ms: 41.838345
+  ...
+# Subtest: refresh revalidates a saved merge-group hint instead of discarding its binding
+ok 142 - refresh revalidates a saved merge-group hint instead of discarding its binding
+  ---
+  duration_ms: 90.443597
+  ...
+# Subtest: failed stale-check update does not prevent core re-proof
+ok 143 - failed stale-check update does not prevent core re-proof
+  ---
+  duration_ms: 82.243778
+  ...
+1..143
+# tests 143
+# suites 0
+# pass 143
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 12960.673146
+
+> merge-proof@0.1.0 test:factory
+> node --test factory/test/*.test.js
+
+TAP version 13
+# Subtest: Stripe raw signature rejects modified, expired, unsigned and live-mode events
+ok 1 - Stripe raw signature rejects modified, expired, unsigned and live-mode events
+  ---
+  duration_ms: 5.895263
+  ...
+# Subtest: Stripe retrieves authoritative amount/contact/transaction; ignores webhook amount
+ok 2 - Stripe retrieves authoritative amount/contact/transaction; ignores webhook amount
+  ---
+  duration_ms: 3.586912
+  ...
+# Subtest: Stripe rejects wrong SKU, mode, quantity, link, pending payment
+ok 3 - Stripe rejects wrong SKU, mode, quantity, link, pending payment
+  ---
+  duration_ms: 1.95525
+  ...
+# Subtest: offer price comes from Payment Link and rejects adjustable or recurring SKU
+ok 4 - offer price comes from Payment Link and rejects adjustable or recurring SKU
+  ---
+  duration_ms: 33.689676
+  ...
+# Subtest: repository input is public GitHub only; no token, query, fragment, local path or other host
+ok 5 - repository input is public GitHub only; no token, query, fragment, local path or other host
+  ---
+  duration_ms: 0.77454
+  ...
+# Subtest: public repo scope is exact; private adapter fails eligibility without requesting token
+ok 6 - public repo scope is exact; private adapter fails eligibility without requesting token
+  ---
+  duration_ms: 4.996826
+  ...
+# Subtest: merged history requires explicit parent relationship and landed CI SHA
+ok 7 - merged history requires explicit parent relationship and landed CI SHA
+  ---
+  duration_ms: 1.662748
+  ...
+# Subtest: GitHub pagination exhaustion fails closed
+ok 8 - GitHub pagination exhaustion fails closed
+  ---
+  duration_ms: 2.403098
+  ...
+# Subtest: secret scrub covers tokens and does not retain review bodies
+ok 9 - secret scrub covers tokens and does not retain review bodies
+  ---
+  duration_ms: 1.219498
+  ...
+# Subtest: restricted API keys preserve strict live/test separation
+ok 10 - restricted API keys preserve strict live/test separation
+  ---
+  duration_ms: 3507.203587
+  ...
+# Subtest: exact SHA and expected App success can meet CI
+ok 11 - exact SHA and expected App success can meet CI
+  ---
+  duration_ms: 4.321342
+  ...
+# Subtest: wrong SHA never verifies, even when same check succeeds
+ok 12 - wrong SHA never verifies, even when same check succeeds
+  ---
+  duration_ms: 1.676977
+  ...
+# Subtest: wrong App, missing, failed, neutral, skipped, in-progress CI all block
+ok 13 - wrong App, missing, failed, neutral, skipped, in-progress CI all block
+  ---
+  duration_ms: 1.022566
+  ...
+# Subtest: latest failed attempt overrides old success
+ok 14 - latest failed attempt overrides old success
+  ---
+  duration_ms: 0.915624
+  ...
+# Subtest: unresolved or empty CI policy cannot infer not-applicable
+ok 15 - unresolved or empty CI policy cannot infer not-applicable
+  ---
+  duration_ms: 0.553651
+  ...
+# Subtest: approval is exact candidate bound
+ok 16 - approval is exact candidate bound
+  ---
+  duration_ms: 1.278203
+  ...
+# Subtest: dismissed, changes-requested, bot, author and outsider cannot be current approval
+ok 17 - dismissed, changes-requested, bot, author and outsider cannot be current approval
+  ---
+  duration_ms: 1.235179
+  ...
+# Subtest: later comment does not erase an approval but latest decision does
+ok 18 - later comment does not erase an approval but latest decision does
+  ---
+  duration_ms: 0.826416
+  ...
+# Subtest: outstanding changes requested from another reviewer blocks
+ok 19 - outstanding changes requested from another reviewer blocks
+  ---
+  duration_ms: 0.964174
+  ...
+# Subtest: unresolvable approval remains unknown
+ok 20 - unresolvable approval remains unknown
+  ---
+  duration_ms: 0.742828
+  ...
+# Subtest: existing FAIL or blocking local finding is never upgraded
+ok 21 - existing FAIL or blocking local finding is never upgraded
+  ---
+  duration_ms: 0.955271
+  ...
+# Subtest: reassessment preserves original, reports resolved remaining and new gaps
+ok 22 - reassessment preserves original, reports resolved remaining and new gaps
+  ---
+  duration_ms: 3.765413
+  ...
+# Subtest: complete HTTP journey: eligibility -> signed fixture webhook -> authorization -> real Git/PDF -> download -> one reassessment
+ok 23 - complete HTTP journey: eligibility -> signed fixture webhook -> authorization -> real Git/PDF -> download -> one reassessment
+  ---
+  duration_ms: 7920.320838
+  ...
+# Subtest: eligibility blocks inaccessible or unsupported scope without taking payment
+ok 24 - eligibility blocks inaccessible or unsupported scope without taking payment
+  ---
+  duration_ms: 97.499064
+  ...
+# Subtest: report failure is honest, retryable, preserves cleanup, escalates refund to Ryan
+ok 25 - report failure is honest, retryable, preserves cleanup, escalates refund to Ryan
+  ---
+  duration_ms: 1731.090699
+  ...
+# Subtest: post-payment auth and unsupported history have explicit states
+ok 26 - post-payment auth and unsupported history have explicit states
+  ---
+  duration_ms: 485.200727
+  ...
+# Subtest: expired access is denied and artifacts are purged; unknown paid reference escalates
+ok 27 - expired access is denied and artifacts are purged; unknown paid reference escalates
+  ---
+  duration_ms: 510.649524
+  ...
+# Subtest: isolated runner has hard timeout and removes its working directory
+ok 28 - isolated runner has hard timeout and removes its working directory
+  ---
+  duration_ms: 107.275124
+  ...
+# Subtest: new visitors see Pro, retired checkout fails closed, historical access still routes
+ok 29 - new visitors see Pro, retired checkout fails closed, historical access still routes
+  ---
+  duration_ms: 463.10337
+  ...
+# Subtest: hosted sandbox isolates provider credentials and accounting from historical live orders
+ok 30 - hosted sandbox isolates provider credentials and accounting from historical live orders
+  ---
+  duration_ms: 36.693421
+  ...
+# Subtest: authenticated proxy preserves per-client eligibility limits and rejects direct forwarding
+ok 31 - authenticated proxy preserves per-client eligibility limits and rejects direct forwarding
+  ---
+  duration_ms: 364.320521
+  ...
+# Subtest: Pages proxy preserves webhook bytes, origin, cookie and protected response without exposing its key
+ok 32 - Pages proxy preserves webhook bytes, origin, cookie and protected response without exposing its key
+  ---
+  duration_ms: 90.834648
+  ...
+# Subtest: undelivered expired payment escalates once to Ryan instead of disappearing
+ok 33 - undelivered expired payment escalates once to Ryan instead of disappearing
+  ---
+  duration_ms: 13.485422
+  ...
+# Subtest: delivered expired pack retains reconciliation but does not invent a refund on later sweeps
+ok 34 - delivered expired pack retains reconciliation but does not invent a refund on later sweeps
+  ---
+  duration_ms: 2.740807
+  ...
+# Subtest: expired failed reassessment also escalates while unused reassessment does not
+ok 35 - expired failed reassessment also escalates while unused reassessment does not
+  ---
+  duration_ms: 2.755305
+  ...
+# Subtest: one thousand expired paid records do not permanently block new eligibility
+ok 36 - one thousand expired paid records do not permanently block new eligibility
+  ---
+  duration_ms: 24.234721
+  ...
+# Subtest: factory merge report labels and shows the real landed state
+ok 37 - factory merge report labels and shows the real landed state
+  ---
+  duration_ms: 12.215109
+  ...
+1..37
+# tests 37
+# suites 0
+# pass 37
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 18553.490029
+Finished with result: success
+Main processes terminated with: code=exited, status=0/SUCCESS
+Service runtime: 46.429s
+CPU time consumed: 45.731s
+Memory peak: 268M (swap: 0B)
