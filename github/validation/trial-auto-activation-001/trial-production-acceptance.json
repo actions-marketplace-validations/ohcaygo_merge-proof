@@ -1,0 +1,83 @@
+{
+  "at": "2026-09-12T19:26:07.777Z",
+  "productionSha": "0a635a7f9035d027d97aad7b10287e7b925a0e4c",
+  "trial": {
+    "startedAt": 1789241143870,
+    "endsAt": 1789845943870,
+    "receiptId": "49dea0b1-e52b-48e5-906a-bb6ebea75b54"
+  },
+  "receipts": 1,
+  "last": {
+    "id": "49dea0b1-e52b-48e5-906a-bb6ebea75b54",
+    "verdict": "NOT_PROVEN",
+    "current": "CURRENT",
+    "metering": {
+      "key": "[161208536,1352881392,4,\"4b6e8246f88a25b99ed307c1a062afbadf29c08f\"]",
+      "charged": true,
+      "reason": "TRIAL"
+    },
+    "check": {
+      "id": 103608101403,
+      "appId": 4901537,
+      "head": "4b6e8246f88a25b99ed307c1a062afbadf29c08f",
+      "conclusion": "neutral",
+      "title": "NOT_PROVEN · CURRENT at observation · reporting only",
+      "url": "https://github.com/ohcaygo/merge-proof/runs/103608101403"
+    }
+  },
+  "subscriptions": [
+    {
+      "installationId": 161208536,
+      "repositoryId": 1352881392,
+      "repo": "ohcaygo/merge-proof",
+      "pr": 4,
+      "latestReceiptId": "49dea0b1-e52b-48e5-906a-bb6ebea75b54",
+      "refreshState": "CURRENT"
+    }
+  ],
+  "funnel": [
+    {
+      "type": "app_installed",
+      "at": "2026-09-12T19:15:56.415Z"
+    },
+    {
+      "type": "account_connected",
+      "at": "2026-09-12T19:25:28.826Z",
+      "source": "direct"
+    },
+    {
+      "type": "repo_authorized",
+      "at": "2026-09-12T19:25:28.826Z",
+      "source": "direct"
+    },
+    {
+      "type": "first_successful_proof",
+      "at": "2026-09-12T19:25:43.870Z",
+      "source": "direct"
+    },
+    {
+      "type": "trial_started",
+      "at": "2026-09-12T19:25:43.871Z",
+      "source": "direct"
+    },
+    {
+      "type": "hosted_proof_completed",
+      "at": "2026-09-12T19:25:43.871Z",
+      "source": "direct"
+    },
+    {
+      "type": "proof_observed",
+      "at": "2026-09-12T19:25:43.871Z",
+      "source": "direct"
+    },
+    {
+      "type": "automatic_proof",
+      "at": "2026-09-12T19:25:44.522Z",
+      "source": "direct"
+    }
+  ],
+  "historicalReceiptsPreserved": true,
+  "billingLedgerPreserved": true,
+  "policiesPreserved": true,
+  "mergeLedgerPreserved": true
+}

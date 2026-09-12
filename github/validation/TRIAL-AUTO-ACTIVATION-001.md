@@ -1,7 +1,80 @@
 # MERGE-PROOF-7DAY-TRIAL-AUTO-ACTIVATION-001
 
-FINAL: BLOCKED — implementation accepted locally and on isolated Linux; production
-acceptance requires one owner GitHub action. No production release was promoted.
+FINAL: PASS — production acceptance and deployment completed September 12, 2026.
+
+## Current production acceptance
+
+Production source: `0a635a7f9035d027d97aad7b10287e7b925a0e4c`.
+Release: `/opt/merge-proof/releases/trial-0a635a7`, service active.
+Owner action is complete; no reinstall, permission change or further owner action
+is needed. NEXT: STOP.
+
+Fresh GitHub API confirmed production App 4901537 installation **161208536** for
+`ohcaygo`, and a repository-scoped token authorized `ohcaygo/merge-proof`
+(repository 1352881392). Isolated acceptance using this production App created a
+CURRENT NOT_PROVEN proof and started a seven-day trial before promotion; that
+probe never wrote production state or published checks.
+
+Promotion used the already-tested immutable archive (SHA256
+`3b3eaa9dc37e5f847d9ce6eaa29b67856224a49548edcc9dd0d581995172d3b3`), backed up
+factory and Pro state with the service stopped, and switched the existing release
+symlink. Exact authenticated backend asset health passed. Production configuration,
+Stripe prices and Cloudflare Pages deployment were unchanged.
+
+The real hosted browser journey completed GitHub OAuth, selected the `ohcaygo`
+installation, automatically selected its repository, discovered PR #4 and produced
+receipt **49dea0b1-e52b-48e5-906a-bb6ebea75b54** without clicking Prove it now.
+The installation event was at 19:15:56 UTC; it did not start a trial. The first
+successful receipt started it at **2026-09-12T19:25:43.870Z**, ending
+**2026-09-19T19:25:43.870Z** (September 19, 2:25 p.m. Central).
+
+Receipt verdict is correctly NOT_PROVEN / CURRENT at observation, for head
+`4b6e8246f88a25b99ed307c1a062afbadf29c08f`. GitHub Check **103608101403** was
+published by production App 4901537 on that same head, concluding neutral under
+the unchanged report-only policy. This is not an enforcing or VERIFIED claim.
+
+Authorized HTML receipt access and its trial notice/Continue link passed in the
+browser. Anonymous JSON access returned 403 LOGIN_REQUIRED. Trial enforcement
+options were visibly disabled. One observed active developer displayed $29/month.
+The public JavaScript matched the exact release. Public HTML also matched after
+verifying and normalizing only Cloudflare's support-email encoding and its email
+decoding script; that CDN transformation was not a source mismatch.
+
+A real GitHub redelivery of the installation event (GUID
+`60dfd2d0-aede-11f1-8865-993a29cb2a14`) returned HTTP 202 OK. The original trial
+start/end/receipt binding remained identical and exactly one trial_started event
+was stored. Historical receipt bodies, billing ledger, policies and merge ledger
+matched the pre-promotion backup. Live Stripe price was fetched again and verified
+as active USD 2900, monthly, licensed. No live checkout, charge or subscription
+activation was manufactured.
+
+Durable events cover the actual owner acceptance journey, including connect,
+repository authorization, first proof, trial start and automatic proof. The
+supported aggregate export ran on production and is retained in
+`trial-auto-activation-001/trial-production-funnel.json`. These are founder
+acceptance events, not evidence of outside adoption or a paid customer.
+
+Expiry, day 5/6/7 reminders, enforcing-expiry warnings and paid activation/resume
+remain covered by the exact candidate's isolated Linux tests; no production clock,
+payment or GitHub protection was altered to simulate those cases. The 248/248
+Linux test results are reused because candidate code and validation conditions
+did not change.
+
+Rollback/state recovery: backups are retained at
+`/var/lib/merge-proof/backups/pre-trial-0a635a7/{factory,pro}`, alongside the prior
+release. Do not restore old state over new receipts/payments, or resume pre-trial
+code over started trials. The accepted trial-0a635a7 release is now the compatible
+rollback baseline for subsequent changes. The promotion script automatically
+returns to the previous release on a failed boot only if no trial has started;
+otherwise it stops processing and preserves state for a forward repair.
+
+Evidence: `trial-production-app-preflight.json`, `trial-production-acceptance.json`,
+`trial-production-final.json`, `trial-production-funnel.json`, the promotion script
+and final verification script in `trial-auto-activation-001/`. Earlier BLOCKED
+notes below are historical and superseded. Public marketing/campaign edits remain
+in their separate lane.
+
+## Pre-promotion record (historical)
 
 Candidate source: `0a635a7f9035d027d97aad7b10287e7b925a0e4c`.
 Branch: `codex/7day-trial-auto-activation`.
@@ -66,7 +139,7 @@ ROLLBACK: production unchanged, so no rollback required. Trial migration rollbac
 limitations are documented in `../TRIAL.md`; do not run pre-trial automation over
 new trial-bearing state or restore old state over new receipts/payments.
 
-## Production blocker / exact next action
+## Initial production blocker / requested owner action (resolved)
 
 Production App `4901537` is installed on private `dupageinspect-beep/vera-mvp`
 (installation `160741988`). Live read found two open PRs, #16 and #8, both targeting

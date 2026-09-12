@@ -1,0 +1,20 @@
+{
+  "at": "2026-09-12T19:30:45.046Z",
+  "publicPageMatchesCandidateAfterCloudflareEmailProtection": true,
+  "publicScriptMatchesCandidate": true,
+  "anonymousReceiptDenied": true,
+  "liveStripe29MonthlyLicensed": true,
+  "replay": {
+    "guid": "60dfd2d0-aede-11f1-8865-993a29cb2a14",
+    "event": "installation",
+    "status": "OK",
+    "statusCode": 202,
+    "redeliveryDelivered": true
+  },
+  "trialUnchangedAfterReplay": {
+    "startedAt": 1789241143870,
+    "endsAt": 1789845943870,
+    "receiptId": "49dea0b1-e52b-48e5-906a-bb6ebea75b54"
+  },
+  "trialStartedEvents": 1
+}
