@@ -4,6 +4,9 @@ const { prove, freshness } = require("./proof");
 const { Client } = require("./client");
 const { assert, repoName, randomUUID } = require("./common");
 const { installationClient, verifyWebhook } = require("./app");
+const policies = require("./policy");
+const ledger = require("./ledger");
+const { actor } = require("./actors");
 class ProofService {
   constructor({
     store,
@@ -26,6 +29,10 @@ class ProofService {
       completed: [],
     };
     this.data = store.data.github;
+    // Existing installations keep reporting-only behavior. A blocking gate is
+    // never switched on for a repository that did not ask for it.
+    this.data.policies ||= {};
+    ledger.area(store);
     this.meter = config.hosted ? new (require("./meter").Meter)(store) : null;
     this.customers = this.meter
       ? new (require("./customer").Customers)(this)
@@ -37,6 +44,28 @@ class ProofService {
   }
   save() {
     this.store.save();
+  }
+  // Per repository, owner-chosen, defaulting to report-only.
+  policyFor(repositoryId) {
+    return this.data.policies?.[repositoryId] || null;
+  }
+  setPolicy(repositoryId, presetId, setByUserId = null) {
+    assert(Number.isSafeInteger(repositoryId) && repositoryId > 0, "INVALID_SCOPE");
+    const chosen = policies.select(presetId);
+    this.data.policies[repositoryId] = {
+      preset: chosen.id,
+      setAt: new Date().toISOString(),
+      setByUserId: Number.isSafeInteger(setByUserId) ? setByUserId : null,
+    };
+    this.save();
+    return policies.normalize(this.data.policies[repositoryId]);
+  }
+  gateFor(receipt, current) {
+    return policies.evaluate(
+      receipt,
+      current,
+      this.policyFor(receipt.identity.repositoryId),
+    );
   }
   startScan(installationId, repositoryId, repo) {
     const account = this.meter.account(installationId);
@@ -133,7 +162,7 @@ class ProofService {
       }
       const revision = this.data.revisions[repo.toLowerCase()] || 0;
       const capture = await collect(client, repo, pr, { mergeGroup });
-      const receipt = prove(capture);
+      const receipt = prove(capture, { appId: this.config.appId });
       assert(
         !publish || capture.identity.visibility === "public",
         "PRIVATE_SHARING_DENIED",
@@ -171,9 +200,11 @@ class ProofService {
             collectionComplete,
           )
         : null;
+      const gate = this.gateFor(receipt, current);
       this.data.receipts[receipt.receiptId] = {
         receipt,
         current,
+        gate,
         published: publish,
         installationId,
         metering,
@@ -203,7 +234,7 @@ class ProofService {
           at: receipt.issuedAt,
         });
       this.save();
-      return { receipt, current };
+      return { receipt, current, gate };
     });
   }
   async access(id, token) {
@@ -292,6 +323,9 @@ class ProofService {
     return {
       receipt: row.receipt,
       current,
+      // Recomputed against the currentness actually being shown, so an
+      // unrefreshed or stale view never displays a satisfied merge gate.
+      gate: this.gateFor(row.receipt, current),
       latestReceiptId:
         this.data.subscriptions[
           `${row.receipt.identity.repositoryId}:${row.receipt.identity.pr}`
@@ -426,6 +460,14 @@ class ProofService {
     ];
     if (!supported.includes(event)) return { ignored: true };
     this.data.events.push(id);
+    // Recorded before anything is staled, so the ledger preserves what was
+    // known at the decision point rather than what is known afterwards.
+    if (
+      event === "pull_request" &&
+      p.action === "closed" &&
+      p.pull_request?.merged === true
+    )
+      this.recordMerge(repo, repositoryId, installationId, p.pull_request);
     this.data.revisions[repo.toLowerCase()] =
       (this.data.revisions[repo.toLowerCase()] || 0) + 1;
     for (const row of Object.values(this.data.receipts))
@@ -489,6 +531,43 @@ class ProofService {
     this.save();
     return { accepted: true };
   }
+  // One immutable row per merge. A receipt bound to a different commit than
+  // the one that landed is recorded as exactly that, never as proof of it.
+  recordMerge(repo, repositoryId, installationId, pull) {
+    const mergedHeadSha = pull.head?.sha || null;
+    const rows = Object.values(this.data.receipts).filter(
+      (r) =>
+        r.receipt.identity.repositoryId === repositoryId &&
+        r.receipt.identity.pr === pull.number,
+    );
+    const bound = rows.filter(
+      (r) => r.receipt.identity.headSha === mergedHeadSha,
+    );
+    const chosen =
+      (bound.length ? bound : rows)
+        .slice()
+        .sort(
+          (a, b) =>
+            Date.parse(a.receipt.issuedAt) - Date.parse(b.receipt.issuedAt),
+        )
+        .pop() || null;
+    return ledger.record(this.store, {
+      repository: repo,
+      repositoryId,
+      pr: pull.number,
+      installationId,
+      baseRef: pull.base?.ref || null,
+      mergedAt: pull.merged_at || null,
+      mergeCommitSha: pull.merge_commit_sha || null,
+      mergedHeadSha,
+      mergedBy: actor(pull.merged_by),
+      proof: ledger.proofSnapshot(
+        chosen,
+        mergedHeadSha,
+        chosen ? this.gateFor(chosen.receipt, chosen.current) : null,
+      ),
+    });
+  }
   async drain() {
     if (this.busy || this.draining || !this.data.queue.length) return;
     this.draining = true;
@@ -513,7 +592,12 @@ class ProofService {
                   method: "PATCH",
                   body: {
                     status: "completed",
-                    conclusion: "neutral",
+                    // Under an enforcing policy a superseded proof must not
+                    // keep satisfying the required check: GitHub treats
+                    // `neutral` as a pass.
+                    conclusion: require("./policy").staleConclusion(
+                      this.policyFor(job.repositoryId),
+                    ),
                     output: {
                       title: "STALE — RE-PROOF REQUIRED",
                       summary: `Historical ${row.receipt.verdict} remains available. Relevant evidence changed; refresh is pending.`,
@@ -538,9 +622,13 @@ class ProofService {
             out.receipt,
             out.current,
             this.config.origin,
+            out.gate,
           );
-          if (Number.isSafeInteger(check?.id))
+          if (Number.isSafeInteger(check?.id)) {
             this.data.receipts[out.receipt.receiptId].checkId = check.id;
+            this.data.receipts[out.receipt.receiptId].checkOn =
+              check.publishedOn || null;
+          }
         } catch {
           this.data.receipts[out.receipt.receiptId].checkDelivery =
             "UNAVAILABLE";

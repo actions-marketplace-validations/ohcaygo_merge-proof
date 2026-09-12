@@ -52,7 +52,60 @@
     },
     "summary": {
       "type": "object",
-      "required": ["ci", "approval", "remote", "rules", "target"]
+      "required": ["ci", "approval", "remote", "rules", "target"],
+      "properties": {
+        "ci": {
+          "type": "object",
+          "properties": {
+            "selfReference": {
+              "description": "Set when the repository requires Merge Proof's own check. Recorded as out of scope for the evidence claim, never counted as evidence about the change.",
+              "oneOf": [
+                { "type": "null" },
+                {
+                  "type": "object",
+                  "required": ["context", "state"],
+                  "properties": {
+                    "context": { "type": "string" },
+                    "ruleAppId": { "type": ["integer", "null"] },
+                    "boundToThisApp": { "type": ["boolean", "null"] },
+                    "state": { "const": "SELF_CHECK_NOT_INDEPENDENT_EVIDENCE" }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "actors": {
+          "description": "Deterministic human, app and bot provenance. UNKNOWN is preserved, never inferred.",
+          "type": "object",
+          "required": ["state", "agentIdentity", "limitation"],
+          "properties": {
+            "state": { "enum": ["AVAILABLE", "UNAVAILABLE"] },
+            "agentIdentity": {
+              "enum": ["OBSERVED_APP_OR_BOT", "NONE_OBSERVED", "UNAVAILABLE"]
+            },
+            "limitation": { "type": "string" }
+          }
+        },
+        "gate": {
+          "description": "Whether Merge Proof's own check is currently required on the base branch, read from the repository's rules.",
+          "type": "object",
+          "required": ["context", "required", "readiness"],
+          "properties": {
+            "context": { "type": "string" },
+            "required": { "enum": [true, false, "UNAVAILABLE"] },
+            "boundToThisApp": { "type": ["boolean", "null"] },
+            "readiness": {
+              "type": "object",
+              "required": ["state", "blockers"],
+              "properties": {
+                "state": { "enum": ["READY", "NOT_READY", "UNAVAILABLE"] },
+                "blockers": { "type": "array" }
+              }
+            }
+          }
+        }
+      }
     },
     "local": {
       "type": "object",
@@ -81,6 +134,7 @@
         "statuses": { "$ref": "#/$defs/observation" },
         "execution": { "$ref": "#/$defs/observation" },
         "reviews": { "$ref": "#/$defs/observation" },
+        "actors": { "$ref": "#/$defs/observation" },
         "remote": { "$ref": "#/$defs/observation" },
         "rules": {
           "type": "object",

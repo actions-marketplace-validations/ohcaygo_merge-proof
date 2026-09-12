@@ -134,6 +134,8 @@ async function handle(service, req, res, url) {
           "/proof/checkout",
           "/proof/portal",
           "/proof/quantity",
+          "/proof/gate",
+          "/proof/merges",
         ].includes(url.pathname)
       ) {
         const input = raw.length
@@ -162,6 +164,9 @@ async function handle(service, req, res, url) {
               current:
                 r.current.state === "STALE" ? "STALE" : "REFRESH_REQUIRED",
               issuedAt: r.receipt.issuedAt,
+              gate: r.gate
+                ? { enforced: r.gate.enforced, conclusion: r.gate.conclusion }
+                : null,
             }));
           const client = service.clientFactory({ token });
           const pulls = await client.get(
@@ -176,10 +181,84 @@ async function handle(service, req, res, url) {
           send(200, {
             usage,
             receipts,
+            policy: require("./policy").normalize(
+              service.policyFor(repositoryId),
+            ),
+            merges: require("./ledger").list(service.store, {
+              installationId,
+              repositoryId,
+              limit: 10,
+            }),
             billingOwner,
             pulls: pulls.map((p) => ({ number: p.number, title: p.title })),
             billingAvailable: !!service.billing,
           });
+          return true;
+        }
+        // Required-merge-gate status and the repository's merge policy.
+        if (url.pathname === "/proof/gate") {
+          const setup = require("./setup");
+          const policies = require("./policy");
+          // Only a repository administrator can change whether Merge Proof
+          // blocks a merge. Repository access alone is not that authority.
+          const admin = repo.permissions?.admin === true;
+          if (req.method === "POST") {
+            assert(admin, "REPOSITORY_ADMIN_REQUIRED");
+            service.setPolicy(repositoryId, input.preset, session.userId);
+          }
+          const client = await service.appClient(installationId, repositoryId);
+          await client.authorize(repo.full_name, repositoryId);
+          const status = await setup.observe(
+            client,
+            repo.full_name,
+            repo.default_branch,
+            service.config.appId,
+          );
+          send(200, {
+            admin,
+            policy: policies.normalize(service.policyFor(repositoryId)),
+            presets: Object.values(policies.PRESETS).map((p) => ({
+              id: p.id,
+              label: p.label,
+              description: p.description,
+              enforced: p.enforced,
+            })),
+            status,
+            instructions: setup.instructions(
+              repo.full_name,
+              repo.default_branch,
+              status,
+            ),
+          });
+          return true;
+        }
+        // Durable merge evidence record. A ledger, not a dashboard.
+        if (url.pathname === "/proof/merges" && req.method === "GET") {
+          const ledger = require("./ledger");
+          const recordId = url.searchParams.get("record");
+          if (recordId) {
+            assert(/^[a-f0-9-]{36}$/.test(recordId), "NOT_FOUND");
+            send(
+              200,
+              ledger.get(service.store, recordId, {
+                installationId,
+                repositoryId,
+              }),
+            );
+            return true;
+          }
+          send(
+            200,
+            ledger.list(service.store, {
+              installationId,
+              repositoryId,
+              pr: Number(url.searchParams.get("pr")) || null,
+              verdict: url.searchParams.get("verdict") || null,
+              since: url.searchParams.get("since") || null,
+              until: url.searchParams.get("until") || null,
+              limit: url.searchParams.get("limit"),
+            }),
+          );
           return true;
         }
         if (url.pathname === "/proof/run" && req.method === "POST") {
@@ -310,7 +389,7 @@ async function handle(service, req, res, url) {
       else
         send(
           200,
-          interactive(html(out.receipt, out.current))
+          interactive(html(out.receipt, out.current, out.gate))
             .replace('src="/proof/app.js"', 'src="/proof/receipt.js"')
             .replace(
               "</main>",
@@ -334,6 +413,8 @@ async function handle(service, req, res, url) {
       "SCAN_TASTE_ALREADY_RESERVED",
       "SCAN_BUSY",
       "SCAN_REPOSITORY_MISMATCH",
+      "REPOSITORY_ADMIN_REQUIRED",
+      "UNKNOWN_POLICY",
     ];
     send(e.code === "PROOF_BUSY" ? 409 : 403, {
       error: safe.includes(e.code) ? e.code : "PROOF_UNAVAILABLE_OR_DENIED",

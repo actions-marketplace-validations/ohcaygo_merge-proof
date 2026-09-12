@@ -56,6 +56,9 @@ New routes:
 | `GET /proof/receipts/:id?format=json` | Same evidence as the human receipt |
 | `POST /proof/receipts/:id/refresh` | Re-observe evidence; preserve original verdict |
 | `POST /proof/webhook` | Verify GitHub HMAC, deduplicate delivery, stale and queue proof |
+| `GET /proof/gate` | Required-check status, merge policy, presets and guided setup |
+| `POST /proof/gate` | Set this repository's merge policy; repository admin only |
+| `GET /proof/merges` | Durable merge evidence ledger; `?record=<id>` for one full row |
 
 API clients can supply `Authorization: Bearer <GitHub user token>` to access
 private repositories. Tokens are transient and never persisted. Each read checks
@@ -105,11 +108,13 @@ Stale published checks are changed to neutral when the queued refresh can reach
 GitHub. A failed GitHub write cannot guarantee immediate check-UI invalidation;
 the receipt remains historical and the endpoint never infers currentness.
 
-The owner decides whether to require any check. **This candidate never changes
-branch protection or rulesets.** Its own check cannot serve as independent CI
-proof; making it part of the collected CI requirements produces an explicit
-self-reference gap. Treat optional publication as a receipt delivery surface,
-not as an atomic merge authorization mechanism.
+The owner decides whether to require any check. **Merge Proof never changes
+branch protection or rulesets**, and does not request the permission that would
+let it. Its own check cannot serve as independent CI proof: it is recorded as an
+explicit self-reference and excluded from the requirements the receipt must
+establish, so requiring it does not deadlock the gate. Publication is a receipt
+delivery surface bound to one commit, not an atomic merge authorization
+mechanism; see "Merge assurance" below for what an enforcing policy changes.
 
 ## What the proof means
 
@@ -171,6 +176,122 @@ remains advisory; base movement without overlap can still produce VERIFIED when
 the other exact-state evidence is sufficient. Existing protected categories and
 ignore behavior remain unchanged locally. Hosted metadata does not load customer
 ignore files. Additional repository-specific boundary configuration is not added.
+
+## Merge assurance: the required gate, and the policy behind it
+
+Merge Proof reports on every proof. Whether that report **blocks** a merge is two
+separate decisions, and both have to agree.
+
+**GitHub decides whether the check is required.** Merge Proof reads repository
+rules (Metadata read, the same two sources every proof already reads) and reports
+whether its own context is currently required on the base branch, and whether the
+rule binds it to this App. It never writes branch protection or a ruleset.
+Writing one needs Administration: write, which also grants renaming,
+transferring and deleting the repository, adding collaborators and deploy keys,
+and removing the very rule that gates the merge. An App that can switch off its
+own gate is not a gate, so this App does not request that permission. `setup.js`
+returns the exact guided steps and deep links instead.
+
+**Merge Proof decides what its check reports.** This matters because GitHub
+treats a required check concluding `neutral` or `skipped` as a **pass**. A
+report-only policy is therefore the only policy that may emit `neutral`; an
+enforcing policy emits `success` or `failure` and nothing else. A superseded
+published check is retracted to `failure` under an enforcing policy rather than
+to `neutral`, and a check run cannot be re-pointed at a new commit, so a new head
+always gets a new check run — an unreported required check leaves the pull
+request blocked with "Waiting for status to be reported".
+
+### Presets
+
+| Preset | Blocks merge | What it enforces |
+|---|---|---|
+| `ADVISORY` | never | Default for every repository, existing and new. Behavior is unchanged from before this feature existed. |
+| `REPOSITORY_REQUIREMENTS` | yes | The evidence for the requirements the repository already configures, established for the exact state being merged. A protected boundary is reported but does not block. |
+| `REPOSITORY_REQUIREMENTS_AND_BOUNDARIES` | yes | As above, and a candidate touching a protected boundary additionally needs at least two current eligible human approvals. |
+
+The policy is stored per repository ID, set only by a repository administrator,
+and recorded with who set it and when. There is no policy language: the
+requirements come from the repository's own rules.
+
+`policy.evaluate()` never changes a verdict and never hides a gap. It partitions
+the receipt's gaps into blocking and reported, and it **fails closed**: every gap
+blocks under an enforcing preset unless it appears in an explicit
+boundary-scoped set, so a gap code added later blocks by default rather than
+silently becoming advisory. A FAIL verdict, a STALE receipt and an unconfirmed
+currentness all block an enforcing gate.
+
+### Gate readiness
+
+Merge Proof will not recommend a blocking preset it cannot satisfy, and says so
+before the gate is enabled rather than after merges stop:
+
+- a branch that requires no validation has nothing to prove, so the gate would
+  block permanently;
+- a requirement outside what Merge Proof can establish (code owners, signatures,
+  linear history, conversation resolution, ALLGREEN queue grouping) would block
+  permanently. GitHub still enforces those itself; Merge Proof simply does not
+  claim them.
+
+### Merge Proof's own required check
+
+When a repository requires Merge Proof's own context, that requirement is
+satisfied by publishing the receipt, and the receipt cannot be independent
+evidence about the change it describes. It is recorded as `selfReference` and
+listed in `notChecked`, and excluded from the requirements the receipt must
+establish. It is **not** emitted as a requirement no evidence could satisfy,
+which would deadlock every gated pull request. Every other required check is
+enforced exactly as before, and a same-named context bound to a different App is
+somebody else's requirement and stays a real one.
+
+## Who or what changed this
+
+`summary.actors` records deterministic provenance from evidence already read:
+pull request author, commit author and committer accounts, commit signature
+verification, reviewers, check-publishing Apps, workflow actors, and the merging
+account. Each carries the account type GitHub returned, classified as
+`HUMAN_ACCOUNT`, `APP_OR_BOT` or `UNKNOWN`. The `[bot]` login suffix is recorded
+as corroboration only; GitHub documents it by example, not as a guarantee.
+
+`agentIdentity` is `OBSERVED_APP_OR_BOT`, `NONE_OBSERVED` or `UNAVAILABLE`, and
+covers **authorship** only — check publishers are Apps on nearly every
+repository and would otherwise make every change look agent-authored.
+
+The limit is stated on every receipt rather than filled in: GitHub records the
+account that acted, not the tool it was driven by. A coding agent run with a
+person's own credentials is recorded as that person, and no API field on a pull
+request, review or commit records the credential class. `NONE_OBSERVED`
+therefore does not establish that a person wrote the code. Git header name and
+email are unvalidated client strings and are never stored; only linked account
+identity is.
+
+## Durable merge evidence record
+
+On a merged pull request the service writes one immutable ledger row **before**
+anything is staled, so it preserves what was known at the decision point rather
+than what is known afterwards: repository, PR, merged commit, head at merge,
+merging account, the receipt that applied, its verdict, its currentness at that
+moment, the requirements observed, approvals, protected boundaries, missing
+evidence, actors, and the gate decision that was published.
+
+A row is a self-contained snapshot, so it survives receipt retention. A repeated
+delivery is ignored rather than merged into an existing row, and later evidence
+never rewrites one. When the latest receipt was produced for a different commit
+than the one that landed, the row records `PROOF_BOUND_TO_OTHER_STATE` rather
+than implying the merged state was proven; when no receipt exists it records
+`NO_PROOF_RECORDED`. The ledger is bounded at 5,000 rows and reports its own
+pruning count, so a listing never implies completeness it does not have.
+
+Retrieval is scoped to the authorized installation and repository:
+`GET /proof/merges` lists and filters (`pr`, `verdict`, `since`, `until`,
+`limit`), and `?record=<id>` returns one full row as JSON for export or agent
+consumption.
+
+## Metering is unaffected
+
+One billable unit remains `(installation ID, immutable repository ID, PR number,
+head SHA)`, deduplicated permanently. A required gate causes re-proofs on the
+same head — from check, workflow, status, review and ruleset events — and every
+one of those is zero debit. No price, allowance or top-up changed.
 
 ## Receipt, freshness and history
 

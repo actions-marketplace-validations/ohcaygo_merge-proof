@@ -2,29 +2,39 @@
 const { requirements } = require("./rules");
 const { analyzeMetadata } = require("./local-evidence");
 const { hash, randomUUID, sha } = require("./common");
-function ciEvidence(c, r) {
+function ciEvidence(c, r, options = {}) {
   const out = {
     target: c.target,
     state: "NOT_PROVEN",
     required: [],
+    selfReference: null,
     acceptedCount: 0,
     executionCount: 0,
   };
   if (r.state !== "AVAILABLE") return { ...out, reason: "RULES_UNAVAILABLE" };
-  if (!r.checks.length)
+  // A repository may require Merge Proof's own check. That requirement is
+  // satisfied by publishing this receipt, and this receipt cannot be
+  // independent evidence about the change it describes. It is therefore
+  // recorded as out of scope rather than pushed in as a requirement no
+  // evidence could ever satisfy, which would deadlock a required gate.
+  // Every other required check is still enforced exactly as before.
+  const self = require("./setup").selfRule;
+  const selfEntry = r.checks.map((rule) => self(rule, options.appId)).find(Boolean);
+  const independent = r.checks.filter((rule) => !self(rule, options.appId));
+  if (selfEntry)
+    out.selfReference = {
+      ...selfEntry,
+      state: "SELF_CHECK_NOT_INDEPENDENT_EVIDENCE",
+      note:
+        selfEntry.boundToThisApp === true
+          ? "This repository requires Merge Proof's own check, bound to this App. The requirement is this receipt; it is not counted as evidence about the change."
+          : "This repository requires a check named the same as Merge Proof's own receipt check, without binding it to a specific App. Merge Proof does not count that context as independent evidence about the change.",
+    };
+  if (!independent.length)
     return { ...out, reason: "NO_REQUIRED_VALIDATION_CONFIGURED" };
   if (c.checks.state !== "AVAILABLE" || c.statuses.state !== "AVAILABLE")
     return { ...out, reason: "CHECK_EVIDENCE_UNAVAILABLE" };
-  for (const rule of r.checks) {
-    if (rule.name === require("./check").NAME) {
-      out.required.push({
-        ...rule,
-        state: "SELF_CHECK_NOT_INDEPENDENT_EVIDENCE",
-        accepted: false,
-        executionRecorded: false,
-      });
-      continue;
-    }
+  for (const rule of independent) {
     const named = c.checks.value.filter(
       (x) =>
         x.name === rule.name && (rule.appId === null || x.appId === rule.appId),
@@ -183,11 +193,11 @@ function fingerprint(c) {
   const { startedAt, observedAt, source, consistency, ...evidence } = c;
   return hash(evidence);
 }
-function prove(c) {
+function prove(c, options = {}) {
   c = structuredClone(c);
   const local = analyzeMetadata(c),
     rules = requirements(c.rules);
-  const ci = ciEvidence(c, rules),
+  const ci = ciEvidence(c, rules, options),
     approval = approvalEvidence(c, rules);
   const gaps = [];
   if (
@@ -263,7 +273,15 @@ function prove(c) {
       meaning:
         "Current only at the recorded observation; later views must recheck evidence.",
     },
-    summary: { ci, approval, remote: c.remote, rules, target: c.target },
+    summary: {
+      ci,
+      approval,
+      remote: c.remote,
+      rules,
+      target: c.target,
+      actors: require("./actors").summarize(c),
+      gate: require("./setup").gate(c.rules, options.appId),
+    },
     gaps: [...new Set(gaps)],
     local,
     evidence: c,
@@ -273,6 +291,8 @@ function prove(c) {
       "WORKFLOW_CHECKOUT_CONTENTS",
       "SCOPE_CREEP_VS_DECLARED_SCOPE",
       "FUTURE_REMOTE_RETENTION",
+      "WHICH_TOOL_OR_MODEL_PRODUCED_THE_CODE",
+      ...(ci.selfReference ? ["MERGE_PROOF_OWN_REQUIRED_CHECK"] : []),
     ],
     next: require("./wording").next(gaps),
     limitations: [
@@ -280,6 +300,7 @@ function prove(c) {
       "GitHub observations are not an atomic transaction or a guarantee of future merge state.",
       "Job records establish GitHub-reported execution, not what source a workflow actually checked out.",
       "Remote confirmation is point-in-time ref presence, not a future retention guarantee.",
+      require("./actors").LIMITATION,
     ],
   };
 }

@@ -31,12 +31,40 @@ test("optional GitHub check reports same verdict and cannot be its own CI eviden
     "https://merge-proof.ohcaygo.com",
   );
   a.equal(call[1].body.conclusion, "neutral");
+  // Requiring Merge Proof's own check is the supported merge-gate setup. The
+  // receipt must not treat itself as evidence about the change, and must not
+  // turn that into a requirement no evidence can satisfy: that would deadlock
+  // every gated pull request. The independent requirement is still enforced.
   const c = capture();
   c.rules.classic.value.required_status_checks.checks.push({
     context: NAME,
-    app_id: 10,
+    app_id: 77,
   });
-  a.equal(prove(c).verdict, "NOT_PROVEN");
+  const gated = prove(c, { appId: 77 });
+  a.equal(gated.verdict, "VERIFIED");
+  a.equal(gated.summary.ci.selfReference.boundToThisApp, true);
+  a.ok(!gated.summary.ci.required.some((x) => x.name === NAME));
+  a.ok(gated.notChecked.includes("MERGE_PROOF_OWN_REQUIRED_CHECK"));
+  a.equal(gated.summary.gate.required, true);
+
+  const failing = capture();
+  failing.rules.classic.value.required_status_checks.checks.push({
+    context: NAME,
+    app_id: 77,
+  });
+  failing.checks.value[0].conclusion = "failure";
+  a.equal(prove(failing, { appId: 77 }).verdict, "NOT_PROVEN");
+
+  // A different App publishing a check with the same name is somebody else's
+  // requirement, not ours, and stays a real requirement.
+  const other = capture();
+  other.rules.classic.value.required_status_checks.checks.push({
+    context: NAME,
+    app_id: 999,
+  });
+  const foreign = prove(other, { appId: 77 });
+  a.equal(foreign.verdict, "NOT_PROVEN");
+  a.equal(foreign.summary.ci.selfReference, null);
 });
 test("Pages forwards proof receipts and raw App webhook signature using existing proxy boundary", async (t) => {
   const worker = (await import("../../factory/deploy/pages-worker.mjs"))

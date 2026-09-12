@@ -13,6 +13,72 @@ const commitMeta = (c) => ({
   parents: (c.parents || []).map((p) => p.sha),
   date: c.commit?.committer?.date || null,
 });
+// The linked GitHub account and its declared type. Nothing free-text: commit
+// author name/email, review bodies and commit messages stay uncollected.
+const account = (u) =>
+  u && Number.isSafeInteger(u.id) && typeof u.login === "string"
+    ? { id: u.id, login: u.login, type: typeof u.type === "string" ? u.type : null }
+    : null;
+// The two rule sources, projected to parameters only. Shared by proof
+// collection and by the read-only merge-gate status check, so both see exactly
+// the same requirements.
+async function collectRules(client, repo, baseRef, branchProtected) {
+  const root = `/repos/${repo}`;
+  return {
+    classic: await client.observe(async () => {
+      try {
+        const c = await client.get(
+          `${root}/branches/${encodeURIComponent(baseRef)}/protection`,
+        );
+        return {
+          required_signatures: c.required_signatures
+            ? { enabled: c.required_signatures.enabled }
+            : null,
+          required_linear_history: c.required_linear_history
+            ? { enabled: c.required_linear_history.enabled }
+            : null,
+          required_status_checks: c.required_status_checks
+            ? {
+                strict: c.required_status_checks.strict,
+                contexts: c.required_status_checks.contexts || [],
+                checks: (c.required_status_checks.checks || []).map((x) => ({
+                  context: x.context,
+                  app_id: x.app_id,
+                })),
+              }
+            : null,
+          required_pull_request_reviews: c.required_pull_request_reviews
+            ? Object.fromEntries(
+                [
+                  "required_approving_review_count",
+                  "dismiss_stale_reviews",
+                  "require_code_owner_reviews",
+                  "require_last_push_approval",
+                ].map((k) => [k, c.required_pull_request_reviews[k] ?? false]),
+              )
+            : null,
+          required_conversation_resolution: c.required_conversation_resolution
+            ? { enabled: c.required_conversation_resolution.enabled }
+            : null,
+        };
+      } catch (e) {
+        // A protected branch can return 404 for denied access. Do not infer absence.
+        if (e.status === 404 && branchProtected === false) return null;
+        throw e;
+      }
+    }),
+    active: await client.observe(async () =>
+      (
+        await client.list(`${root}/rules/branches/${encodeURIComponent(baseRef)}`)
+      ).map((r) => ({
+        type: r.type,
+        ruleset_id: r.ruleset_id,
+        ruleset_source_type: r.ruleset_source_type,
+        parameters: r.parameters || null,
+      })),
+    ),
+  };
+}
 async function identity(client, repo, pr) {
   const root = `/repos/${repo}`;
   const r = await client.get(root),
@@ -49,6 +115,10 @@ async function identity(client, repo, pr) {
     merged: p.merged === true,
     mergeCommitSha: p.merge_commit_sha,
     authorId: p.user?.id,
+    // Account identity only. Git header name/email are unvalidated client
+    // strings and are never stored.
+    author: account(p.user),
+    mergedBy: account(p.merged_by),
     githubMergeable: p.mergeable ?? "UNKNOWN",
     githubMergeState: p.mergeable_state || "UNKNOWN",
   };
@@ -78,62 +148,7 @@ async function collectOnce(
     i.observedCurrentBaseSha = i.baseSha;
     i.baseSha = landed.parents[0];
   }
-  const rules = {
-    classic: await client.observe(async () => {
-      try {
-        const c = await client.get(
-          `${root}/branches/${encodeURIComponent(i.baseRef)}/protection`,
-        );
-        return {
-          required_signatures: c.required_signatures
-            ? { enabled: c.required_signatures.enabled }
-            : null,
-          required_linear_history: c.required_linear_history
-            ? { enabled: c.required_linear_history.enabled }
-            : null,
-          required_status_checks: c.required_status_checks
-            ? {
-                strict: c.required_status_checks.strict,
-                contexts: c.required_status_checks.contexts || [],
-                checks: (c.required_status_checks.checks || []).map((x) => ({
-                  context: x.context,
-                  app_id: x.app_id,
-                })),
-              }
-            : null,
-          required_pull_request_reviews: c.required_pull_request_reviews
-            ? Object.fromEntries(
-                [
-                  "required_approving_review_count",
-                  "dismiss_stale_reviews",
-                  "require_code_owner_reviews",
-                  "require_last_push_approval",
-                ].map((k) => [k, c.required_pull_request_reviews[k] ?? false]),
-              )
-            : null,
-          required_conversation_resolution: c.required_conversation_resolution
-            ? { enabled: c.required_conversation_resolution.enabled }
-            : null,
-        };
-      } catch (e) {
-        // A protected branch can return 404 for denied access. Do not infer absence.
-        if (e.status === 404 && i.branchProtected === false) return null;
-        throw e;
-      }
-    }),
-    active: await client.observe(async () =>
-      (
-        await client.list(
-          `${root}/rules/branches/${encodeURIComponent(i.baseRef)}`,
-        )
-      ).map((r) => ({
-        type: r.type,
-        ruleset_id: r.ruleset_id,
-        ruleset_source_type: r.ruleset_source_type,
-        parameters: r.parameters || null,
-      })),
-    ),
-  };
+  const rules = await collectRules(client, repo, i.baseRef, i.branchProtected);
   const req = requirements(rules);
   const git = await client.observe(async () => {
     const d = await client.get(
@@ -331,6 +346,7 @@ async function collectOnce(
           id: c.id,
           name: c.name,
           appId: c.app.id,
+          appSlug: typeof c.app.slug === "string" ? c.app.slug : null,
           sha: c.head_sha,
           status: c.status,
           conclusion: c.conclusion,
@@ -388,6 +404,9 @@ async function collectOnce(
           workflowId: r.workflow_id,
           attempt: r.run_attempt,
           runSha: r.head_sha,
+          // actor started the run; triggeringActor started the latest attempt.
+          actor: account(r.actor),
+          triggeringActor: account(r.triggering_actor),
           jobId: j.id,
           checkId: Number.isSafeInteger(checkId) ? checkId : null,
           sha: j.head_sha,
@@ -447,6 +466,24 @@ async function collectOnce(
     }
     return out.sort((a, b) => a.id - b.id);
   });
+  // Who and what GitHub records as having produced this change. One bounded
+  // page; a longer branch is marked truncated rather than silently cut.
+  const actors = await client.observe(async () => {
+    const rows = await client.get(`${root}/pulls/${pr}/commits?per_page=100`);
+    assert(Array.isArray(rows), "COMMIT_ACTORS_UNAVAILABLE");
+    return {
+      author: i.author,
+      mergedBy: i.mergedBy,
+      truncated: rows.length >= 100,
+      commits: rows.map((c) => ({
+        sha: c.sha,
+        author: account(c.author),
+        committer: account(c.committer),
+        verified: c.commit?.verification?.verified === true,
+        verificationReason: c.commit?.verification?.reason || null,
+      })),
+    };
+  });
   return {
     identity: i,
     rules,
@@ -457,6 +494,7 @@ async function collectOnce(
     statuses,
     execution,
     reviews,
+    actors,
   };
 }
 async function collect(client, repo, pr, options) {
@@ -474,4 +512,4 @@ async function collect(client, repo, pr, options) {
         : "CHANGED_DURING_COLLECTION",
   };
 }
-module.exports = { collect, collectOnce, identity };
+module.exports = { collect, collectOnce, identity, collectRules };

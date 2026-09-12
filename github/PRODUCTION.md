@@ -31,6 +31,38 @@ Subscribe to pull_request, pull_request_review, check_run, check_suite, status, 
 
 User tokens stay in process memory for at most one hour and expire on restart. Customers reconnect through GitHub; no pasted PAT or per-customer owner configuration is required. Each repository/receipt request rechecks the user/App/installation repository intersection. Uninstall, suspended installation, removed repository or revoked user access denies retrieval. Saved CURRENT observations display refresh-required until freshly checked. Historical receipt bodies remain immutable.
 
+## Merge gate operations
+
+Every repository defaults to the report-only policy, including every repository
+already installed. A blocking policy is per repository, opt-in, and settable only
+by a GitHub repository administrator; the account owner's billing authority is a
+different question and is not reused here. No existing customer's merges change
+because this shipped.
+
+Requiring the check is the repository owner's action inside GitHub. Merge Proof
+does not request Administration: write and will not edit a ruleset or branch
+protection: that permission also grants repository deletion, transfer,
+collaborator changes and deploy keys, and would let the App remove the rule that
+gates it. `GET /proof/gate` reports whether the check is currently required,
+whether the rule binds it to this App, whether the branch is ready for a blocking
+gate, and the exact steps and deep links to set it up.
+
+Operationally significant: GitHub treats a required check concluding `neutral`
+or `skipped` as a pass. Under a blocking policy Merge Proof emits only `success`
+or `failure`, and retracts a superseded check to `failure`. If a rollback ever
+re-enables code that emits `neutral` while a customer ruleset requires this
+check, that customer's gate silently stops blocking - treat a rollback across
+this change as a gate-affecting change and tell affected repositories.
+
+Merge records accumulate in the same fsynced snapshot, bounded at 5,000 rows with
+an explicit pruning count. Include ledger size in capacity inspection alongside
+receipts, queue depth and delivery IDs. Never delete merge records during
+recovery: they are the evidence of what was known at past merge decisions.
+
+Metering is unchanged. A blocking gate produces more re-proofs on the same head,
+and those are zero debit under the existing permanent `(installation, repository,
+PR, head SHA)` deduplication. No price, allowance, top-up or SKU changed.
+
 ## Billing rule
 
 Paying account is the immutable GitHub installation-owner ID; installations belonging to that account share its ledger. Human GitHub IDs from covered PR-open or push events count once across those installations. Bots are excluded. Configured known service IDs are excluded; ambiguous bot-to-human attribution is never invented. Initial checkout displays observed human activity from the preceding 30 days. Subsequent counts use the subscription month. No inactive organization member is imported as a seat.

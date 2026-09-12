@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "receiptId": "d5be3355-744a-4e42-bbb2-23ccc58c603a",
+  "receiptId": "be361356-c186-4411-b742-66bb6f81967c",
   "tool": {
     "name": "merge-proof",
     "version": "0.1.0"
@@ -25,10 +25,16 @@
     "merged": false,
     "mergeCommitSha": "cccccccccccccccccccccccccccccccccccccccc",
     "authorId": 1,
+    "author": {
+      "id": 1,
+      "login": "author",
+      "type": "User"
+    },
+    "mergedBy": null,
     "githubMergeable": true,
     "githubMergeState": "clean"
   },
-  "fingerprint": "7fbd2885fdf29c53cbe84a264aa282b157d9b3742a55a557e6fe57741633ce16",
+  "fingerprint": "f0963a26f8e886072ee04fbf400ae805efb05c8b5c8182f2d406d7c9e8b23e79",
   "freshness": {
     "state": "CURRENT",
     "asOf": "2026-09-10T12:00:00Z",
@@ -62,6 +68,16 @@
               "workflowId": 30,
               "attempt": 1,
               "runSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": {
+                "id": 1,
+                "login": "author",
+                "type": "User"
+              },
+              "triggeringActor": {
+                "id": 1,
+                "login": "author",
+                "type": "User"
+              },
               "jobId": 40,
               "checkId": 10,
               "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
@@ -84,6 +100,7 @@
             "id": 10,
             "name": "test",
             "appId": 10,
+            "appSlug": "ci",
             "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
             "status": "completed",
             "conclusion": "skipped",
@@ -94,6 +111,7 @@
           "observedStatus": null
         }
       ],
+      "selfReference": null,
       "acceptedCount": 1,
       "executionCount": 0
     },
@@ -150,6 +168,94 @@
         "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
       }
+    },
+    "actors": {
+      "state": "AVAILABLE",
+      "prAuthor": {
+        "id": 1,
+        "login": "author",
+        "type": "User",
+        "kind": "HUMAN_ACCOUNT",
+        "botLoginSuffix": false
+      },
+      "mergedBy": null,
+      "commitAuthors": [
+        {
+          "id": 1,
+          "login": "author",
+          "type": "User",
+          "kind": "HUMAN_ACCOUNT",
+          "botLoginSuffix": false
+        }
+      ],
+      "commitCommitters": [
+        {
+          "id": 1,
+          "login": "author",
+          "type": "User",
+          "kind": "HUMAN_ACCOUNT",
+          "botLoginSuffix": false
+        }
+      ],
+      "commitsObserved": 1,
+      "commitsTruncated": false,
+      "signedCommits": 0,
+      "reviewers": [
+        {
+          "id": 2,
+          "login": "reviewer",
+          "type": "User",
+          "kind": "HUMAN_ACCOUNT",
+          "botLoginSuffix": false
+        }
+      ],
+      "checkPublishers": [
+        {
+          "appId": 10,
+          "slug": "ci",
+          "kind": "APP"
+        }
+      ],
+      "workflowActors": [
+        {
+          "id": 1,
+          "login": "author",
+          "type": "User",
+          "kind": "HUMAN_ACCOUNT",
+          "botLoginSuffix": false
+        }
+      ],
+      "authorship": [
+        {
+          "id": 1,
+          "login": "author",
+          "type": "User",
+          "kind": "HUMAN_ACCOUNT",
+          "botLoginSuffix": false
+        }
+      ],
+      "nonHumanAuthorship": [],
+      "agentIdentity": "NONE_OBSERVED",
+      "limitation": "GitHub records the account that acted, not the tool it was driven by. A coding agent run with a person's own credentials is recorded as that person; only an agent acting as its own GitHub App or bot account is separately identifiable here."
+    },
+    "gate": {
+      "context": "Merge Proof exact-state receipt",
+      "appId": null,
+      "required": false,
+      "boundToThisApp": null,
+      "independentRequiredChecks": 1,
+      "requiredChecks": [
+        {
+          "name": "test",
+          "appId": 10
+        }
+      ],
+      "approvalsRequired": 1,
+      "readiness": {
+        "state": "READY",
+        "blockers": []
+      },
+      "unsupported": []
     }
   },
   "gaps": [
@@ -239,6 +345,12 @@
       "merged": false,
       "mergeCommitSha": "cccccccccccccccccccccccccccccccccccccccc",
       "authorId": 1,
+      "author": {
+        "id": 1,
+        "login": "author",
+        "type": "User"
+      },
+      "mergedBy": null,
       "githubMergeable": true,
       "githubMergeState": "clean"
     },
@@ -309,6 +421,7 @@
           "id": 10,
           "name": "test",
           "appId": 10,
+          "appSlug": "ci",
           "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
           "status": "completed",
           "conclusion": "skipped",
@@ -330,6 +443,16 @@
           "workflowId": 30,
           "attempt": 1,
           "runSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "actor": {
+            "id": 1,
+            "login": "author",
+            "type": "User"
+          },
+          "triggeringActor": {
+            "id": 1,
+            "login": "author",
+            "type": "User"
+          },
           "jobId": 40,
           "checkId": 10,
           "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
@@ -366,6 +489,35 @@
           }
         }
       ]
+    },
+    "actors": {
+      "state": "AVAILABLE",
+      "value": {
+        "author": {
+          "id": 1,
+          "login": "author",
+          "type": "User"
+        },
+        "mergedBy": null,
+        "truncated": false,
+        "commits": [
+          {
+            "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "author": {
+              "id": 1,
+              "login": "author",
+              "type": "User"
+            },
+            "committer": {
+              "id": 1,
+              "login": "author",
+              "type": "User"
+            },
+            "verified": false,
+            "verificationReason": "unsigned"
+          }
+        ]
+      }
     }
   },
   "notChecked": [
@@ -373,14 +525,16 @@
     "SECURITY",
     "WORKFLOW_CHECKOUT_CONTENTS",
     "SCOPE_CREEP_VS_DECLARED_SCOPE",
-    "FUTURE_REMOTE_RETENTION"
+    "FUTURE_REMOTE_RETENTION",
+    "WHICH_TOOL_OR_MODEL_PRODUCED_THE_CODE"
   ],
   "next": "Run the required validation against the applicable current state, then re-run proof.",
   "limitations": [
     "VERIFIED covers only these evidence claims; it does not establish bug-free, secure or production-safe code.",
     "GitHub observations are not an atomic transaction or a guarantee of future merge state.",
     "Job records establish GitHub-reported execution, not what source a workflow actually checked out.",
-    "Remote confirmation is point-in-time ref presence, not a future retention guarantee."
+    "Remote confirmation is point-in-time ref presence, not a future retention guarantee.",
+    "GitHub records the account that acted, not the tool it was driven by. A coding agent run with a person's own credentials is recorded as that person; only an agent acting as its own GitHub App or bot account is separately identifiable here."
   ],
   "example": "SYNTHETIC_FIXTURE_NOT_CUSTOMER_EVIDENCE"
 }

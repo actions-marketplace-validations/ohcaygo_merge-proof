@@ -28,6 +28,8 @@ function capture() {
       merged: false,
       mergeCommitSha: M,
       authorId: 1,
+      author: { id: 1, login: "author", type: "User" },
+      mergedBy: null,
       githubMergeable: true,
       githubMergeState: "clean",
     },
@@ -71,6 +73,7 @@ function capture() {
         id: 10,
         name: "test",
         appId: 10,
+        appSlug: "ci",
         sha: H,
         status: "completed",
         conclusion: "success",
@@ -86,6 +89,8 @@ function capture() {
         workflowId: 30,
         attempt: 1,
         runSha: H,
+        actor: { id: 1, login: "author", type: "User" },
+        triggeringActor: { id: 1, login: "author", type: "User" },
         jobId: 40,
         checkId: 10,
         sha: H,
@@ -116,6 +121,20 @@ function capture() {
         writePermission: A(true),
       },
     ]),
+    actors: A({
+      author: { id: 1, login: "author", type: "User" },
+      mergedBy: null,
+      truncated: false,
+      commits: [
+        {
+          sha: H,
+          author: { id: 1, login: "author", type: "User" },
+          committer: { id: 1, login: "author", type: "User" },
+          verified: false,
+          verificationReason: "unsigned",
+        },
+      ],
+    }),
   };
 }
 // Real REST response shapes passed through the actual streaming Client and collector.
@@ -146,7 +165,8 @@ function fixtureFetch({
         state: "open",
         merged: false,
         merge_commit_sha: M,
-        user: { id: 1 },
+        user: { id: 1, login: "author", type: "User" },
+        merged_by: null,
         mergeable: true,
         mergeable_state: "clean",
       };
@@ -194,7 +214,7 @@ function fixtureFetch({
           {
             id: 10,
             name: "test",
-            app: { id: 10 },
+            app: { id: 10, slug: "ci" },
             head_sha: head,
             status: "completed",
             conclusion: "success",
@@ -217,6 +237,8 @@ function fixtureFetch({
             head_sha: head,
             status: "completed",
             conclusion: "success",
+            actor: { id: 1, login: "author", type: "User" },
+            triggering_actor: { id: 1, login: "author", type: "User" },
           },
         ],
       };
@@ -243,6 +265,20 @@ function fixtureFetch({
           },
         ],
       };
+    else if (p === "/repos/fixture/public/pulls")
+      v = [{ number: 1, title: "Fixture pull request" }];
+    else if (p.endsWith("/pulls/1/commits"))
+      v = [
+        {
+          sha: head,
+          author: { id: 1, login: "author", type: "User" },
+          committer: { id: 1, login: "author", type: "User" },
+          commit: {
+            message: "DO NOT STORE",
+            verification: { verified: false, reason: "unsigned" },
+          },
+        },
+      ];
     else if (p.endsWith("/pulls/1/reviews"))
       v = [
         {

@@ -15,7 +15,8 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "mp-customer-")),
     store = new Store(root);
   let removed = false,
-    privateRepo = false;
+    privateRepo = false,
+    repositoryAdmin = false;
   const service = new ProofService({
     store,
     config: {
@@ -51,7 +52,14 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
                 }
               : {
                   total_count: 1,
-                  repositories: [{ id: 1, full_name: "fixture/public" }],
+                  repositories: [
+                    {
+                      id: 1,
+                      full_name: "fixture/public",
+                      default_branch: "main",
+                      permissions: { admin: repositoryAdmin },
+                    },
+                  ],
                 };
       return new Response(JSON.stringify(data));
     },
@@ -118,8 +126,106 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
   service.scanBusy = false;
   a.equal((await (await request("/proof/scan/cancel", {installation: 2, repository: 1})).json()).error,
     "SCAN_REPOSITORY_MISMATCH");
+  // Merge gate: status is readable by anyone with repository access, but only
+  // a repository administrator may change whether Merge Proof blocks a merge.
+  const gate = await (
+    await request("/proof/gate?installation=2&repository=1")
+  ).json();
+  a.equal(gate.admin, false);
+  a.equal(gate.policy.preset, "ADVISORY");
+  a.equal(gate.policy.enforced, false);
+  a.equal(gate.status.branch, "main");
+  a.equal(gate.status.required, false);
+  a.equal(gate.status.readiness.state, "READY");
+  a.ok(gate.presets.some((p) => p.id === "REPOSITORY_REQUIREMENTS"));
+  a.match(gate.instructions.steps.join(" "), /settings\/rules/);
+  a.equal(
+    (
+      await (
+        await request("/proof/gate", {
+          installation: 2,
+          repository: 1,
+          preset: "REPOSITORY_REQUIREMENTS",
+        })
+      ).json()
+    ).error,
+    "REPOSITORY_ADMIN_REQUIRED",
+  );
+  a.equal(service.policyFor(1), null);
+  repositoryAdmin = true;
+  const saved = await (
+    await request("/proof/gate", {
+      installation: 2,
+      repository: 1,
+      preset: "REPOSITORY_REQUIREMENTS",
+    })
+  ).json();
+  a.equal(saved.admin, true);
+  a.equal(saved.policy.preset, "REPOSITORY_REQUIREMENTS");
+  a.equal(service.policyFor(1).setByUserId, 9);
+  a.equal(
+    (
+      await (
+        await request("/proof/gate", {
+          installation: 2,
+          repository: 1,
+          preset: "NOT_A_PRESET",
+        })
+      ).json()
+    ).error,
+    "UNKNOWN_POLICY",
+  );
+
+  // Merge ledger: scoped to the authorized repository, denied otherwise.
+  service.recordMerge("fixture/public", 1, 2, {
+    number: 1,
+    merged_at: "2026-09-11T10:00:00Z",
+    merge_commit_sha: "c".repeat(40),
+    head: { sha: "a".repeat(40) },
+    base: { ref: "main" },
+    merged_by: { id: 9, login: "owner", type: "User" },
+  });
+  const merges = await (
+    await request("/proof/merges?installation=2&repository=1")
+  ).json();
+  a.equal(merges.total, 1);
+  a.equal(merges.records[0].mergedBy, "owner");
+  a.match(merges.completeness, /pruned/);
+  const one = await (
+    await request(
+      "/proof/merges?installation=2&repository=1&record=" +
+        merges.records[0].recordId,
+    )
+  ).json();
+  a.equal(one.pr, 1);
+  a.equal(
+    (await request("/proof/merges?installation=2&repository=999")).status,
+    403,
+  );
+  a.equal(
+    (await request("/proof/merges?installation=2&repository=1&record=nope"))
+      .status,
+    403,
+  );
+  const account = await (
+    await request("/proof/account?installation=2&repository=1")
+  ).json();
+  a.equal(account.policy.preset, "REPOSITORY_REQUIREMENTS");
+  a.equal(account.merges.total, 1);
+
   a.equal((await request("/proof/logout", {})).status, 200);
   a.equal((await request(out.url)).status, 403);
+  // Signed out, the new surfaces are denied like every other authorized read.
+  a.equal(
+    (await request("/proof/gate?installation=2&repository=1", null, false))
+      .status,
+    403,
+  );
+  a.equal(
+    (await request("/proof/merges?installation=2&repository=1", null, false))
+      .status,
+    403,
+  );
 });
 test("OAuth state is cookie-bound, expires, and cannot be replayed", async () => {
   const service = {
