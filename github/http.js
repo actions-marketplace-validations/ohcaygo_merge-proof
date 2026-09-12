@@ -204,7 +204,6 @@ async function handle(service, req, res, url) {
           const admin = repo.permissions?.admin === true;
           if (req.method === "POST") {
             assert(admin, "REPOSITORY_ADMIN_REQUIRED");
-            service.setPolicy(repositoryId, input.preset, session.userId);
           }
           const client = await service.appClient(installationId, repositoryId);
           await client.authorize(repo.full_name, repositoryId);
@@ -214,6 +213,12 @@ async function handle(service, req, res, url) {
             repo.default_branch,
             service.config.appId,
           );
+          if (req.method === "POST") {
+            const chosen = policies.select(input.preset);
+            assert(!chosen.enforced || status.readiness.state === "READY", "GATE_NOT_READY");
+            service.setPolicy(repositoryId, input.preset, session.userId);
+            await service.retractChecks(client, repositoryId);
+          }
           send(200, {
             admin,
             policy: policies.normalize(service.policyFor(repositoryId)),
@@ -415,6 +420,8 @@ async function handle(service, req, res, url) {
       "SCAN_REPOSITORY_MISMATCH",
       "REPOSITORY_ADMIN_REQUIRED",
       "UNKNOWN_POLICY",
+      "GATE_NOT_READY",
+      "CHECK_RECONCILIATION_PENDING",
     ];
     send(e.code === "PROOF_BUSY" ? 409 : 403, {
       error: safe.includes(e.code) ? e.code : "PROOF_UNAVAILABLE_OR_DENIED",

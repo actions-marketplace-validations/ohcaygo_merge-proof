@@ -1,7 +1,7 @@
 "use strict";
 // Required-merge-gate detection and guided setup.
 //
-// Merge Proof reads repository rules (Metadata: read, already collected for
+// Merge Proof reads repository rules (Administration: read, already collected for
 // every proof) and reports whether its own check is currently required. It
 // never writes branch protection or a ruleset. Writing a ruleset requires
 // Administration: write, which also grants renaming, transferring and deleting
@@ -38,7 +38,7 @@ const describeUnsupported = (code) =>
 function selfRule(rule, appId) {
   if (rule.name !== NAME) return null;
   const known = Number.isSafeInteger(appId) && appId > 0;
-  if (rule.appId !== null && known && rule.appId !== appId) return null;
+  if (rule.appId !== null && (!known || rule.appId !== appId)) return null;
   return {
     context: rule.name,
     ruleAppId: rule.appId,
@@ -82,12 +82,15 @@ function gate(rules, appId = null) {
       doNext:
         "Make at least one of your existing checks required on this branch first. Merge Proof then proves whether that check actually ran against the exact code being merged.",
     });
-  for (const code of req.unsupported)
+  const unsupported = [...req.unsupported,
+    ...(req.codeOwners ? ["CODE_OWNER_APPROVAL_UNAVAILABLE"] : []),
+    ...(req.lastPush ? ["LAST_PUSH_ACTOR_APPROVAL_UNAVAILABLE"] : [])];
+  for (const code of unsupported)
     blockers.push({
       code,
       plain: describeUnsupported(code),
       doNext:
-        "Requiring Merge Proof would block merges on this branch until this requirement is removed or Merge Proof supports it.",
+        "Requiring Merge Proof would block merges on this branch. Keep the existing protection and use report-only mode until Merge Proof supports this requirement.",
     });
 
   return {
@@ -102,7 +105,7 @@ function gate(rules, appId = null) {
       state: blockers.length ? "NOT_READY" : "READY",
       blockers,
     },
-    unsupported: req.unsupported,
+    unsupported,
   };
 }
 

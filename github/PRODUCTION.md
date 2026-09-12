@@ -27,7 +27,7 @@ Homepage: `https://merge-proof.ohcaygo.com`. Callback: `/proof/callback`. Setup:
 
 Repository read permissions: Actions (execution evidence), Administration (protection/rules and reviewer permission), Commit statuses, Contents (Git identity/history), Pull requests, and mandatory Metadata. Checks is read/write solely for receipt Check publication. Organization Members read permits verifying that the signed-in billing user is an organization owner; it is not used to bill every member. No contents write, secrets, workflow write, or organization administration access.
 
-Subscribe to pull_request, pull_request_review, check_run, check_suite, status, workflow_run, push, repository_ruleset, branch_protection_rule and repository. Installation lifecycle and selected-repository events are handled separately. Merge-group evidence support is retained; a production merge-queue acceptance is not claimed.
+Subscribe to pull_request, pull_request_review, check_run, check_suite, status, workflow_run, push, merge_group, repository_ruleset, branch_protection_rule and repository. Installation lifecycle and selected-repository events are handled separately. Merge-group evidence support is retained; a production merge-queue acceptance is not claimed.
 
 User tokens stay in process memory for at most one hour and expire on restart. Customers reconnect through GitHub; no pasted PAT or per-customer owner configuration is required. Each repository/receipt request rechecks the user/App/installation repository intersection. Uninstall, suspended installation, removed repository or revoked user access denies retrieval. Saved CURRENT observations display refresh-required until freshly checked. Historical receipt bodies remain immutable.
 
@@ -76,3 +76,31 @@ The free historical scan has a separate one-time reservation against the account
 Support: support@ohcaygo.com. Operational inspection should report queue depth, exhausted/failed refreshes, `billingHealth`, scan retry state, and disk capacity without copying receipts, tokens or private repository identities into public logs. Existing bounds still apply; capacity exhaustion must be resolved before onboarding additional customers. No production privacy certification, deletion SLA or real payment acceptance is asserted.
 
 Primary implementation references: [GitHub App user authorization](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app), [Stripe subscription webhooks](https://docs.stripe.com/billing/subscriptions/webhooks), [Stripe subscription object](https://docs.stripe.com/api/subscriptions/object).
+
+## Assurance candidate migration and activation
+
+Adding publisher and workflow actor observations changes evidence fingerprints.
+Existing receipts can become STALE on their first refresh after this upgrade;
+that is expected conservative invalidation. Historical receipt bodies remain
+unchanged, and a same-head re-proof has no additional debit.
+
+Policy activation first checks branch readiness, then invalidates stored receipts,
+retracts their published checks and queues re-proof. If an enforcing check update
+fails, activation reports CHECK_RECONCILIATION_PENDING and retries; do not rely
+on the gate until publication is established. Existing report-only installations
+remain report-only. Code-owner and last-push approval requirements are currently
+explicit unsupported evidence; keep those protections and use report-only mode.
+
+Publication persists each returned check ID before posting another commit, and
+immediately retracts that receipt if a signed event arrives during publication.
+External API failures and events not yet received still prevent atomic guarantees
+about GitHub's merge decision. The ledger states this limit explicitly.
+
+A merge-queue acceptance additionally needs the App's merge_group subscription,
+queue-capable repository settings and compatible CI triggers. The September 12
+read-only inspection found the production App did not subscribe to merge_group;
+no production queue acceptance is claimed. The candidate must not be deployed
+until the owner-authorized live gate/queue acceptance passes.
+
+GitHub mechanics: [required status check conclusions](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks)
+and [merge-group target SHA](https://github.blog/changelog/2022-08-18-merge-group-webhook-event-and-github-actions-workflow-trigger/).

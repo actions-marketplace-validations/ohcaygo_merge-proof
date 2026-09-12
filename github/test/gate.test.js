@@ -331,7 +331,7 @@ test("a requirement Merge Proof cannot establish is declared before it is enable
   const c = capture();
   c.rules.classic.value.required_pull_request_reviews.require_code_owner_reviews = true;
   const status = setup.gate(c.rules, 42);
-  a.equal(status.readiness.state, "READY");
+  a.equal(status.readiness.state, "NOT_READY");
   const withSignatures = capture();
   withSignatures.rules.classic.value.required_signatures = { enabled: true };
   const blocked = setup.gate(withSignatures.rules, 42);
@@ -408,8 +408,9 @@ test("the stricter boundary preset is satisfied by a second current approval", (
   });
   a.equal(strict.boundaryEscalation.observed, 2);
   a.ok(!strict.blocking.includes("PROTECTED_BOUNDARY_APPROVAL_REQUIRED"));
-  // The boundary itself still blocks under this preset.
-  a.ok(strict.blocking.includes("PROTECTED_BOUNDARY"));
+  a.equal(strict.conclusion, "success");
+  a.ok(strict.reported.includes("PROTECTED_BOUNDARY"));
+  a.equal(receipt.verdict, "NOT_PROVEN");
   // A change that touches no boundary is unaffected by the stricter preset.
   const clean = policy.evaluate(prove(capture()), { state: "CURRENT" }, {
     preset: "REPOSITORY_REQUIREMENTS_AND_BOUNDARIES",
@@ -560,7 +561,7 @@ test("a completed merge is preserved immutably with what was known at the time",
         number: 1,
         state: "closed",
         merged: true,
-        merged_at: "2026-09-11T10:00:00Z",
+        merged_at: new Date().toISOString(),
         merge_commit_sha: "f".repeat(40),
         head: { sha: H },
         base: { ref: "main" },
@@ -575,10 +576,12 @@ test("a completed merge is preserved immutably with what was known at the time",
     repositoryId: 1,
   });
   a.equal(row.proof.verdict, "VERIFIED");
-  a.equal(row.proof.boundToMergedState, true);
+  a.equal(row.proof.boundToMergedState, false);
+  a.equal(row.proof.state, "PROOF_BOUND_TO_PR_HEAD_ONLY");
   // The currentness recorded is the one held at the decision point, not the
   // STALE state the merge event itself then applied.
-  a.equal(row.proof.currentnessAtMerge.state, "CURRENT");
+  a.equal(row.proof.currentnessAtMerge.state, "UNAVAILABLE");
+  a.equal(row.proof.currentnessAtDelivery.state, "CURRENT");
   a.equal(row.mergedBy.login, "maintainer");
   a.equal(row.mergedBy.kind, "HUMAN_ACCOUNT");
   a.equal(row.proof.gate.enforced, true);
@@ -599,7 +602,7 @@ test("a completed merge is preserved immutably with what was known at the time",
         number: 1,
         state: "closed",
         merged: true,
-        merged_at: "2026-09-11T10:00:00Z",
+        merged_at: new Date().toISOString(),
         merge_commit_sha: "f".repeat(40),
         head: { sha: H },
         base: { ref: "main" },
@@ -630,7 +633,7 @@ test("a merge of a commit no receipt covers is recorded as exactly that", async 
         number: 1,
         state: "closed",
         merged: true,
-        merged_at: "2026-09-11T10:00:00Z",
+        merged_at: new Date().toISOString(),
         merge_commit_sha: "f".repeat(40),
         head: { sha: OLD },
         base: { ref: "main" },
@@ -653,7 +656,7 @@ test("a merge with no proof at all is recorded without inventing one", (t) => {
   const h = harness(t);
   h.service.recordMerge("fixture/public", 1, 2, {
     number: 9,
-    merged_at: "2026-09-11T10:00:00Z",
+    merged_at: new Date().toISOString(),
     merge_commit_sha: "a".repeat(40),
     head: { sha: OLD },
     base: { ref: "main" },
@@ -806,4 +809,86 @@ test("a store snapshot missing the new keys boots without losing anything", (t) 
   a.equal(policy.normalize(service.policyFor(1)).enforced, false);
   a.deepEqual(ledger.list(store, { installationId: 2, repositoryId: 1 }).records, []);
   a.equal(store.data.github.merges.pruned, 0);
+});
+
+test("policy activation invalidates and queues existing checks without another event", async t => {
+  const h = harness(t);
+  await h.service.webhook(...hook()); await h.service.drain();
+  h.service.setPolicy(1, "REPOSITORY_REQUIREMENTS");
+  a.equal(h.service.data.queue.length, 1);
+  a.ok(Object.values(h.service.data.receipts).every(r => r.current.state === "STALE"));
+  await h.service.retractChecks(await h.service.appClient(2, 1), 1);
+  a.equal(h.writes.at(-1).o.body.conclusion, "failure");
+  await h.service.drain();
+  a.equal(h.writes.at(-1).o.body.conclusion, "success");
+});
+
+test("unknown App identity cannot waive an explicitly publisher-bound requirement", () => {
+  const c = capture();
+  c.rules.classic.value.required_status_checks.checks.push({context: NAME, app_id: 999});
+  const r = prove(c);
+  a.equal(r.verdict, "NOT_PROVEN");
+  a.equal(r.summary.ci.selfReference, null);
+  a.equal(r.summary.ci.required.find(x => x.name === NAME).state, "NAME_COLLIDES_WITH_MERGE_PROOF_CHECK");
+});
+
+test("partial publication persists the first identity before the second request fails", async () => {
+  const r = prove(capture());
+  r.summary.target = {state:"AVAILABLE", value:{kind:"MERGE_GROUP", sha:OLD}};
+  const saved = []; let n = 0;
+  await a.rejects(publish({request:async()=>{if (++n === 2) throw Error("provider"); return {id:777};}}, r,
+    {state:"CURRENT"}, "https://example.test", null, on => saved.push(on)));
+  a.deepEqual(saved, [{sha:H, kind:"PULL_REQUEST_HEAD", id:777}]);
+});
+
+test("a signed event during publication immediately retracts the returned check", async t => {
+  const h = harness(t); h.service.setPolicy(1, "REPOSITORY_REQUIREMENTS");
+  const original = h.service.appClient; let fired = false;
+  h.service.appClient = async (...args) => {
+    const client = await original(...args), request = client.request.bind(client);
+    client.request = async (p,o) => {
+      const result = await request(p,o);
+      if (o?.method === "POST" && p.endsWith("/check-runs") && !fired) {
+        fired = true; await h.service.webhook(...hook("pull_request_review"));
+      }
+      return result;
+    }; return client;
+  };
+  await h.service.webhook(...hook()); await h.service.drain();
+  a.equal(h.writes.at(-1).kind, "PATCH");
+  a.equal(h.writes.at(-1).o.body.conclusion, "failure");
+  a.equal(Object.values(h.service.data.receipts)[0].current.state, "STALE");
+  a.equal(h.service.data.queue.length, 1);
+});
+
+test("delayed merge delivery never borrows a receipt issued after the merge", async t => {
+  const h = harness(t); await h.service.webhook(...hook()); await h.service.drain();
+  h.service.recordMerge("fixture/public",1,2,{number:1,head:{sha:H},merged_at:"2000-01-01T00:00:00Z",merge_commit_sha:OLD});
+  a.equal(ledger.area(h.store).records[0].proof.state,"NO_PROOF_RECORDED");
+});
+
+test("ledger snapshot remains detached from receipt mutation and capacity is explicit", () => {
+  const store = {data:{github:{}}}; const receipt = prove(capture());
+  const proof = ledger.proofSnapshot({receipt,current:{state:"CURRENT"}},H,null);
+  const row = ledger.record(store,{repository:"fixture/public",repositoryId:1,pr:1,mergeCommitSha:H,proof});
+  receipt.summary.actors.agentIdentity = "CHANGED";
+  proof.gaps.push("CHANGED");
+  a.ok(!JSON.stringify(row).includes("CHANGED"));
+  for(let n=2;n<=ledger.CAPACITY+1;n++) ledger.record(store,{repository:"fixture/public",repositoryId:1,pr:n,mergeCommitSha:H,proof:{state:"NO_PROOF_RECORDED"}});
+  a.equal(ledger.area(store).records.length,ledger.CAPACITY);
+  a.equal(ledger.area(store).pruned,1);
+});
+
+test("failed enforcing retraction remains pending and recovers without another webhook", async t => {
+  const h = harness(t); await h.service.webhook(...hook()); await h.service.drain();
+  h.service.setPolicy(1,"REPOSITORY_REQUIREMENTS");
+  const original=h.service.appClient; let fail=true;
+  h.service.appClient=async(...args)=>{const c=await original(...args),request=c.request.bind(c);c.request=(p,o)=>{if(fail&&o?.method==='PATCH')throw Error('provider unavailable');return request(p,o)};return c};
+  await a.rejects(h.service.retractChecks(await h.service.appClient(2,1),1),{code:'CHECK_RECONCILIATION_PENDING'});
+  await h.service.drain();
+  a.equal(h.service.data.queue.length,1);
+  a.equal(Object.values(h.service.data.receipts).length,1);
+  fail=false;h.service.data.queue[0].retryAt=0;await h.service.drain();
+  a.equal(h.service.data.queue.length,0);
+  a.equal(h.writes.at(-1).o.body.conclusion,'success');
 });

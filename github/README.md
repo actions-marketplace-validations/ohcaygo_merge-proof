@@ -183,7 +183,7 @@ Merge Proof reports on every proof. Whether that report **blocks** a merge is tw
 separate decisions, and both have to agree.
 
 **GitHub decides whether the check is required.** Merge Proof reads repository
-rules (Metadata read, the same two sources every proof already reads) and reports
+rules (Administration read, the same two sources every proof already reads) and reports
 whether its own context is currently required on the base branch, and whether the
 rule binds it to this App. It never writes branch protection or a ruleset.
 Writing one needs Administration: write, which also grants renaming,
@@ -266,20 +266,25 @@ identity is.
 
 ## Durable merge evidence record
 
-On a merged pull request the service writes one immutable ledger row **before**
-anything is staled, so it preserves what was known at the decision point rather
-than what is known afterwards: repository, PR, merged commit, head at merge,
-merging account, the receipt that applied, its verdict, its currentness at that
-moment, the requirements observed, approvals, protected boundaries, missing
-evidence, actors, and the gate decision that was published.
+On a merged pull request the service writes one immutable ledger row before
+staling receipts. It preserves repository, PR, landed commit, PR head, merge
+actor, and a detached snapshot of the latest receipt issued no later than the
+reported merge timestamp. The snapshot includes requirements, approvals,
+checks, gaps, provenance and the recorded publication result when available
+before merge. Later same-head receipts cannot become evidence for an earlier merge.
 
-A row is a self-contained snapshot, so it survives receipt retention. A repeated
-delivery is ignored rather than merged into an existing row, and later evidence
-never rewrites one. When the latest receipt was produced for a different commit
-than the one that landed, the row records `PROOF_BOUND_TO_OTHER_STATE` rather
-than implying the merged state was proven; when no receipt exists it records
-`NO_PROOF_RECORDED`. The ledger is bounded at 5,000 rows and reports its own
-pruning count, so a listing never implies completeness it does not have.
+A webhook is not an atomic observation of GitHub's merge decision.
+`currentnessAtMerge` therefore remains `UNAVAILABLE`; `currentnessAtDelivery`
+records the separate delivery-time observation. A matching PR head alone is
+`PROOF_BOUND_TO_PR_HEAD_ONLY`. Exact landed-state binding requires the receipt's
+validated target SHA to equal the landed commit; other heads remain
+`PROOF_BOUND_TO_OTHER_STATE`. No eligible pre-merge receipt means
+`NO_PROOF_RECORDED`. Neither a published check nor its policy is represented as
+proof of GitHub's actual decision at merge time.
+
+The snapshot survives receipt retention. Duplicate deliveries and later evidence
+never rewrite it. The ledger is bounded at 5,000 rows and explicitly reports
+pruning; export records you need to retain beyond this bound.
 
 Retrieval is scoped to the authorized installation and repository:
 `GET /proof/merges` lists and filters (`pr`, `verdict`, `since`, `until`,

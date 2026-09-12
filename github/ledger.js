@@ -27,7 +27,7 @@ const identityOf = (e) =>
 
 // Snapshot the proof that was current for the merged state, without asserting
 // that a proof of some other state describes it.
-function proofSnapshot(row, mergedHeadSha, policyResult) {
+function proofSnapshot(row, mergedHeadSha, policyResult, mergeCommitSha = null) {
   if (!row)
     return {
       receiptId: null,
@@ -36,13 +36,15 @@ function proofSnapshot(row, mergedHeadSha, policyResult) {
         "Merge Proof holds no receipt for this pull request, so it establishes nothing about what was merged.",
     };
   const receipt = row.receipt;
-  const bound = receipt.identity.headSha === mergedHeadSha;
+  const headBound = receipt.identity.headSha === mergedHeadSha;
+  const bound = headBound && Boolean(mergeCommitSha) && receipt.summary?.target?.value?.sha === mergeCommitSha;
   return {
     receiptId: receipt.receiptId,
-    state: bound ? "PROOF_BOUND_TO_MERGED_STATE" : "PROOF_BOUND_TO_OTHER_STATE",
+    state: bound ? "PROOF_BOUND_TO_MERGED_STATE" : headBound ? "PROOF_BOUND_TO_PR_HEAD_ONLY" : "PROOF_BOUND_TO_OTHER_STATE",
     plain: bound
       ? "This receipt was produced for the exact commit that was merged."
-      : "The most recent receipt was produced for a different commit than the one that was merged, so it does not describe the merged state.",
+      : headBound ? "This receipt covers the PR head. Binding to the final landed commit is not established."
+      : "The most recent receipt was produced for a different PR head, so it does not describe the merged state.",
     boundToMergedState: bound,
     verdict: receipt.verdict,
     fingerprint: receipt.fingerprint,
@@ -51,10 +53,14 @@ function proofSnapshot(row, mergedHeadSha, policyResult) {
     receiptHeadSha: receipt.identity.headSha,
     baseShaAtProof: receipt.identity.baseSha,
     currentnessAtMerge: {
-      state: row.current?.state || "UNAVAILABLE",
-      reason: row.current?.reason || null,
-      asOf: row.current?.asOf || null,
+      state: "UNAVAILABLE",
+      reason: "MERGE_DECISION_NOT_ATOMICALLY_OBSERVED",
+      asOf: null,
     },
+    currentnessAtDelivery: JSON.parse(JSON.stringify(row.current || { state: "UNAVAILABLE" })),
+    publicationObservedAt: row.publishedAt || null,
+    gateObservation: "Published policy result, not an assertion of GitHub's decision at merge time.",
+    receiptSnapshot: JSON.parse(JSON.stringify(receipt)),
     gaps: [...(receipt.gaps || [])],
     requiredChecks: (receipt.summary?.rules?.checks || []).map((c) => ({
       name: c.name,
@@ -115,9 +121,9 @@ function record(store, entry) {
     mergeCommitSha: entry.mergeCommitSha || null,
     mergedHeadSha: entry.mergedHeadSha || null,
     mergedBy: entry.mergedBy || null,
-    proof: entry.proof,
+    proof: JSON.parse(JSON.stringify(entry.proof)),
     immutable:
-      "This record states what was established at the merge decision. Later evidence does not change it.",
+      "This record preserves pre-merge evidence available when the merge event was received. Decision-time currentness remains unavailable unless independently established. Later evidence does not change it.",
   };
   m.records.push(row);
   while (m.records.length > CAPACITY) {

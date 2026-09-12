@@ -57,6 +57,17 @@ class ProofService {
       setAt: new Date().toISOString(),
       setByUserId: Number.isSafeInteger(setByUserId) ? setByUserId : null,
     };
+    for (const row of Object.values(this.data.receipts)) {
+      if (row.receipt.identity.repositoryId !== repositoryId) continue;
+      row.current = { state: "STALE", reason: "POLICY_CHANGED" };
+    }
+    for (const sub of Object.values(this.data.subscriptions)) {
+      if (sub.repositoryId !== repositoryId) continue;
+      const key = sub.repo.toLowerCase();
+      this.data.revisions[key] = (this.data.revisions[key] || 0) + 1;
+      if (!this.data.queue.some(q => !q.processing && q.repositoryId === repositoryId && q.pr === sub.pr))
+        this.data.queue.push({ ...sub });
+    }
     this.save();
     return policies.normalize(this.data.policies[repositoryId]);
   }
@@ -538,7 +549,9 @@ class ProofService {
     const rows = Object.values(this.data.receipts).filter(
       (r) =>
         r.receipt.identity.repositoryId === repositoryId &&
-        r.receipt.identity.pr === pull.number,
+        r.receipt.identity.pr === pull.number &&
+        Number.isFinite(Date.parse(pull.merged_at)) &&
+        Date.parse(r.receipt.issuedAt) <= Date.parse(pull.merged_at),
     );
     const bound = rows.filter(
       (r) => r.receipt.identity.headSha === mergedHeadSha,
@@ -564,57 +577,43 @@ class ProofService {
       proof: ledger.proofSnapshot(
         chosen,
         mergedHeadSha,
-        chosen ? this.gateFor(chosen.receipt, chosen.current) : null,
+        chosen?.publishedAt && Date.parse(chosen.publishedAt) <= Date.parse(pull.merged_at) ? chosen.publishedGate : null,
+        pull.merge_commit_sha,
       ),
     });
+  }
+  async retractChecks(client, repositoryId, pr = null, receiptId = null) {
+    if (!this.config.publishChecks) return;
+    let failed = false;
+    for (const row of Object.values(this.data.receipts)) {
+      if ((receiptId && row.receipt.receiptId !== receiptId) || row.receipt.identity.repositoryId !== repositoryId ||
+          (pr !== null && row.receipt.identity.pr !== pr) || row.current.state !== "STALE") continue;
+      for (const id of row.checkIds?.length ? row.checkIds : row.checkId ? [row.checkId] : []) {
+        try {
+          await client.request(`/repos/${row.receipt.identity.repository}/check-runs/${id}`, {
+            method: "PATCH", body: { status: "completed",
+              conclusion: policies.staleConclusion(this.policyFor(repositoryId)),
+              output: { title: "STALE — RE-PROOF REQUIRED",
+                summary: `Historical ${row.receipt.verdict} remains available. Relevant evidence changed; refresh is pending.` }
+            }
+          });
+        } catch { failed = true; row.checkDelivery = "UNAVAILABLE"; }
+      }
+    }
+    this.save();
+    assert(!failed || !policies.normalize(this.policyFor(repositoryId)).enforced, "CHECK_RECONCILIATION_PENDING");
   }
   async drain() {
     if (this.busy || this.draining || !this.data.queue.length) return;
     this.draining = true;
     const job = this.data.queue[0];
+    if (job.retryAt && Date.now() < job.retryAt) { this.draining = false; return; }
     job.processing = true;
     this.save();
     try {
       const client = await this.appClient(job.installationId, job.repositoryId);
       await client.authorize(job.repo, job.repositoryId);
-      if (this.config.publishChecks)
-        for (const row of Object.values(this.data.receipts)) {
-          if (
-            row.receipt.identity.repositoryId === job.repositoryId &&
-            row.receipt.identity.pr === job.pr &&
-            row.checkId &&
-            row.current.state === "STALE"
-          )
-            // Every commit this receipt was published on is retracted; a merge
-            // group leaves a check on the queue commit as well as the head.
-            for (const checkId of row.checkIds?.length
-              ? row.checkIds
-              : [row.checkId])
-            try {
-              await client.request(
-                `/repos/${job.repo}/check-runs/${checkId}`,
-                {
-                  method: "PATCH",
-                  body: {
-                    status: "completed",
-                    // Under an enforcing policy a superseded proof must not
-                    // keep satisfying the required check: GitHub treats
-                    // `neutral` as a pass.
-                    conclusion: require("./policy").staleConclusion(
-                      this.policyFor(job.repositoryId),
-                    ),
-                    output: {
-                      title: "STALE — RE-PROOF REQUIRED",
-                      summary: `Historical ${row.receipt.verdict} remains available. Relevant evidence changed; refresh is pending.`,
-                    },
-                  },
-                },
-              );
-            } catch {
-              // Optional delivery failure must not stop independent evidence collection.
-              row.checkDelivery = "UNAVAILABLE";
-            }
-        }
+      await this.retractChecks(client, job.repositoryId, job.pr);
       const out = await this.run(job.repo, job.pr, {
         client,
         mergeGroup: job.mergeGroup,
@@ -627,7 +626,20 @@ class ProofService {
             out.receipt,
             out.current,
             this.config.origin,
-            out.gate,
+            this.gateFor(out.receipt, this.data.receipts[out.receipt.receiptId].current),
+            async (on, publishedGate) => {
+              const row = this.data.receipts[out.receipt.receiptId];
+              if (Number.isSafeInteger(on.id)) {
+                row.publishedGate = publishedGate;
+                row.publishedAt = new Date().toISOString();
+                row.checkId ||= on.id;
+                (row.checkIds ||= []).push(on.id);
+                (row.checkOn ||= []).push(on);
+                this.save();
+              }
+              // A signed event or policy change can arrive during the POST.
+              await this.retractChecks(client, job.repositoryId, job.pr, out.receipt.receiptId);
+            },
           );
           if (Number.isSafeInteger(check?.id)) {
             const row = this.data.receipts[out.receipt.receiptId];
@@ -638,6 +650,7 @@ class ProofService {
         } catch {
           this.data.receipts[out.receipt.receiptId].checkDelivery =
             "UNAVAILABLE";
+          throw Object.assign(new Error("Check publication must retry"), { code: "CHECK_RECONCILIATION_PENDING" });
         }
       }
       const sub = this.data.subscriptions[`${job.repositoryId}:${job.pr}`];
@@ -650,6 +663,8 @@ class ProofService {
         if (sub) sub.refreshState = "ALLOWANCE_EXHAUSTED";
         return;
       }
+      // Preserve a failed gate update for retry instead of leaving an old pass forever.
+      if (error.code === "CHECK_RECONCILIATION_PENDING") { job.retryAt = Date.now() + 30000; return; }
       job.attempts = (job.attempts || 0) + 1;
       if (job.attempts >= 3) {
         this.data.queue.shift();

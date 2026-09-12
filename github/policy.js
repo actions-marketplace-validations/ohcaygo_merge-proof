@@ -105,14 +105,14 @@ function evaluate(receipt, current, stored) {
   const blocking = [];
   const reported = [];
 
+  const escalation = policy.boundaries ? boundaryEscalation(receipt) : null;
   for (const gap of gaps) {
     const boundaryScoped = BOUNDARY_SCOPED_GAPS.has(gap);
     const enforcedHere =
-      policy.enforced && (!boundaryScoped || policy.boundaries);
+      policy.enforced && (!boundaryScoped || (policy.boundaries && !escalation?.satisfied));
     (enforcedHere ? blocking : reported).push(gap);
   }
 
-  const escalation = policy.boundaries ? boundaryEscalation(receipt) : null;
   if (escalation && !escalation.satisfied)
     blocking.push("PROTECTED_BOUNDARY_APPROVAL_REQUIRED");
 
@@ -158,8 +158,8 @@ function consequence(policy, blocking, conclusion) {
       ? "Merge Proof is set to report only. It is not blocking this merge."
       : "Merge Proof is set to report only. This result does not block the merge.";
   return blocking.length
-    ? "Merge Proof is a required check here, so this result blocks the merge until the listed evidence is established."
-    : "Merge Proof is a required check here and this merge satisfies it.";
+    ? "Merge Proof reports failure under this policy. If the repository requires this check, it blocks the merge until the listed evidence is established."
+    : "Merge Proof reports success under this policy. If the repository requires this check, this result satisfies it.";
 }
 
 // The conclusion to leave on a previously published check whose evidence has

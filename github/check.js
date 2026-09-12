@@ -64,7 +64,7 @@ function summary(receipt, current, result) {
   ).slice(0, 60000);
 }
 
-async function publish(client, receipt, current, origin, policyResult = null) {
+async function publish(client, receipt, current, origin, policyResult = null, onPublished = null) {
   const url = new URL(origin);
   if (!["https:", "http:"].includes(url.protocol))
     throw Error("INVALID_ORIGIN");
@@ -87,6 +87,8 @@ async function publish(client, receipt, current, origin, policyResult = null) {
       { method: "POST", body: { ...body, head_sha: on.sha } },
     );
     published.push({ ...on, id: response?.id ?? null });
+    // Persist each returned identity before attempting another commit.
+    if (onPublished) await onPublished(published[published.length - 1], result);
     primary ||= response;
   }
   return Object.assign(primary || {}, {

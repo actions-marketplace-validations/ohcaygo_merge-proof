@@ -176,6 +176,21 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
     "UNKNOWN_POLICY",
   );
 
+  // A failed readiness observation must not change the saved policy.
+  const originalAppClient = service.appClient;
+  service.appClient = async (...args) => {
+    const c = await originalAppClient(...args);
+    c.observe = async () => ({state: "UNAVAILABLE", reason: "GITHUB_HTTP_403"});
+    return c;
+  };
+  const beforePolicy = JSON.stringify(service.policyFor(1));
+  const refused = await request("/proof/gate", {
+    installation: 2, repository: 1, preset: "REPOSITORY_REQUIREMENTS_AND_BOUNDARIES",
+  });
+  a.equal((await refused.json()).error, "GATE_NOT_READY");
+  a.equal(JSON.stringify(service.policyFor(1)), beforePolicy);
+  service.appClient = originalAppClient;
+
   // Merge ledger: scoped to the authorized repository, denied otherwise.
   service.recordMerge("fixture/public", 1, 2, {
     number: 1,
