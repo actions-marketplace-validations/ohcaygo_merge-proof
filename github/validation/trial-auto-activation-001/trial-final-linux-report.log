@@ -1,0 +1,11 @@
+  PASS  public Kiota sample counts and all 77 records survive rendering
+  PASS  unresolvable records and recorded FAIL are visible without inventing verdicts
+  PASS  full collector dataset retains distinct landed commits for a repeated PR number
+  PASS  invalid, empty, duplicate and contradictory evidence is rejected
+  PASS  CLI writes HTML to paths with spaces and preserves source bytes
+  PASS  missing browser fails visibly and removes an older PDF
+  PASS  export closes a browser that stays alive after completing the PDF
+  PASS  CLI rejects malformed JSON, missing scope, unknown flags and input/output collision
+  PASS  real analyzer CLI JSON flows to a report for all three verdicts
+
+9/9 pilot report tests passed
