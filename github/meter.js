@@ -70,6 +70,7 @@ class Meter {
       !["VERIFIED", "NOT_PROVEN"].includes(receipt.verdict)
     )
       return { charged: false, reason: "NOT_BILLABLE_COMPLETION" };
+    const decision = this.check(installationId, receipt.identity);
     const account = this.account(installationId);
     const accountKey = this.data.installations[installationId].account;
     // Same synchronous transaction as the receipt save; no install or failed attempt starts time.
@@ -79,7 +80,6 @@ class Meter {
       record(this.store, "first_successful_proof", accountKey, { account: accountKey, installationId, receiptId: receipt.receiptId });
       record(this.store, "trial_started", accountKey, { account: accountKey, installationId, startedAt: now, endsAt: account.trial.endsAt });
     }
-    const decision = this.check(installationId, receipt.identity);
     if (decision.charged) {
       const account = this.account(installationId);
       if (decision.reason === "MONTHLY_INCLUDED")

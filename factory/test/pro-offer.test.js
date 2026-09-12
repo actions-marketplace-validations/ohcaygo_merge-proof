@@ -42,7 +42,9 @@ test("new visitors see Pro, retired checkout fails closed, historical access sti
   a.doesNotMatch(root, /\$5,000|Loading Stripe/);
   const offer = await (await fetch(config.origin + "/api/offer")).json();
   a.equal(offer.available, false);
-  a.equal(offer.freeProofs, 5);
+  a.equal(offer.trialDays, 7);
+  a.equal(offer.trialStarts, "FIRST_SUCCESSFUL_HOSTED_PROOF");
+  a.equal(offer.freeProofs, undefined);
   for (const path of ["eligibility", "checkout"]) {
     const r = await fetch(config.origin + "/api/" + path, {
       method: "POST",

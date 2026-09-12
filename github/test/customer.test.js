@@ -100,6 +100,11 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
     });
   a.equal((await request("/proof/installations")).status, 200);
   a.equal((await request("/proof/repositories?installation=999")).status, 403);
+  const initial = await (await request("/proof/account?installation=2&repository=1")).json();
+  a.equal(initial.usage.plan,"AWAITING_FIRST_PROOF");
+  a.equal(initial.usage.used,undefined);
+  await service.drain();
+  a.equal(service.meter.usage(2).plan,"TRIAL");
   const response = await request("/proof/run", {
     installation: 2,
     repository: 1,

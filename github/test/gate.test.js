@@ -718,9 +718,9 @@ test("the gate adds no billable proof: a re-proof of the same head is zero debit
   h.service.meter.connect(2, 7);
   h.service.data.subscriptions["1:1"]={installationId:2,repositoryId:1,repo:"fixture/public",pr:1};
   h.service.meter.paidPeriod("github:7",{verifiedPaid:true,quantity:1,periodStart:Date.now()-1000,periodEnd:Date.now()+86400000});
-  h.service.setPolicy(1, "REPOSITORY_REQUIREMENTS");
   await h.service.webhook(...hook());
   await h.service.drain();
+  h.service.setPolicy(1, "REPOSITORY_REQUIREMENTS");
   const before = h.service.meter.usage(2);
   a.equal(before.used, 1);
   // Any number of further events on the same head re-prove without charging.

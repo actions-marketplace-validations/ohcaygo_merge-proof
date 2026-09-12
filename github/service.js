@@ -56,6 +56,7 @@ class ProofService {
     if (chosen.enforced && this.meter) {
       const installationId = Object.values(this.data.subscriptions).find(s=>s.repositoryId===repositoryId)?.installationId;
       assert(installationId && this.meter.usage(installationId).plan === "PRO", "PAID_PRO_REQUIRED_FOR_GATE");
+      assert(Object.values(this.data.receipts).some(r=>r.receipt.identity.repositoryId===repositoryId && r.installationId===installationId && r.metering && r.metering.reason!=="NOT_BILLABLE_COMPLETION"), "FIRST_PROOF_REQUIRED_FOR_GATE");
     }
     this.data.policies[repositoryId] = {
       preset: chosen.id,
