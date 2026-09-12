@@ -203,7 +203,10 @@ async function collectOnce(
       baseSha: i.baseSha,
     });
   if (i.prState === "open" && !i.merged) {
-    if (req.mergeQueue || mergeGroup) {
+    // GitHub requires passing PR checks before it creates a merge group.
+    // Without a group, prove only the ordinary PR target for queue admission.
+    // A signed group event selects the separate queue commit for final checks.
+    if (mergeGroup) {
       target = await client.observe(async () => {
         assert(
           mergeGroup &&

@@ -30,6 +30,8 @@ function subjects(receipt) {
 }
 
 function title(receipt, current, result) {
+  if (result.enforced && result.conclusion === "success" && receipt.summary?.queueStage === "ADMISSION_ONLY")
+    return `${receipt.verdict} · PR evidence satisfied · queue group proof still required`;
   if (!result.enforced)
     return `${receipt.verdict} · ${current?.state || "UNAVAILABLE"} at observation · reporting only`;
   return result.conclusion === "success"
@@ -52,6 +54,8 @@ function summary(receipt, current, result) {
           .join("\n")
       : "";
   return (
+    (receipt.summary?.queueStage === "ADMISSION_ONLY"
+      ? "This proof covers queue admission only. GitHub must create a merge group and require a separate passing check on that group before merging.\n\n" : "") +
     `${result.mergeConsequence}\n` +
     section("What must be resolved before this merge", blocking) +
     section(

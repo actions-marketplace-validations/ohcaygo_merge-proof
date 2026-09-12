@@ -286,6 +286,9 @@ function prove(c, options = {}) {
         "Current only at the recorded observation; later views must recheck evidence.",
     },
     summary: {
+      queueStage: rules.mergeQueue
+        ? c.target.value?.kind === "MERGE_GROUP" ? "MERGE_GROUP" : "ADMISSION_ONLY"
+        : null,
       ci,
       approval,
       remote: c.remote,
@@ -304,6 +307,8 @@ function prove(c, options = {}) {
       "SCOPE_CREEP_VS_DECLARED_SCOPE",
       "FUTURE_REMOTE_RETENTION",
       "WHICH_TOOL_OR_MODEL_PRODUCED_THE_CODE",
+      ...(rules.mergeQueue && c.target.value?.kind !== "MERGE_GROUP"
+        ? ["MERGE_QUEUE_GROUP_NOT_YET_PROVEN"] : []),
       ...(ci.selfReference ? ["MERGE_PROOF_OWN_REQUIRED_CHECK"] : []),
     ],
     next: require("./wording").next(gaps),

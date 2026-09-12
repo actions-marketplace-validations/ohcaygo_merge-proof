@@ -190,3 +190,19 @@ test("current queue selection must match live GraphQL entry; old group remains u
   });
   a.equal(old.target.state, "UNAVAILABLE");
 });
+test("queue admission proves PR evidence without pretending the future group is proven", async () => {
+  const f = () => fixtureFetch({ mutate: (p, v) => p.includes('/rules/branches/')
+    ? [{type:'merge_queue',parameters:{grouping_strategy:'HEADGREEN'}}] : v });
+  const c = await collect(new Client(f()), 'fixture/public', 1);
+  const receipt = prove(c);
+  a.equal(receipt.verdict, 'VERIFIED');
+  a.equal(receipt.summary.queueStage, 'ADMISSION_ONLY');
+  a.ok(receipt.notChecked.includes('MERGE_QUEUE_GROUP_NOT_YET_PROVEN'));
+  a.deepEqual(require('../check').subjects(receipt), [{sha:H,kind:'PULL_REQUEST_HEAD'}]);
+  const group = {head_sha:M,base_sha:B,base_ref:'refs/heads/main',head_ref:'refs/heads/gh-readonly-queue/main/pr-1'};
+  const grouped = prove(await collect(new Client(f()), 'fixture/public', 1, {mergeGroup:group}));
+  a.equal(grouped.summary.queueStage, 'MERGE_GROUP');
+  a.equal(grouped.verdict, 'NOT_PROVEN');
+  a.ok(grouped.gaps.includes('CURRENT_MERGE_GROUP_SELECTION_UNAVAILABLE'));
+  a.equal(freshness(receipt, grouped.evidence).state, 'STALE');
+});
