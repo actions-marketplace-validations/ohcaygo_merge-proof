@@ -62,8 +62,29 @@ async function collectRules(client, repo, baseRef, branchProtected) {
             : null,
         };
       } catch (e) {
-        // A protected branch can return 404 for denied access. Do not infer absence.
+        // Rulesets also set branch.protected. A REST 404 alone cannot distinguish
+        // absent classic protection from denied access. Ask GitHub for the exact
+        // ref's classic rule; errors/partial data must never imply absence.
         if (e.status === 404 && branchProtected === false) return null;
+        if (e.status === 404 && branchProtected === true) {
+          const [owner, name] = repo.split("/");
+          const result = await client.request("/graphql", {
+            method: "POST",
+            body: {
+              query: "query($owner:String!,$name:String!,$ref:String!){repository(owner:$owner,name:$name){nameWithOwner ref(qualifiedName:$ref){name prefix branchProtectionRule{id}}}}",
+              variables: { owner, name, ref: `refs/heads/${baseRef}` },
+            },
+          });
+          const repository = result.data?.repository, ref = repository?.ref;
+          assert(
+            !result.errors &&
+              repository?.nameWithOwner?.toLowerCase() === repo.toLowerCase() &&
+              ref?.name === baseRef && ref?.prefix === "refs/heads/" &&
+              ref.branchProtectionRule === null,
+            "CLASSIC_PROTECTION_ABSENCE_UNCONFIRMED",
+          );
+          return null;
+        }
         throw e;
       }
     }),
@@ -74,6 +95,7 @@ async function collectRules(client, repo, baseRef, branchProtected) {
         type: r.type,
         ruleset_id: r.ruleset_id,
         ruleset_source_type: r.ruleset_source_type,
+        ruleset_source: r.ruleset_source,
         parameters: r.parameters || null,
       })),
     ),

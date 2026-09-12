@@ -380,3 +380,29 @@ external to this presentation layer.
 HTML puts actions first and technical evidence in a disclosure. GitHub Checks
 show at most three gap/action summaries and direct readers to the full receipt.
 This layer changes no evidence collection, verdict, policy, billing or permissions.
+
+### Ruleset-only protection
+
+GitHub's paginated `GET /repos/{owner}/{repo}/rules/branches/{branch}` supplies
+active applicable rules across repository and organization levels, including
+GitHub's ref targeting. Evaluate/disabled rules are excluded by GitHub. Merge
+Proof uses that result instead of approximating GitHub's pattern matching.
+Classic and ruleset requirements are combined: required checks retain publisher
+bindings, approval counts take the maximum, and strict/stale-review requirements
+accumulate. The existing receipt gate is excluded only as its own delivery check.
+
+For a protected branch whose classic REST protection returns 404, Merge Proof
+queries the exact GraphQL ref's `branchProtectionRule`. Only an error-free,
+identity-matching response with an explicit null establishes classic absence.
+A denied read, partial response, missing field, or existing classic rule remains
+unavailable. An unavailable active-rules read still blocks proof independently.
+Both observations participate in the existing consistency/freshness checks.
+
+Unsupported signatures, linear history, deployments, required workflows, code
+scanning, review threads/teams, code-owner/last-push evidence, restricted updates,
+ALLGREEN other-entry evidence and unknown rule types remain unproven. No bypass
+entitlement or ruleset administration is inferred. GitHub remains merge authority.
+
+References: [applicable branch rules](https://docs.github.com/en/rest/repos/rules#get-rules-for-a-branch),
+[GraphQL Ref](https://docs.github.com/en/graphql/reference/git#ref),
+[ruleset rule semantics](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets).

@@ -15,6 +15,8 @@ function requirements(rules) {
   };
   if (rules.classic.state !== "AVAILABLE" || rules.active.state !== "AVAILABLE")
     return { ...out, state: "UNAVAILABLE" };
+  if (!Array.isArray(rules.active.value))
+    return { ...out, state: "UNAVAILABLE" };
   const add = (name, appId) => {
     if (
       typeof name !== "string" ||
@@ -63,6 +65,10 @@ function requirements(rules) {
   if (c?.required_conversation_resolution?.enabled)
     out.unsupported.push("REVIEW_THREAD_RESOLUTION");
   for (const r of rules.active.value) {
+    if (!r || typeof r.type !== "string") {
+      out.unsupported.push("MALFORMED_RULE");
+      continue;
+    }
     const p = r.parameters;
     if (r.type === "required_status_checks") {
       if (!Array.isArray(p?.required_status_checks)) {
@@ -70,7 +76,7 @@ function requirements(rules) {
         continue;
       }
       for (const s of p.required_status_checks)
-        add(s.context, s.integration_id);
+        add(s?.context, s?.integration_id);
       out.strict ||= p.strict_required_status_checks_policy === true;
     } else if (r.type === "pull_request") reviews(p);
     else if (r.type === "merge_queue") {
@@ -78,7 +84,7 @@ function requirements(rules) {
       if (p?.grouping_strategy === "ALLGREEN")
         out.unsupported.push("ALLGREEN_OTHER_GROUP_ENTRIES_UNAVAILABLE");
     } else if (
-      !["deletion", "non_fast_forward", "creation", "update"].includes(r.type)
+      !["deletion", "non_fast_forward", "creation"].includes(r.type)
     )
       out.unsupported.push(r.type || "UNKNOWN_RULE");
   }
