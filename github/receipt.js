@@ -175,4 +175,4 @@ function html(r, current, policyResult = null, remediation = require("./remediat
   <details><summary>Inspect full receipt JSON</summary><pre>${escape(JSON.stringify({ receipt: r, current, remediation }, null, 2))}</pre></details>
   <small>${r.limitations.map(escape).join("<br>")}<br>Receipt ${escape(r.receiptId)}</small>${remediation ? "</details>" : ""}</main></html>`;
 }
-module.exports = { text, html, lines, actorLines, plain };
+module.exports = { escape, text, html, lines, actorLines, plain };

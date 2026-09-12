@@ -153,6 +153,9 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
   );
   a.equal(service.policyFor(1), null);
   repositoryAdmin = true;
+  const trialGate = await request("/proof/gate", {installation:2,repository:1,preset:"REPOSITORY_REQUIREMENTS"});
+  a.equal((await trialGate.json()).error,"PAID_PRO_REQUIRED_FOR_GATE");
+  service.meter.paidPeriod("github:9", {verifiedPaid:true,quantity:1,periodStart:Date.now()-1000,periodEnd:Date.now()+86400000});
   const saved = await (
     await request("/proof/gate", {
       installation: 2,

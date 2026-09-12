@@ -32,6 +32,7 @@ class ProofService {
     // Existing installations keep reporting-only behavior. A blocking gate is
     // never switched on for a repository that did not ask for it.
     this.data.policies ||= {};
+    this.data.activation ||= {};
     ledger.area(store);
     this.meter = config.hosted ? new (require("./meter").Meter)(store) : null;
     this.customers = this.meter
@@ -52,6 +53,10 @@ class ProofService {
   setPolicy(repositoryId, presetId, setByUserId = null) {
     assert(Number.isSafeInteger(repositoryId) && repositoryId > 0, "INVALID_SCOPE");
     const chosen = policies.select(presetId);
+    if (chosen.enforced && this.meter) {
+      const installationId = Object.values(this.data.subscriptions).find(s=>s.repositoryId===repositoryId)?.installationId;
+      assert(installationId && this.meter.usage(installationId).plan === "PRO", "PAID_PRO_REQUIRED_FOR_GATE");
+    }
     this.data.policies[repositoryId] = {
       preset: chosen.id,
       setAt: new Date().toISOString(),
@@ -85,6 +90,7 @@ class ProofService {
   }
   startScan(installationId, repositoryId, repo) {
     const account = this.meter.account(installationId);
+    assert(this.meter.usage(installationId).automationAllowed,"TRIAL_EXPIRED");
     const old = account.scan;
     if (old) {
       assert(old.repositoryId === repositoryId, "SCAN_TASTE_ALREADY_RESERVED");
@@ -207,7 +213,8 @@ class ProofService {
             item.state === "AVAILABLE" &&
             !require("./common").hasUnavailable(item),
         );
-      // No await between allowance validation, debit, receipt, and durable save.
+      if (this.meter) assert(this.meter.usage(installationId).automationAllowed, "TRIAL_EXPIRED");
+      // No await between entitlement validation, trial start, receipt, and durable save.
       const metering = this.meter
         ? this.meter.complete(
             installationId,
@@ -249,6 +256,7 @@ class ProofService {
           repositoryId: receipt.identity.repositoryId,
           at: receipt.issuedAt,
         });
+      if (this.meter) require("./events").record(this.store, "proof_observed", receipt.receiptId, {account:this.meter.data.installations[installationId].account,installationId,receiptId:receipt.receiptId,verdict:receipt.verdict});
       this.save();
       return { receipt, current, gate, remediation: this.remediationFor(receipt, current, gate) };
     });
@@ -270,10 +278,10 @@ class ProofService {
   resumeEntitled() {
     if (!this.meter) return;
     for (const sub of Object.values(this.data.subscriptions)) {
-      if (sub.refreshState !== "ALLOWANCE_EXHAUSTED") continue;
+      if (!["ALLOWANCE_EXHAUSTED", "TRIAL_EXPIRED"].includes(sub.refreshState)) continue;
       try {
         if (
-          this.meter.usage(sub.installationId).remaining > 0 &&
+          this.meter.usage(sub.installationId).automationAllowed &&
           !this.data.queue.some(
             (q) => q.repositoryId === sub.repositoryId && q.pr === sub.pr,
           )
@@ -383,6 +391,7 @@ class ProofService {
         assert(Number.isSafeInteger(p.installation.account?.id) &&
           p.installation.account.id > 0, "INVALID_WEBHOOK_SCOPE");
         this.meter.connect(installationId, p.installation.account?.id);
+        for (const repo of p.repositories || []) this.activate(installationId, repo);
       } else return { ignored: true };
       this.data.events.push(id);
       this.save();
@@ -396,7 +405,9 @@ class ProofService {
         (p.repositories_removed || []).every(r => Number.isSafeInteger(r?.id) && r.id > 0),
         "INVALID_WEBHOOK_SCOPE");
       this.meter.account(installationId);
+      for (const repo of p.repositories_added || []) this.activate(installationId, repo);
       for (const removed of p.repositories_removed || []) {
+        delete this.data.activation[`${installationId}:${removed.id}`];
         this.data.queue = this.data.queue.filter(
           (q) =>
             q.installationId !== installationId ||
@@ -485,6 +496,7 @@ class ProofService {
       p.pull_request?.merged === true
     )
       this.recordMerge(repo, repositoryId, installationId, p.pull_request);
+    if (this.meter) require("./events").record(this.store,"evidence_changed",id,{account:this.meter.data.installations[installationId].account,repositoryId,event});
     this.data.revisions[repo.toLowerCase()] =
       (this.data.revisions[repo.toLowerCase()] || 0) + 1;
     for (const row of Object.values(this.data.receipts))
@@ -609,9 +621,70 @@ class ProofService {
     this.save();
     assert(!failed || !policies.normalize(this.policyFor(repositoryId)).enforced, "CHECK_RECONCILIATION_PENDING");
   }
+  activate(installationId, repo) {
+    assert(Number.isSafeInteger(repo.id) && repoName(repo.full_name), "INVALID_WEBHOOK_SCOPE");
+    const key = `${installationId}:${repo.id}`;
+    this.data.activation[key] = {installationId, repositoryId:repo.id, repo:repo.full_name};
+    require("./events").record(this.store,"repo_authorized",key,{installationId,repositoryId:repo.id,account:this.meter.data.installations[installationId].account});
+  }
+  watch(installationId, repositoryId, repo, pulls) {
+    for (const p of pulls) {
+      if (p.state && p.state !== "open") continue;
+      assert(Number.isSafeInteger(p.number) && p.number > 0, "INVALID_SCOPE");
+      const key = `${repositoryId}:${p.number}`;
+      if (this.data.subscriptions[key]) continue;
+      assert(Object.keys(this.data.subscriptions).length < 100,"SUBSCRIPTION_CAPACITY");
+      const sub = this.data.subscriptions[key] = {installationId,repositoryId,repo,pr:p.number};
+      this.meter.activity(installationId,p.user,"PR_OPEN",`discovery:${repositoryId}:${p.number}`,Date.parse(p.created_at)||Date.now());
+      this.data.queue.push({...sub});
+    }
+    this.save();
+  }
+  async activateNext() {
+    const pending = Object.values(this.data.activation).find(x=>!x.complete && (!x.retryAt || x.retryAt<=Date.now()));
+    if (!pending) return;
+    try {
+      this.meter.account(pending.installationId);
+      const client = await this.appClient(pending.installationId,pending.repositoryId);
+      await client.authorize(pending.repo,pending.repositoryId);
+      const pulls = await client.list(`/repos/${pending.repo}/pulls?state=open`);
+      this.watch(pending.installationId,pending.repositoryId,pending.repo,pulls);
+      pending.complete = true;
+    } catch (e) { pending.error = e.code || "ACTIVATION_UNAVAILABLE"; pending.retryAt=Date.now()+300000; }
+    this.save();
+  }
+  async trialNotices() {
+    if (!this.meter) return;
+    for (const sub of Object.values(this.data.subscriptions)) {
+      if (!this.meter.data.installations[sub.installationId]?.active) continue;
+      const usage = this.meter.usage(sub.installationId);
+      const trial = this.meter.account(sub.installationId).trial;
+      if (!trial || usage.plan === "PRO") continue;
+      const day = usage.plan === "PAUSED" ? 8 : Math.min(8,Math.floor((Date.now()-trial.startedAt)/86400000)+1);
+      if(day<5 || sub.noticeDay===day) continue;
+      // Update existing native checks even when no new GitHub event arrives.
+      if(this.config.publishChecks) {
+        const client=await this.appClient(sub.installationId,sub.repositoryId);
+        for(const row of Object.values(this.data.receipts).filter(r=>r.installationId===sub.installationId && r.receipt.identity.repositoryId===sub.repositoryId && r.receipt.identity.pr===sub.pr)) {
+          for(const id of row.checkIds || (row.checkId?[row.checkId]:[])) {
+            const gate=this.gateFor(row.receipt,row.current);
+            await client.request(`/repos/${sub.repo}/check-runs/${id}`,{method:"PATCH",body:{output:{title:usage.plan==="PAUSED"?"TRIAL ENDED — action required":`Trial ends ${usage.trial.endsAt}`,summary:usage.notice+`\n\nContinue: ${this.config.origin}/proof/\nHistorical receipt: ${this.config.origin}/proof/receipts/${row.receipt.receiptId}`},...(usage.plan==="PAUSED"?{status:"completed",conclusion:gate.enforced?"failure":"neutral"}:{})}});
+          }
+        }
+      }
+      sub.noticeDay=day;
+      if(!usage.automationAllowed) sub.refreshState="TRIAL_EXPIRED";
+      require("./events").record(this.store,"trial_notice",`${sub.installationId}:${sub.repositoryId}:${sub.pr}:${day}`,{account:this.meter.data.installations[sub.installationId].account,day});
+    }
+    this.save();
+  }
   async drain() {
-    if (this.busy || this.draining || !this.data.queue.length) return;
+    if (this.busy || this.draining) return;
     this.draining = true;
+    try {
+      if(this.meter) { await this.activateNext(); await this.trialNotices(); }
+    } catch { this.data.trialNoticeHealth="RETRY_PENDING"; this.save(); }
+    if (!this.data.queue.length) { this.draining=false; return; }
     const job = this.data.queue[0];
     if (job.retryAt && Date.now() < job.retryAt) { this.draining = false; return; }
     job.processing = true;
@@ -619,6 +692,16 @@ class ProofService {
     try {
       const client = await this.appClient(job.installationId, job.repositoryId);
       await client.authorize(job.repo, job.repositoryId);
+      if (this.meter && !this.meter.usage(job.installationId).automationAllowed) {
+        // Safety notice only: no collection, receipt or passing enforcing result at expiry.
+        if(this.config.publishChecks) {
+          const pull=await client.get(`/repos/${job.repo}/pulls/${job.pr}`);
+          const usage=this.meter.usage(job.installationId);
+          const heads=[pull.head.sha,job.mergeGroup?.head_sha].filter((x,i,a)=>x&&a.indexOf(x)===i);
+          for(const head_sha of heads) await client.request(`/repos/${job.repo}/check-runs`,{method:"POST",body:{name:require("./check").NAME,head_sha,status:"completed",conclusion:policies.normalize(this.policyFor(job.repositoryId)).enforced?"failure":"neutral",details_url:this.config.origin+"/proof/",output:{title:"TRIAL ENDED — hosted proof paused",summary:usage.notice+` Continue: ${this.config.origin}/proof/`}}});
+        }
+        throw Object.assign(new Error("TRIAL_EXPIRED"),{code:"TRIAL_EXPIRED"});
+      }
       await this.retractChecks(client, job.repositoryId, job.pr);
       const out = await this.run(job.repo, job.pr, {
         client,
@@ -647,6 +730,7 @@ class ProofService {
               await this.retractChecks(client, job.repositoryId, job.pr, out.receipt.receiptId);
             },
             this.remediationFor(out.receipt, this.data.receipts[out.receipt.receiptId].current),
+            this.meter ? this.meter.usage(job.installationId).notice + ` Continue: ${this.config.origin}/proof/` : "",
           );
           if (Number.isSafeInteger(check?.id)) {
             const row = this.data.receipts[out.receipt.receiptId];
@@ -661,13 +745,14 @@ class ProofService {
         }
       }
       const sub = this.data.subscriptions[`${job.repositoryId}:${job.pr}`];
-      if (sub) sub.latestReceiptId = out.receipt.receiptId;
+      if (sub) { sub.latestReceiptId = out.receipt.receiptId; sub.refreshState="CURRENT"; }
+      if(this.meter) require("./events").record(this.store,"automatic_proof",out.receipt.receiptId,{account:this.meter.data.installations[job.installationId].account,receiptId:out.receipt.receiptId,verdict:out.receipt.verdict});
       this.data.queue.shift();
     } catch (error) {
-      if (error.code === "ALLOWANCE_EXHAUSTED") {
+      if (["ALLOWANCE_EXHAUSTED", "TRIAL_EXPIRED"].includes(error.code)) {
         this.data.queue.shift();
         const sub = this.data.subscriptions[`${job.repositoryId}:${job.pr}`];
-        if (sub) sub.refreshState = "ALLOWANCE_EXHAUSTED";
+        if (sub) sub.refreshState = error.code;
         return;
       }
       // Preserve a failed gate update for retry instead of leaving an old pass forever.

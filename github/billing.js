@@ -56,6 +56,7 @@ class Billing extends Stripe {
     assert(["pro", "topup"].includes(kind), "INVALID_PURCHASE");
     const account = this.service.meter.account(installationId),
       usage = this.service.meter.usage(installationId);
+    assert(kind === "pro", "TOPUP_OFFER_RETIRED");
     const accountKey =
       this.service.meter.data.installations[installationId].account;
     if (kind === "pro") {
@@ -139,6 +140,7 @@ class Billing extends Stripe {
     );
     c.sessionId = session.id;
     c.url = session.url;
+    require("./events").record(this.store, "checkout_started", c.id, { account:accountKey, kind, quantity:c.quantity });
     this.store.save();
     return { url: c.url };
   }

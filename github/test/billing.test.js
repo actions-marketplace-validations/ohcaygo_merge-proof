@@ -94,13 +94,13 @@ test("verified top-up grants exactly five across duplicate events and delivery t
   await h.b.webhook(
     ...event("checkout.session.async_payment_succeeded", "evt_2"),
   );
-  a.equal(h.meter.usage(2).topupBalance, 5);
+  a.equal(Object.values(h.meter.account(2).topups).reduce((n,p)=>n+p.proofs,0), 5);
 });
 test("unpaid, wrong quantity, invalid signature grant nothing", async () => {
   const h = harness();
   h.session.payment_status = "unpaid";
   await h.b.webhook(...event("checkout.session.completed"));
-  a.equal(h.meter.usage(2).topupBalance, 0);
+  a.equal(Object.values(h.meter.account(2).topups).reduce((n,p)=>n+p.proofs,0), 0);
   h.session.payment_status = "paid";
   h.session.line_items.data[0].quantity = 2;
   await a.rejects(
@@ -108,12 +108,12 @@ test("unpaid, wrong quantity, invalid signature grant nothing", async () => {
     /WRONG_SKU/,
   );
   await a.rejects(h.b.webhook(Buffer.from("{}"), "bad"));
-  a.equal(h.meter.usage(2).topupBalance, 0);
+  a.equal(Object.values(h.meter.account(2).topups).reduce((n,p)=>n+p.proofs,0), 0);
 });
-test("two paid developers get 100 monthly proofs, duplicate invoices preserve usage, topups survive renewal", async () => {
+test("two paid developers get Pro, duplicate invoices preserve usage, topups survive renewal", async () => {
   const h = harness();
   await h.b.subscription("github:9", "sub_test", "cus_test", 2);
-  a.equal(h.meter.usage(2).includedBalance, 100);
+  a.equal(h.meter.usage(2).paidDevelopers, 2);
   const r = {
     receiptId: "one",
     issuedAt: new Date().toISOString(),
@@ -122,13 +122,13 @@ test("two paid developers get 100 monthly proofs, duplicate invoices preserve us
   };
   h.meter.complete(2, r, { state: "CURRENT" }, true);
   await h.b.subscription("github:9", "sub_test", "cus_test", 2);
-  a.equal(h.meter.usage(2).includedBalance, 99);
+  a.equal(h.meter.usage(2).used, 1);
   h.meter.topup("github:9", "pi_extra");
   h.subscription.items.data[0].current_period_start += 50;
   h.subscription.latest_invoice.lines.data[0].period.start += 50;
   await h.b.subscription("github:9", "sub_test", "cus_test", 2);
-  a.equal(h.meter.usage(2).includedBalance, 100);
-  a.equal(h.meter.usage(2).topupBalance, 5);
+  a.equal(h.meter.usage(2).paidDevelopers, 2);
+  a.equal(Object.values(h.meter.account(2).topups).reduce((n,p)=>n+p.proofs,0), 5);
   a.equal(h.meter.complete(2, r, { state: "CURRENT" }, true).charged, false);
 });
 test("human identity dedups across installations, bots and guessed attribution excluded", () => {
@@ -168,7 +168,7 @@ test("quantity increase needs confirmation, changes next invoice without expandi
   const result = await h.b.quantity(2, 3);
   a.equal(writes[0].form.proration_behavior, "none");
   a.equal(result.quantity, 3);
-  a.equal(h.meter.usage(2).includedBalance, 100);
+  a.equal(h.meter.usage(2).paidDevelopers, 2);
   a.equal(account.nextQuantity, 3);
 });
 test("checkout creation uses exact monthly quantity and redirect cannot activate subscription",async()=>{
@@ -191,19 +191,19 @@ test("checkout creation uses exact monthly quantity and redirect cannot activate
  a.equal(requests.find(r=>r.p==="/customers").form.test_clock,undefined);
  const form=requests.find(r=>r.p==="/checkout/sessions").form;
  a.equal(form["line_items[0][quantity]"],"2");a.equal(form.mode,"subscription");a.equal(form.customer,"cus_test");
- a.equal(h.meter.usage(2).plan,"FREE");
+ a.equal(h.meter.usage(2).plan,"AWAITING_FIRST_PROOF");
  await h.b.webhook(...event("checkout.session.completed","evt_pro",{id:"cs_pro"}));
- a.equal(h.meter.usage(2).plan,"PRO");a.equal(h.meter.usage(2).includedBalance,100);
+ a.equal(h.meter.usage(2).plan,"PRO");a.equal(h.meter.usage(2).paidDevelopers,2);
 });
-test('renewal allowance follows paid invoice quantity, not mutable next-invoice quantity', async () => {
+test('renewal entitlement follows paid invoice quantity, not mutable next-invoice quantity', async () => {
  const h=harness();
  h.subscription.items.data[0].quantity=4;
  await h.b.subscription('github:9','sub_test','cus_test',2);
- a.equal(h.meter.usage(2).includedBalance,100);
+ a.equal(h.meter.usage(2).paidDevelopers,2);
  a.equal(h.meter.usage(2).paidDevelopers,2);
  h.subscription.items.data[0].current_period_start+=50;
  await a.rejects(h.b.subscription('github:9','sub_test','cus_test'), /UNVERIFIED_PAID_PERIOD/);
- a.equal(h.meter.usage(2).includedBalance,100);
+ a.equal(h.meter.usage(2).paidDevelopers,2);
 });
 test('quantity reconciliation never reverses a newly requested provider cancellation', async () => {
  const h=harness();

@@ -40,7 +40,7 @@ function receipt(n, repo = 1, verdict = "NOT_PROVEN") {
     },
   };
 }
-test("five unique heads exhaust free taste, old keys refresh after restart, repositories do not collide", (t) => {
+test("trial is unlimited, starts once and persists across restart and installations", (t) => {
   const h = setup(t);
   let m = new Meter(h.store);
   m.connect(2, 9);
@@ -60,12 +60,13 @@ test("five unique heads exhaust free taste, old keys refresh after restart, repo
   );
   h.store.save();
   m = h.reopen();
-  a.equal(m.usage(2).remaining, 0);
-  a.throws(() => m.check(2, receipt(6).identity), /ALLOWANCE_EXHAUSTED/);
+  a.equal(m.usage(2).plan, "TRIAL");
+  a.equal(m.usage(2).automationAllowed, true);
+  a.equal(m.check(2, receipt(6).identity).charged, true);
   a.equal(m.complete(2, receipt(1), { state: "CURRENT" }, true).charged, false);
   m.disconnect(2);
   m.connect(3, 9);
-  a.equal(m.usage(3).remaining, 0);
+  a.equal(m.usage(3).trial.startedAt, new Date(m.account(3).trial.startedAt).toISOString());
   a.throws(() => m.usage(2), /INSTALLATION_INACTIVE/);
 });
 test("FAIL, failed collection and stale completion debit zero", (t) => {
@@ -117,7 +118,7 @@ test("overlapping workers cannot double-debit; second writer cannot open durable
   a.equal(results.filter((r) => r.status === "fulfilled").length, 1);
   a.equal(s.meter.usage(2).used, 1);
 });
-test("signed hosted lifecycle: install, five heads, stale immutable history, sixth pauses and same-head refresh stays free", async (t) => {
+test("signed hosted lifecycle: automatic proof, immutable stale history, time expiry pauses even same head", async (t) => {
   const h = setup(t);
   let head = "1".repeat(40);
   const s = new ProofService({
@@ -155,16 +156,17 @@ test("signed hosted lifecycle: install, five heads, stale immutable history, six
   a.equal(s.meter.usage(2).used, 5);
   a.equal(first.current.state, "STALE");
   a.equal(first.receipt.identity.headSha, "1".repeat(40));
+  s.meter.account(2).trial.endsAt = Date.now()-1;
   head = "6".repeat(40);
   await hook("push", {
     installation: { id: 2 },
     repository: { id: 1, full_name: "fixture/public" },
   });
   await s.drain();
-  a.equal(s.data.subscriptions["1:1"].refreshState, "ALLOWANCE_EXHAUSTED");
+  a.equal(s.data.subscriptions["1:1"].refreshState, "TRIAL_EXPIRED");
   a.equal(Object.keys(s.data.receipts).length, 5);
   head = "5".repeat(40);
-  await s.run("fixture/public", 1, { installationId: 2 });
+  await a.rejects(s.run("fixture/public", 1, { installationId: 2 }), /TRIAL_EXPIRED/);
   a.equal(s.meter.usage(2).used, 5);
   await hook("installation", { action: "deleted", installation: { id: 2 } });
   await a.rejects(
@@ -175,7 +177,7 @@ test("signed hosted lifecycle: install, five heads, stale immutable history, six
     action: "created",
     installation: { id: 3, account: { id: 9 } },
   });
-  a.equal(s.meter.usage(3).remaining, 0);
+  a.equal(s.meter.usage(3).plan, "PAUSED");
 });
 test("historical scan retries the same reservation after infrastructure failure and never consumes live taste", async (t) => {
   const h = setup(t);
@@ -192,7 +194,7 @@ test("historical scan retries the same reservation after infrastructure failure 
   const first = s.startScan(2, 1, "fixture/public");
   await s.scanJob;
   a.equal(first.state, "RETRY_AVAILABLE");
-  a.equal(s.meter.usage(2).remaining, 5);
+  a.equal(s.meter.usage(2).plan, "AWAITING_FIRST_PROOF");
   unavailable = false;
   first.result = { rows: [{ state: "UNAVAILABLE" }] };
   const second = s.startScan(2, 1, "fixture/public");
@@ -205,7 +207,7 @@ test("historical scan retries the same reservation after infrastructure failure 
     () => s.startScan(2, 2, "fixture/other"),
     /SCAN_TASTE_ALREADY_RESERVED/,
   );
-  a.equal(s.meter.usage(2).remaining, 5);
+  a.equal(s.meter.usage(2).plan, "AWAITING_FIRST_PROOF");
 });
 test('active developers require pushed commits; repeated later pushes retain their own event evidence', async t => {
  const h=setup(t);

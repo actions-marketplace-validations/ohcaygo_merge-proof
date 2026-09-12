@@ -69,7 +69,7 @@ function summary(receipt, current, result, remediation = require("./remediation"
   ).slice(0, 60000);
 }
 
-async function publish(client, receipt, current, origin, policyResult = null, onPublished = null, remediation = undefined) {
+async function publish(client, receipt, current, origin, policyResult = null, onPublished = null, remediation = undefined, notice = "") {
   const url = new URL(origin);
   if (!["https:", "http:"].includes(url.protocol))
     throw Error("INVALID_ORIGIN");
@@ -81,7 +81,7 @@ async function publish(client, receipt, current, origin, policyResult = null, on
     details_url: `${url.origin}/proof/receipts/${receipt.receiptId}`,
     output: {
       title: title(receipt, current, result).slice(0, 255),
-      summary: summary(receipt, current, result, remediation),
+      summary: (notice ? notice + "\n\n" : "") + summary(receipt, current, result, remediation),
     },
   };
   const published = [];

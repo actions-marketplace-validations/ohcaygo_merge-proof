@@ -54,23 +54,14 @@ class Meter {
   }
   check(installationId, identity) {
     const account = this.account(installationId);
+    assert(this.usage(installationId).automationAllowed, "TRIAL_EXPIRED");
     const key = this.key(installationId, identity);
     // Dedup history never resets with an allowance period.
     if (this.data.proofs[key])
       return { key, charged: false, reason: "ALREADY_ACCOUNTED" };
-    const usage = this.usage(installationId);
-    assert(usage.remaining > 0, "ALLOWANCE_EXHAUSTED");
-    return {
-      key,
-      charged: true,
-      reason:
-        usage.includedBalance > 0
-          ? usage.plan === "PRO"
-            ? "MONTHLY_INCLUDED"
-            : "FREE_TASTE"
-          : "TOPUP",
-    };
+    return { key, charged: true, reason: this.usage(installationId).plan === "PRO" ? "MONTHLY_INCLUDED" : "TRIAL" };
   }
+
   complete(installationId, receipt, current, collectionComplete) {
     this.account(installationId);
     if (
@@ -79,6 +70,15 @@ class Meter {
       !["VERIFIED", "NOT_PROVEN"].includes(receipt.verdict)
     )
       return { charged: false, reason: "NOT_BILLABLE_COMPLETION" };
+    const account = this.account(installationId);
+    const accountKey = this.data.installations[installationId].account;
+    // Same synchronous transaction as the receipt save; no install or failed attempt starts time.
+    if (!account.trial && this.usage(installationId).plan !== "PRO") {
+      const now = Date.now();
+      account.trial = { startedAt: now, endsAt: now + 7 * 86400000, receiptId: receipt.receiptId };
+      record(this.store, "first_successful_proof", accountKey, { account: accountKey, installationId, receiptId: receipt.receiptId });
+      record(this.store, "trial_started", accountKey, { account: accountKey, installationId, startedAt: now, endsAt: account.trial.endsAt });
+    }
     const decision = this.check(installationId, receipt.identity);
     if (decision.charged) {
       const account = this.account(installationId);
@@ -103,22 +103,16 @@ class Meter {
     const active =
       s && s.periodStart <= now && now < s.periodEnd && s.verifiedPaid === true;
     const period = active ? a.periods[s.periodStart] : null;
-    const includedBalance = active
-      ? Math.max(0, period.quantity * 50 - period.used)
-      : Math.max(0, 5 - a.freeUsed);
-    const topupBalance =
-      Object.values(a.topups || {}).reduce((n, p) => n + p.proofs, 0) -
-      (a.topupUsed || 0);
+    const trial = a.trial;
+    const expired = (!!trial && now >= trial.endsAt) || (!!s && !active);
+    if (trial && expired && !active) record(this.store, "trial_expired", this.data.installations[installationId].account, { account: this.data.installations[installationId].account, endsAt: trial.endsAt });
+    const plan = active ? "PRO" : expired ? "PAUSED" : trial ? "TRIAL" : "AWAITING_FIRST_PROOF";
     return {
-      plan: active ? "PRO" : "FREE",
+      plan,
+      automationAllowed: active || !expired,
       used: active ? period.used : a.freeUsed,
-      remaining: includedBalance + topupBalance,
-      includedBalance,
-      topupBalance,
-      resetAt: active ? new Date(s.periodEnd).toISOString() : null,
-      resetExplanation: active
-        ? "Included proofs expire at renewal. Top-ups remain until used."
-        : "The free taste does not reset.",
+      trial: trial ? { startedAt: new Date(trial.startedAt).toISOString(), endsAt: new Date(trial.endsAt).toISOString() } : null,
+      notice: this.notice(plan, trial || (s ? {endsAt:s.periodEnd} : null), now),
       paidDevelopers: active ? period.quantity : 0,
       nextQuantity: a.nextQuantity ?? (active ? period.quantity : null),
       quantityEffectiveAt: a.quantityEffectiveAt
@@ -146,6 +140,14 @@ class Meter {
           }
         : null,
     };
+  }
+  notice(plan, trial, now = Date.now()) {
+    if (plan === "PRO") return "Pro is active.";
+    if (plan === "AWAITING_FIRST_PROOF") return "Merge Proof is on. Your 7-day trial starts with the first successful hosted proof. No card required.";
+    const end = new Date(trial.endsAt).toISOString();
+    if (plan === "PAUSED") return "TRIAL ENDED — hosted automation is paused. Existing receipts remain available. Continue Pro for $29/month per active developer. If you require Merge Proof in GitHub, subscribe or remove the required Merge Proof check in repository Settings → Rules / Branches; Merge Proof never changes your rules.";
+    const day = Math.floor((now - trial.startedAt) / 86400000) + 1;
+    return day < 5 ? `Trial active until ${end}.` : `Trial ends ${end}${day >= 7 ? " — within 24 hours" : ""}. Continue Pro for $29/month per active developer. If Merge Proof is required in GitHub, subscribe or remove the required check before expiry in Settings → Rules / Branches. Existing receipts stay available; no automatic charge.`;
   }
   activity(installationId, user, kind, evidence, at = Date.now()) {
     const a = this.account(installationId);

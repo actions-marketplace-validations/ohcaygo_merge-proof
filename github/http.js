@@ -173,11 +173,14 @@ async function handle(service, req, res, url) {
           const pulls = await client.get(
             `/repos/${repo.full_name}/pulls?state=open&per_page=30`,
           );
+          service.watch(installationId,repositoryId,repo.full_name,pulls);
           const usage = service.meter.usage(installationId);
+          service.save();
           let billingOwner = false;
           try {
             billingOwner = await customers.billingOwner(session, installation);
           } catch {}
+          delete usage.used;
           if (!billingOwner) usage.activeDevelopers = [];
           send(200, {
             usage,
@@ -216,12 +219,15 @@ async function handle(service, req, res, url) {
           );
           if (req.method === "POST") {
             const chosen = policies.select(input.preset);
+            assert(!chosen.enforced || service.meter.usage(installationId).plan === "PRO", "PAID_PRO_REQUIRED_FOR_GATE");
             assert(!chosen.enforced || status.readiness.state === "READY", "GATE_NOT_READY");
             service.setPolicy(repositoryId, input.preset, session.userId);
             await service.retractChecks(client, repositoryId);
           }
           send(200, {
             admin,
+            enforcementAvailable: service.meter.usage(installationId).plan === "PRO",
+            trialNotice: service.meter.usage(installationId).notice,
             policy: policies.normalize(service.policyFor(repositoryId)),
             presets: Object.values(policies.PRESETS).map((p) => ({
               id: p.id,
@@ -387,6 +393,9 @@ async function handle(service, req, res, url) {
       const out = await service.read(match[1], token, {
         refresh: Boolean(match[2]),
       });
+      const receiptRow = service.data.receipts[match[1]];
+      const notice = customers ? service.meter.usage(receiptRow.installationId).notice : "";
+      if (customers) { out.entitlementNotice = notice; service.save(); }
       if (
         url.searchParams.get("format") === "json" ||
         (match[2] && url.searchParams.get("format") !== "html")
@@ -395,7 +404,7 @@ async function handle(service, req, res, url) {
       else
         send(
           200,
-          interactive(html(out.receipt, out.current, out.gate, out.remediation))
+          interactive(html(out.receipt, out.current, out.gate, out.remediation)).replace("<main>", "<main>" + (notice ? `<aside><p>${require("./receipt").escape(notice)}</p><a href="/proof/">Continue Pro / account</a></aside>` : ""))
             .replace('src="/proof/app.js"', 'src="/proof/receipt.js"')
             .replace(
               "</main>",
@@ -412,6 +421,8 @@ async function handle(service, req, res, url) {
       "PROOF_BUSY",
       "LOGIN_REQUIRED",
       "ALLOWANCE_EXHAUSTED",
+      "TRIAL_EXPIRED",
+      "PAID_PRO_REQUIRED_FOR_GATE",
       "BILLING_NOT_CONFIGURED",
       "BILLING_OWNER_REQUIRED",
       "REVIEW_ACTIVE_DEVELOPERS",

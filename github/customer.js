@@ -1,4 +1,5 @@
 "use strict";
+const { record } = require("./events");
 const { randomBytes, createHash } = require("node:crypto");
 const { assert } = require("./common");
 const random = () => randomBytes(32).toString("hex");
@@ -34,6 +35,7 @@ class Customers {
     const counts = this.service.store.data.acquisition ||= {};
     counts[source] ||= {};
     counts[source][stage] = (counts[source][stage] || 0) + 1;
+    record(this.service.store, stage, session.journeyId || digest(String(session.userId)), { journeyId: session.journeyId, acquisition_source: source });
     this.service.save();
   }
   start(source) {
@@ -44,6 +46,9 @@ class Customers {
     for (const [k, v] of this.states) if (v.expiresAt < Date.now()) this.states.delete(k);
     assert(this.states.size < 1000, "LOGIN_BUSY");
     const state = random();
+    const journeyId = digest(state);
+    if (this.service.store) record(this.service.store, "trial_cta", journeyId, {journeyId, acquisition_source: ["x", "other"].includes(source) ? source : "direct"});
+    this.service.save?.();
     this.states.set(digest(state), { expiresAt: Date.now() + 600000, source: ['x', 'other'].includes(source) ? source : 'direct' });
     const url = new URL("https://github.com/login/oauth/authorize");
     url.search = new URLSearchParams({
@@ -94,6 +99,7 @@ class Customers {
     const id = random();
     this.sessions.set(digest(id), {
       acquisitionSource,
+      journeyId: digest(state),
       token: data.access_token,
       userId: user.id,
       expiresAt: Date.now() + Math.min(data.expires_in || 3600, 3600) * 1000,
@@ -172,7 +178,11 @@ class Customers {
     );
     const repo = repos.find((r) => r.id === repositoryId);
     assert(repo, "ACCESS_DENIED");
-    this.service.meter.connect(installationId, installation.account.id);
+    const key = this.service.meter.connect(installationId, installation.account.id);
+    const account = this.service.meter.account(installationId);
+    account.acquisitionSource ||= session.acquisitionSource || "direct";
+    record(this.service.store, "account_connected", `${key}:${session.journeyId || session.userId}`, {account:key,journeyId:session.journeyId});
+    record(this.service.store, "repo_authorized", `${installationId}:${repositoryId}`, {account:key,installationId,repositoryId});
     this.service.save();
     return { repo, installation };
   }

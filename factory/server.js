@@ -163,9 +163,8 @@ function createServer(factory, proofService = null) {
             available: false,
             price: "Pro — $29/month per active developer",
             hostedReady: false,
-            includedProofs: 50,
-            topup: { amount: 5, proofs: 5 },
-            freeProofs: 5,
+            trialDays: 7,
+            trialStarts: "FIRST_SUCCESSFUL_HOSTED_PROOF",
           });
           return;
         }

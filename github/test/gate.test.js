@@ -716,6 +716,8 @@ test("the ledger filters, states its own completeness and refuses another reposi
 test("the gate adds no billable proof: a re-proof of the same head is zero debit", async (t) => {
   const h = harness(t, { hosted: true });
   h.service.meter.connect(2, 7);
+  h.service.data.subscriptions["1:1"]={installationId:2,repositoryId:1,repo:"fixture/public",pr:1};
+  h.service.meter.paidPeriod("github:7",{verifiedPaid:true,quantity:1,periodStart:Date.now()-1000,periodEnd:Date.now()+86400000});
   h.service.setPolicy(1, "REPOSITORY_REQUIREMENTS");
   await h.service.webhook(...hook());
   await h.service.drain();
@@ -727,8 +729,8 @@ test("the gate adds no billable proof: a re-proof of the same head is zero debit
     await h.service.drain();
   }
   a.equal(h.service.meter.usage(2).used, 1);
-  a.equal(h.service.meter.usage(2).plan, "FREE");
-  a.equal(h.service.meter.usage(2).remaining, before.remaining);
+  a.equal(h.service.meter.usage(2).plan, "PRO");
+  a.equal(h.service.meter.usage(2).automationAllowed, true);
 });
 
 test("policy selection is bounded, defaults to report-only and is recorded", (t) => {
