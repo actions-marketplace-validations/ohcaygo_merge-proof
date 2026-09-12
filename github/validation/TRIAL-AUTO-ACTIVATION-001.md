@@ -82,3 +82,22 @@ https://github.com/apps/ohcaygo-merge-proof/installations/new
 NEXT: Ryan completes that installation; then resume production acceptance and
 promotion through the already-authorized immutable-release path. Site/campaign
 claims and live customer/billing/funnel state were not changed by this task.
+
+## Installation follow-up — 2026-09-12 19:13 UTC
+
+Ryan reported the production App installed on `ohcaygo/merge-proof` and authorized
+continued acceptance/deployment. Fresh authenticated GitHub `/app` verified App
+4901537, slug `ohcaygo-merge-proof`, matching configured installation URL and OAuth
+client. `/app/installations` still returned only installation 160741988 for
+`dupageinspect-beep`; no `ohcaygo` installation was returned. Recent signed delivery
+history likewise contained no new organization installation. The open in-app
+GitHub installation page showed “Confirm access”, signed in as dupageinspect-beep,
+with GitHub Mobile/authenticator/email authentication choices.
+
+Owner action remains completion of GitHub confirmation and the selected-repository
+installation. Do not treat the reported installation as provider-verified yet.
+Production remains ruleset-671b6e9 and active. Candidate code still matches the
+Linux-tested 0a635a7 source. Local and host candidate archives both SHA256
+`3b3eaa9dc37e5f847d9ce6eaa29b67856224a49548edcc9dd0d581995172d3b3`.
+Existing acceptance results remain applicable; no redundant tests, production
+mutation or deployment was performed.
