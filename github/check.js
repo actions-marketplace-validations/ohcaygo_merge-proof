@@ -36,10 +36,11 @@ function title(receipt, current, result) {
     return `${receipt.verdict} · ${current?.state || "UNAVAILABLE"} at observation · reporting only`;
   return result.conclusion === "success"
     ? `${receipt.verdict} · merge requirement satisfied`
-    : `${receipt.verdict} · merge blocked · ${result.blocking.length} item(s) to resolve`;
+    : `${receipt.verdict} · policy reports failure · ${result.blocking.length} item(s) to resolve`;
 }
 
-function summary(receipt, current, result) {
+function summary(receipt, current, result, remediation = require("./remediation").build(receipt, current, result)) {
+  if (remediation) return (`NOT PROVEN\n\n` + remediation.items.slice(0, 3).map(x => `${x.summary}\nAction: ${x.nextAction}\nAutomatic recheck: ${x.automaticRecheck.text}`).join("\n\n") + `\n\nMerge: ${remediation.mergeConsequence.text}\n\n${remediation.items.length > 3 ? `${remediation.items.length - 3} more evidence gaps. ` : ""}Open the receipt for all gaps, why they matter, and Technical details.`).slice(0, 6000);
   const items = explain(receipt, result);
   const blocking = items.filter((x) => x.blocksMerge === true);
   const reported = items.filter((x) => x.blocksMerge !== true);
@@ -68,7 +69,7 @@ function summary(receipt, current, result) {
   ).slice(0, 60000);
 }
 
-async function publish(client, receipt, current, origin, policyResult = null, onPublished = null) {
+async function publish(client, receipt, current, origin, policyResult = null, onPublished = null, remediation = undefined) {
   const url = new URL(origin);
   if (!["https:", "http:"].includes(url.protocol))
     throw Error("INVALID_ORIGIN");
@@ -80,7 +81,7 @@ async function publish(client, receipt, current, origin, policyResult = null, on
     details_url: `${url.origin}/proof/receipts/${receipt.receiptId}`,
     output: {
       title: title(receipt, current, result).slice(0, 255),
-      summary: summary(receipt, current, result),
+      summary: summary(receipt, current, result, remediation),
     },
   };
   const published = [];

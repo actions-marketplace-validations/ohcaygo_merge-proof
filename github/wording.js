@@ -142,7 +142,7 @@ const GAPS = {
     plain:
       "This change touches a protected boundary and your policy asks for extra human approval on those changes.",
     why: "You chose the stricter preset, which requires at least two current eligible approvals when a high-impact area is touched.",
-    doNext: "Get a second eligible approval on the current version, or move this repository to the standard preset.",
+    doNext: "Complete the required number of eligible approvals on the current version.",
     reproof: "AUTOMATIC",
   },
   PROOF_COULD_NOT_COMPLETE: {
@@ -178,7 +178,8 @@ function specialize(code, receipt) {
   if (
     code === "INSUFFICIENT_CURRENT_HUMAN_APPROVAL" &&
     approval?.observed?.length &&
-    !approval?.current?.length
+    !approval?.current?.length &&
+    approval.observed.every((x) => x.sha && x.sha !== receipt.identity?.headSha)
   )
     return {
       ...base,
@@ -188,10 +189,10 @@ function specialize(code, receipt) {
     };
   if (code === "CURRENT_STATE_EXECUTION_NOT_PROVEN" && Array.isArray(ci?.required)) {
     const states = new Set(ci.required.map((r) => r.state));
-    if (states.has("OTHER_SHA_OR_STATUS_ONLY"))
+    if (states.has("OTHER_SHA_OR_STATUS_ONLY") && ci.required.some((x) => x.state === "OTHER_SHA_OR_STATUS_ONLY" && receipt.evidence?.checks?.value?.some(check => check.name === x.name && (x.appId === null || check.appId === x.appId) && check.sha && check.sha !== ci.target?.value?.sha)))
       return {
         ...base,
-        plain: "The required validation result was recorded against an older version.",
+        plain: "The required validation result was recorded against another version.",
         why: "The green tick you can see came from a different commit than the one that would merge.",
         doNext: "Run the required validation against the current version.",
       };

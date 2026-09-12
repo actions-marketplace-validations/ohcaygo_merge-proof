@@ -78,6 +78,11 @@ class ProofService {
       this.policyFor(receipt.identity.repositoryId),
     );
   }
+  remediationFor(receipt, current, gate = this.gateFor(receipt, current)) {
+    const sub = this.data.subscriptions[`${receipt.identity.repositoryId}:${receipt.identity.pr}`];
+    const tracked = Boolean(sub?.installationId && this.config.appId && this.config.privateKey && this.config.webhookSecret);
+    return require("./remediation").build(receipt, current, gate, { tracked });
+  }
   startScan(installationId, repositoryId, repo) {
     const account = this.meter.account(installationId);
     const old = account.scan;
@@ -245,7 +250,7 @@ class ProofService {
           at: receipt.issuedAt,
         });
       this.save();
-      return { receipt, current, gate };
+      return { receipt, current, gate, remediation: this.remediationFor(receipt, current, gate) };
     });
   }
   async access(id, token) {
@@ -334,6 +339,7 @@ class ProofService {
     return {
       receipt: row.receipt,
       current,
+      remediation: this.remediationFor(row.receipt, current),
       // Recomputed against the currentness actually being shown, so an
       // unrefreshed or stale view never displays a satisfied merge gate.
       gate: this.gateFor(row.receipt, current),
@@ -640,6 +646,7 @@ class ProofService {
               // A signed event or policy change can arrive during the POST.
               await this.retractChecks(client, job.repositoryId, job.pr, out.receipt.receiptId);
             },
+            this.remediationFor(out.receipt, this.data.receipts[out.receipt.receiptId].current),
           );
           if (Number.isSafeInteger(check?.id)) {
             const row = this.data.receipts[out.receipt.receiptId];

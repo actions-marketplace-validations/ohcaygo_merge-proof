@@ -456,7 +456,7 @@ test("an old check result is explained as an old version, not as a failure", () 
   const item = explain(receipt, null).find(
     (x) => x.code === "CURRENT_STATE_EXECUTION_NOT_PROVEN",
   );
-  a.match(item.plain, /recorded against an older version/);
+  a.match(item.plain, /recorded against another version/);
   a.match(item.doNext, /against the current version/);
 });
 
@@ -476,9 +476,9 @@ test("the published check body carries the plain explanation and the consequence
     result,
   );
   a.equal(call[1].body.conclusion, "failure");
-  a.match(call[1].body.output.title, /merge blocked/);
-  a.match(call[1].body.output.summary, /What must be resolved before this merge/);
-  a.match(call[1].body.output.summary, /What to do:/);
+  a.match(call[1].body.output.title, /policy reports failure/);
+  a.match(call[1].body.output.summary, /NOT PROVEN/);
+  a.match(call[1].body.output.summary, /Action:/);
   a.ok(call[1].body.output.summary.length <= 60000);
   a.ok(call[1].body.output.title.length <= 255);
 });

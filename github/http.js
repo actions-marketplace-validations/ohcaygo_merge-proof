@@ -164,6 +164,7 @@ async function handle(service, req, res, url) {
               current:
                 r.current.state === "STALE" ? "STALE" : "REFRESH_REQUIRED",
               issuedAt: r.receipt.issuedAt,
+              remediation: service.remediationFor(r.receipt, { state: r.current.state === "STALE" ? "STALE" : "UNAVAILABLE" }),
               gate: r.gate
                 ? { enforced: r.gate.enforced, conclusion: r.gate.conclusion }
                 : null,
@@ -394,7 +395,7 @@ async function handle(service, req, res, url) {
       else
         send(
           200,
-          interactive(html(out.receipt, out.current, out.gate))
+          interactive(html(out.receipt, out.current, out.gate, out.remediation))
             .replace('src="/proof/app.js"', 'src="/proof/receipt.js"')
             .replace(
               "</main>",

@@ -347,3 +347,23 @@ test("failed stale-check update does not prevent core re-proof", async (t) => {
   a.equal(first.checkDelivery, "UNAVAILABLE");
   a.equal(h.service.data.queue.length, 0);
 });
+
+test('remediation is additive on run and historical read, with actual tracking context', async (t) => {
+  const h = harness(t);
+  h.set({ oldApproval: true });
+  const out = await h.service.run('fixture/public', 1, { publish: true });
+  // Preserve the historical body byte-for-byte while adding a view envelope.
+  const r = out.receipt;
+  r.verdict = 'NOT_PROVEN'; r.gaps = ['INSUFFICIENT_CURRENT_HUMAN_APPROVAL'];
+  const before = JSON.stringify(r);
+  let read = await h.service.read(r.receiptId, null);
+  a.equal(read.remediation.version, 1);
+  a.equal(read.remediation.items[0].automaticRecheck.state, 'NO_KNOWN_TRIGGER');
+  h.service.config.appId = 42; h.service.config.privateKey = 'fixture-not-a-key';
+  h.service.data.subscriptions['1:1'] = { installationId: 2 };
+  read = await h.service.read(r.receiptId, null);
+  a.equal(read.remediation.items[0].automaticRecheck.state, 'EVENT_DRIVEN');
+  a.equal(JSON.stringify(read.receipt), before);
+  h.service.data.receipts[r.receiptId].current = { state: 'STALE' };
+  a.equal((await h.service.read(r.receiptId, null)).remediation, null);
+});

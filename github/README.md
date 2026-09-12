@@ -352,3 +352,31 @@ The packet uses a public owner-controlled development PR, a development-only rel
 and the existing server. `dev/acceptance.js` observes actual saved signed delivery
 IDs and checks immutable history versus a changed head; it does not manufacture
 webhooks or mark live acceptance complete from fixtures.
+
+## Deterministic NOT_PROVEN remediation
+
+Hosted run/read JSON responses add `remediation` alongside the unchanged
+`receipt`, `current`, and `gate`. Account receipt summaries expose the same view.
+It is a version-1 derived presentation object, described by
+`remediation.schema.json`; it is not added to immutable receipt evidence or its
+fingerprint. Older consumers can continue reading the existing fields. Historical
+bodies and merged-record snapshots are not rewritten. Saved receipt HTML derives
+remediation conservatively without asserting a live policy or automatic tracking.
+
+Each item carries `reasonCode`, `summary`, `whatHappened`, `whyItMatters`,
+`nextAction`, `automaticRecheck` (state, events, text), `mergeConsequence` (state,
+text), and `policyBlocksGap`. Unknown reasons get a generic explanation with no
+invented fix. The view is null for VERIFIED, FAIL, or STALE currentness.
+
+Automatic recheck requires an open tracked PR, configured App/webhook credentials,
+and a known handled event for that gap. Text promises queueing **when the event is
+received**, not event delivery or successful completion. Unsupported gaps have no
+known automatic remediation trigger. Receipt freshness is never inferred from
+age or a saved CURRENT value. Policy failure plus a required check is reported as
+blocking only at a current observation; unconfirmed currentness or requirements
+remain unknown. Check publication and GitHub's ultimate merge decision remain
+external to this presentation layer.
+
+HTML puts actions first and technical evidence in a disclosure. GitHub Checks
+show at most three gap/action summaries and direct readers to the full receipt.
+This layer changes no evidence collection, verdict, policy, billing or permissions.
