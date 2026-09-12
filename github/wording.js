@@ -204,6 +204,16 @@ function specialize(code, receipt) {
       };
     if (states.has("PENDING"))
       return { ...base, plain: "A required check has not finished on this version yet.", doNext: "Wait for it to finish." };
+    if (states.has("NAME_COLLIDES_WITH_MERGE_PROOF_CHECK"))
+      return {
+        ...base,
+        plain:
+          "A required check on this branch uses Merge Proof's own check name but is bound to a different app.",
+        why: "Merge Proof does not read check results published under its own name, so it cannot establish that requirement for you.",
+        doNext:
+          "Rename that required check, or bind the rule to the app that actually publishes it.",
+        reproof: "AUTOMATIC",
+      };
     if (states.has("MISSING"))
       return {
         ...base,

@@ -40,5 +40,5 @@ NEXT
 Run the required validation against the applicable current state, then re-run proof.
 
 Nothing in this receipt establishes that the code contains a bug.
-Receipt: be361356-c186-4411-b742-66bb6f81967c
+Receipt: fa418b22-ce91-47ab-9000-4d38acee9659
 Observed: 2026-09-10T12:00:00Z

@@ -35,6 +35,18 @@ function ciEvidence(c, r, options = {}) {
   if (c.checks.state !== "AVAILABLE" || c.statuses.state !== "AVAILABLE")
     return { ...out, reason: "CHECK_EVIDENCE_UNAVAILABLE" };
   for (const rule of independent) {
+    // The collector drops every check run carrying Merge Proof's own name, so
+    // a requirement using that name but bound to a different App can never be
+    // satisfied here. Say that, rather than reporting it as simply missing.
+    if (rule.name === require("./check").NAME) {
+      out.required.push({
+        ...rule,
+        state: "NAME_COLLIDES_WITH_MERGE_PROOF_CHECK",
+        accepted: false,
+        executionRecorded: false,
+      });
+      continue;
+    }
     const named = c.checks.value.filter(
       (x) =>
         x.name === rule.name && (rule.appId === null || x.appId === rule.appId),

@@ -9,7 +9,7 @@ const { Store } = require("../../factory/store");
 const { ProofService } = require("../service");
 const { Client } = require("../client");
 const { prove } = require("../proof");
-const { publish, NAME, subject } = require("../check");
+const { publish, NAME, subjects } = require("../check");
 const policy = require("../policy");
 const ledger = require("../ledger");
 const setup = require("../setup");
@@ -200,7 +200,7 @@ test("a new head produces a new check bound to the new commit", async (t) => {
   );
 });
 
-test("a merge group is reported on the group commit, not the pull request head", () => {
+test("a merge group is reported on the group commit as well as the pull request head", () => {
   const c = capture();
   c.target = {
     state: "AVAILABLE",
@@ -222,10 +222,61 @@ test("a merge group is reported on the group commit, not the pull request head",
       },
     },
   };
-  const on = subject(prove(c));
-  a.equal(on.kind, "MERGE_GROUP");
-  a.equal(on.sha, "e".repeat(40));
-  a.equal(subject(prove(capture())).kind, "PULL_REQUEST_HEAD");
+  // A check run's commit binding is immutable, so the queue commit needs its
+  // own check. The head still needs one too, or the pull request waits forever
+  // for a status that only ever landed on the queue commit.
+  const on = subjects(prove(c));
+  a.deepEqual(
+    on.map((x) => [x.kind, x.sha]),
+    [
+      ["PULL_REQUEST_HEAD", H],
+      ["MERGE_GROUP", "e".repeat(40)],
+    ],
+  );
+  a.deepEqual(
+    subjects(prove(capture())).map((x) => x.kind),
+    ["PULL_REQUEST_HEAD"],
+  );
+
+  // Both commits carry the same conclusion, and both are retracted together.
+  const posted = [];
+  return publish(
+    {
+      request: async (p, o) => {
+        posted.push(o.body.head_sha);
+        return { id: posted.length };
+      },
+    },
+    prove(c),
+    { state: "CURRENT" },
+    "https://merge-proof.ohcaygo.com",
+    policy.evaluate(prove(c), { state: "CURRENT" }, {
+      preset: "REPOSITORY_REQUIREMENTS",
+    }),
+  ).then((r) => {
+    a.deepEqual(posted, [H, "e".repeat(40)]);
+    a.deepEqual(r.checkIds, [1, 2]);
+  });
+});
+
+test("a required check named the same as ours but owned by another app is named as a collision", () => {
+  const c = capture();
+  c.rules.classic.value.required_status_checks.checks.push({
+    context: NAME,
+    app_id: 999,
+  });
+  const receipt = prove(c, { appId: 42 });
+  a.equal(receipt.verdict, "NOT_PROVEN");
+  a.equal(receipt.summary.ci.selfReference, null);
+  a.equal(
+    receipt.summary.ci.required.find((x) => x.name === NAME).state,
+    "NAME_COLLIDES_WITH_MERGE_PROOF_CHECK",
+  );
+  const item = explain(receipt, null).find(
+    (x) => x.code === "CURRENT_STATE_EXECUTION_NOT_PROVEN",
+  );
+  a.match(item.plain, /uses Merge Proof's own check name but is bound to a different app/);
+  a.match(item.doNext, /Rename that required check/);
 });
 
 // ------------------------------------------------------------------ 1, 8, 9
@@ -690,4 +741,69 @@ test("policy selection is bounded, defaults to report-only and is recorded", (t)
   a.throws(() => h.service.setPolicy(0, "ADVISORY"), /INVALID_SCOPE/);
   // An unknown stored value degrades to report-only rather than to enforcing.
   a.equal(policy.normalize({ preset: "GONE" }).enforced, false);
+});
+
+// ------------------------------------------------------- backward compatibility
+
+test("a receipt stored by the previous version still renders, evaluates and ledgers", (t) => {
+  const receipt = prove(capture());
+  // Strip everything this change added, as an older stored snapshot would be.
+  delete receipt.summary.actors;
+  delete receipt.summary.gate;
+  delete receipt.summary.ci.selfReference;
+  delete receipt.evidence.actors;
+  for (const row of receipt.evidence.checks.value) delete row.appSlug;
+  for (const row of receipt.evidence.execution.value) {
+    delete row.actor;
+    delete row.triggeringActor;
+  }
+  const { text, html } = require("../receipt");
+  const advisory = policy.evaluate(receipt, { state: "CURRENT" }, null);
+  a.equal(advisory.conclusion, "success");
+  const enforcing = policy.evaluate(receipt, { state: "STALE" }, {
+    preset: "REPOSITORY_REQUIREMENTS_AND_BOUNDARIES",
+  });
+  a.equal(enforcing.conclusion, "failure");
+  const rendered = html(receipt, { state: "CURRENT" }, advisory);
+  a.match(rendered, /Who or what changed this/);
+  a.match(rendered, /UNKNOWN/);
+  a.match(text(receipt, { state: "CURRENT" }, advisory), /WHO \/ WHAT CHANGED THIS/);
+  a.equal(subjects(receipt).length, 1);
+
+  const snapshot = ledger.proofSnapshot(
+    { receipt, current: { state: "CURRENT" } },
+    receipt.identity.headSha,
+    advisory,
+  );
+  a.equal(snapshot.verdict, "VERIFIED");
+  a.equal(snapshot.actors.agentIdentity, "UNAVAILABLE");
+});
+
+test("a store snapshot missing the new keys boots without losing anything", (t) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "mp-old-"));
+  let store = new Store(root);
+  t.after(() => {
+    store.close();
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  // Exactly the shape the previous version wrote: no policies, no merges.
+  store.data.github = {
+    receipts: {},
+    subscriptions: {},
+    events: [],
+    queue: [],
+    revisions: {},
+    completed: [],
+  };
+  store.save();
+  const service = new ProofService({
+    store,
+    config: { webhookSecret: "s".repeat(40), appId: 42 },
+    clientFactory: () => new Client(fixtureFetch()),
+    appClient: async () => new Client(fixtureFetch()),
+  });
+  a.equal(service.policyFor(1), null);
+  a.equal(policy.normalize(service.policyFor(1)).enforced, false);
+  a.deepEqual(ledger.list(store, { installationId: 2, repositoryId: 1 }).records, []);
+  a.equal(store.data.github.merges.pruned, 0);
 });

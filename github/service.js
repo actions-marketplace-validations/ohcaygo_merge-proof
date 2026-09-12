@@ -585,9 +585,14 @@ class ProofService {
             row.checkId &&
             row.current.state === "STALE"
           )
+            // Every commit this receipt was published on is retracted; a merge
+            // group leaves a check on the queue commit as well as the head.
+            for (const checkId of row.checkIds?.length
+              ? row.checkIds
+              : [row.checkId])
             try {
               await client.request(
-                `/repos/${job.repo}/check-runs/${row.checkId}`,
+                `/repos/${job.repo}/check-runs/${checkId}`,
                 {
                   method: "PATCH",
                   body: {
@@ -625,9 +630,10 @@ class ProofService {
             out.gate,
           );
           if (Number.isSafeInteger(check?.id)) {
-            this.data.receipts[out.receipt.receiptId].checkId = check.id;
-            this.data.receipts[out.receipt.receiptId].checkOn =
-              check.publishedOn || null;
+            const row = this.data.receipts[out.receipt.receiptId];
+            row.checkId = check.id;
+            row.checkIds = check.checkIds?.length ? check.checkIds : [check.id];
+            row.checkOn = check.published || null;
           }
         } catch {
           this.data.receipts[out.receipt.receiptId].checkDelivery =

@@ -12,14 +12,21 @@ function conclusionFor(receipt, current, policyResult) {
   return (policyResult || evaluate(receipt, current, null)).conclusion;
 }
 
-// A check run is bound to one commit and that binding cannot be moved. A
-// merge-queue group is a different commit from the pull request head, so the
-// result has to be reported against whichever commit the evidence applies to.
-function subject(receipt) {
+// A check run is bound to one commit and that binding cannot be moved, so the
+// result has to be reported against every commit a required check is evaluated
+// on. A merge-queue group is a different commit from the pull request head: the
+// head needs its own check or the pull request waits forever for a status that
+// only ever landed on the queue commit.
+function subjects(receipt) {
+  const out = [{ sha: receipt.identity.headSha, kind: "PULL_REQUEST_HEAD" }];
   const target = receipt.summary?.target;
-  if (target?.state === "AVAILABLE" && target.value?.kind === "MERGE_GROUP")
-    return { sha: target.value.sha, kind: "MERGE_GROUP" };
-  return { sha: receipt.identity.headSha, kind: "PULL_REQUEST_HEAD" };
+  if (
+    target?.state === "AVAILABLE" &&
+    target.value?.kind === "MERGE_GROUP" &&
+    target.value.sha !== receipt.identity.headSha
+  )
+    out.push({ sha: target.value.sha, kind: "MERGE_GROUP" });
+  return out;
 }
 
 function title(receipt, current, result) {
@@ -62,25 +69,33 @@ async function publish(client, receipt, current, origin, policyResult = null) {
   if (!["https:", "http:"].includes(url.protocol))
     throw Error("INVALID_ORIGIN");
   const result = policyResult || evaluate(receipt, current, null);
-  const on = subject(receipt);
-  const response = await client.request(
-    `/repos/${receipt.identity.repository}/check-runs`,
-    {
-      method: "POST",
-      body: {
-        name: NAME,
-        head_sha: on.sha,
-        status: "completed",
-        conclusion: conclusionFor(receipt, current, result),
-        details_url: `${url.origin}/proof/receipts/${receipt.receiptId}`,
-        output: {
-          title: title(receipt, current, result).slice(0, 255),
-          summary: summary(receipt, current, result),
-        },
-      },
+  const body = {
+    name: NAME,
+    status: "completed",
+    conclusion: conclusionFor(receipt, current, result),
+    details_url: `${url.origin}/proof/receipts/${receipt.receiptId}`,
+    output: {
+      title: title(receipt, current, result).slice(0, 255),
+      summary: summary(receipt, current, result),
     },
-  );
-  return Object.assign(response || {}, { publishedOn: on });
+  };
+  const published = [];
+  let primary = null;
+  for (const on of subjects(receipt)) {
+    const response = await client.request(
+      `/repos/${receipt.identity.repository}/check-runs`,
+      { method: "POST", body: { ...body, head_sha: on.sha } },
+    );
+    published.push({ ...on, id: response?.id ?? null });
+    primary ||= response;
+  }
+  return Object.assign(primary || {}, {
+    publishedOn: published[0],
+    published,
+    checkIds: published
+      .map((x) => x.id)
+      .filter((id) => Number.isSafeInteger(id)),
+  });
 }
 
-module.exports = { publish, NAME, subject, conclusionFor, title, summary };
+module.exports = { publish, NAME, subjects, conclusionFor, title, summary };
