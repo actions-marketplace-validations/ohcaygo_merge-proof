@@ -47,7 +47,11 @@ test("scheduled day 5/6/7 notices, expiry, same-head pause, immutable receipt an
  const h=harness(t),s=h.service;s.meter.connect(2,9);s.watch(2,1,"fixture/public",[{number:1}]);await s.drain();
  const trial=s.meter.account(2).trial,first=Object.values(s.data.receipts)[0],body=JSON.stringify(first.receipt);
  let now=trial.startedAt;t.mock.method(Date,"now",()=>now);
- for(const day of [5,6,7]){now=trial.startedAt+(day-1)*86400000;await s.drain();a.equal(s.data.subscriptions["1:1"].noticeDay,day);const n=h.writes.length;await s.drain();a.equal(h.writes.length,n);}
+ for(const day of [5,6,7]){now=trial.startedAt+(day-1)*86400000;await s.drain();a.equal(s.data.subscriptions["1:1"].noticeDay,day);
+ const reminder=h.writes.at(-1).body;
+ a.equal(reminder.conclusion,undefined,"reminder preserves native conclusion");
+ a.ok(reminder.output.summary.endsWith(require("../check").summary(first.receipt,first.current,s.gateFor(first.receipt,first.current),s.remediationFor(first.receipt,first.current))),"reminder retains proof/remediation summary");
+ a.equal(JSON.stringify(first.receipt),body);const n=h.writes.length;await s.drain();a.equal(h.writes.length,n);}
  now=trial.endsAt;await s.drain();a.equal(s.meter.usage(2).plan,"PAUSED");
  a.match(h.writes.at(-1).body.output.summary,/subscribe or remove/);
  await a.rejects(s.run("fixture/public",1,{installationId:2}),/TRIAL_EXPIRED/);
@@ -65,14 +69,14 @@ test("trial gate enablement rejected, inherited enforcement never silently passe
  s.meter.account(2).trial.endsAt=Date.now()-1;await s.drain();
  a.equal(h.writes.at(-1).body.conclusion,"failure");
  h.head("3".repeat(40));await h.hook("pull_request",{action:"synchronize",installation:{id:2},repository:{id:1,full_name:"fixture/public"},pull_request:{number:1,state:"open"}});await s.drain();
- a.equal(h.writes.at(-1).body.head_sha,"3".repeat(40));a.equal(h.writes.at(-1).body.conclusion,"failure");a.match(h.writes.at(-1).body.output.title,/TRIAL ENDED/);
+ a.equal(h.writes.at(-1).body.head_sha,"3".repeat(40));a.equal(h.writes.at(-1).body.conclusion,"failure");a.match(h.writes.at(-1).body.output.title,/Hosted access ended/);
  a.equal(JSON.stringify(s.data.policies),policy);a.ok(h.writes.every(w=>w.p.includes("/check-runs")));
 });
 test("paid Pro has no proof cap and canceled paid entitlement cannot restart free access",t=>{
  const h=harness(t),m=h.service.meter;m.connect(2,9);m.paidPeriod("github:9",{verifiedPaid:true,quantity:1,periodStart:Date.now()-1000,periodEnd:Date.now()+86400000});
  for(let n=1;n<=60;n++)m.complete(2,{receiptId:String(n),issuedAt:new Date().toISOString(),verdict:"VERIFIED",identity:{repositoryId:1,pr:1,headSha:n.toString(16).padStart(40,"0")}},{state:"CURRENT"},true);
  a.equal(m.usage(2).automationAllowed,true);a.equal(m.usage(2).used,60);a.equal(m.account(2).trial,undefined);
- m.account(2).subscription.verifiedPaid=false;a.equal(m.usage(2).automationAllowed,false);
+ m.account(2).subscription.verifiedPaid=false;a.equal(m.usage(2).automationAllowed,false);a.match(m.usage(2).notice,/Hosted access ended/);a.doesNotMatch(m.usage(2).notice,/TRIAL ENDED/);
 });
 test("aggregate export preserves source/time boundaries without exposing identifiers",()=>{
  const data={meter:{accounts:{"github:9":{acquisitionSource:"x"}}},lifecycle:{one:{type:"trial_started",account:"github:9",acquisition_source:"unknown",occurred_at:"2026-09-12T12:00:00.000Z"}}};

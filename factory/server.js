@@ -139,11 +139,12 @@ function createServer(factory, proofService = null) {
           "/brand.css",
           "/ohcaygo-mark.png",
           "/sample",
+          "/kiota.css",
         ].includes(url.pathname)
       ) {
         const file =
-          url.pathname === "/sample"
-            ? path.join(__dirname, "../samples/kiota.html")
+          ["/sample", "/kiota.css"].includes(url.pathname)
+            ? path.join(__dirname, url.pathname === "/sample" ? "../samples/kiota.html" : "../samples/kiota.css")
             : path.join(
                 __dirname,
                 "public",
@@ -162,7 +163,8 @@ function createServer(factory, proofService = null) {
           send(200, {
             available: false,
             price: "Pro — $29/month per active developer",
-            hostedReady: false,
+            scope: "RETIRED_LEGACY_EVIDENCE_PACK",
+            hostedUrl: "/proof/",
             trialDays: 7,
             trialStarts: "FIRST_SUCCESSFUL_HOSTED_PROOF",
           });

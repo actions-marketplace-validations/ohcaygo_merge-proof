@@ -184,6 +184,7 @@ async function handle(service, req, res, url) {
           if (!billingOwner) usage.activeDevelopers = [];
           send(200, {
             usage,
+            automation: require("./automation-status").status(service.data, installationId, repositoryId, pulls, usage),
             receipts,
             policy: require("./policy").normalize(
               service.policyFor(repositoryId),

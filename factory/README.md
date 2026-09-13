@@ -1,4 +1,6 @@
-# Merge-Proof Standard Evidence Pack
+# Legacy Merge-Proof Standard Evidence Pack
+
+**Historical implementation and existing-order fulfillment only.** The evidence-pack offer is retired for new sales. The setup and commercial references below describe the original legacy contract, not the current hosted offer. Do not enable retired new-order entry points. Use the [current seven-day, no-card, report-only hosted trial](https://merge-proof.ohcaygo.com/proof/); existing orders retain their private fulfillment path. Retained acceptance records remain dated evidence.
 
 The skinny factory extends the existing Merge-Proof repository. The public CLI,
 Action, historical collector, Kiota sample, and local verdict semantics remain

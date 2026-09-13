@@ -143,11 +143,11 @@ class Meter {
   }
   notice(plan, trial, now = Date.now()) {
     if (plan === "PRO") return "Pro is active.";
-    if (plan === "AWAITING_FIRST_PROOF") return "Merge Proof is on. Your 7-day trial starts with the first successful hosted proof. No card required.";
+    if (plan === "AWAITING_FIRST_PROOF") return "Your 7-day report-only trial starts with the first CURRENT, collection-complete VERIFIED or NOT_PROVEN hosted receipt. No card required.";
     const end = new Date(trial.endsAt).toISOString();
-    if (plan === "PAUSED") return "TRIAL ENDED — hosted automation is paused. Existing receipts remain available. Continue Pro for $29/month per active developer. If you require Merge Proof in GitHub, subscribe or remove the required Merge Proof check in repository Settings → Rules / Branches; Merge Proof never changes your rules.";
+    if (plan === "PAUSED") return "Hosted access ended — automation paused. New hosted proofs, re-proofs and scans are paused. Existing receipts remain available with current authorization, subject to retention and capacity limits. Continue Pro for $29/month per active developer. If you require Merge Proof in GitHub, subscribe or remove the required Merge Proof check in repository Settings → Rules / Branches; Merge Proof never changes your rules.";
     const day = Math.floor((now - trial.startedAt) / 86400000) + 1;
-    return day < 5 ? `Trial active until ${end}.` : `Trial ends ${end}${day >= 7 ? " — within 24 hours" : ""}. Continue Pro for $29/month per active developer. If Merge Proof is required in GitHub, subscribe or remove the required check before expiry in Settings → Rules / Branches. Existing receipts stay available; no automatic charge.`;
+    return day < 5 ? `Trial active until ${end}.` : `Trial ends ${end}${day >= 7 ? " — within 24 hours" : ""}. Continue Pro for $29/month per active developer. If Merge Proof is required in GitHub, subscribe or remove the required check before expiry in Settings → Rules / Branches. Existing receipts stay available with current authorization and retention limits; no automatic charge.`;
   }
   activity(installationId, user, kind, evidence, at = Date.now()) {
     const a = this.account(installationId);

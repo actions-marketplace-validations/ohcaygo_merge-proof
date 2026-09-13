@@ -669,7 +669,7 @@ class ProofService {
         for(const row of Object.values(this.data.receipts).filter(r=>r.installationId===sub.installationId && r.receipt.identity.repositoryId===sub.repositoryId && r.receipt.identity.pr===sub.pr)) {
           for(const id of row.checkIds || (row.checkId?[row.checkId]:[])) {
             const gate=this.gateFor(row.receipt,row.current);
-            await client.request(`/repos/${sub.repo}/check-runs/${id}`,{method:"PATCH",body:{output:{title:usage.plan==="PAUSED"?"TRIAL ENDED — action required":`Trial ends ${usage.trial.endsAt}`,summary:usage.notice+`\n\nContinue: ${this.config.origin}/proof/\nHistorical receipt: ${this.config.origin}/proof/receipts/${row.receipt.receiptId}`},...(usage.plan==="PAUSED"?{status:"completed",conclusion:gate.enforced?"failure":"neutral"}:{})}});
+            await client.request(`/repos/${sub.repo}/check-runs/${id}`,{method:"PATCH",body:{output:require("./check").accessNotice(row.receipt,row.current,gate,usage,this.config.origin,this.remediationFor(row.receipt,row.current)),...(usage.plan==="PAUSED"?{status:"completed",conclusion:gate.enforced?"failure":"neutral"}:{})}});
           }
         }
       }
@@ -699,7 +699,7 @@ class ProofService {
           const pull=await client.get(`/repos/${job.repo}/pulls/${job.pr}`);
           const usage=this.meter.usage(job.installationId);
           const heads=[pull.head.sha,job.mergeGroup?.head_sha].filter((x,i,a)=>x&&a.indexOf(x)===i);
-          for(const head_sha of heads) await client.request(`/repos/${job.repo}/check-runs`,{method:"POST",body:{name:require("./check").NAME,head_sha,status:"completed",conclusion:policies.normalize(this.policyFor(job.repositoryId)).enforced?"failure":"neutral",details_url:this.config.origin+"/proof/",output:{title:"TRIAL ENDED — hosted proof paused",summary:usage.notice+` Continue: ${this.config.origin}/proof/`}}});
+          for(const head_sha of heads) await client.request(`/repos/${job.repo}/check-runs`,{method:"POST",body:{name:require("./check").NAME,head_sha,status:"completed",conclusion:policies.normalize(this.policyFor(job.repositoryId)).enforced?"failure":"neutral",details_url:this.config.origin+"/proof/",output:{title:"Hosted access ended — proof paused",summary:"Paused-access notice, not a new proof. "+usage.notice+` Continue: ${this.config.origin}/proof/`}}});
         }
         throw Object.assign(new Error("TRIAL_EXPIRED"),{code:"TRIAL_EXPIRED"});
       }

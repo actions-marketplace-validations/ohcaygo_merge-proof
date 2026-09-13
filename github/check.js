@@ -69,6 +69,18 @@ function summary(receipt, current, result, remediation = require("./remediation"
   ).slice(0, 60000);
 }
 
+// Rebuild the established proof explanation rather than replacing it with a
+// sales reminder. Timing and publication conclusions remain the caller's job.
+function accessNotice(receipt, current, result, usage, origin, remediation) {
+  const paused = usage.plan === "PAUSED";
+  return {
+    title: (paused ? "Hosted access ended — action required" : `Trial ends ${usage.trial.endsAt} · ${title(receipt, current, result)}`).slice(0, 255),
+    summary: usage.notice + (paused ? "\n\nPaused-access notice, not a new proof. The evidence explanation below is historical; it does not restore hosted access or satisfy an expired enforcing gate." : "") +
+      `\n\nContinue: ${origin}/proof/\nHistorical receipt: ${origin}/proof/receipts/${receipt.receiptId}\n\n` +
+      summary(receipt, current, result, remediation),
+  };
+}
+
 async function publish(client, receipt, current, origin, policyResult = null, onPublished = null, remediation = undefined, notice = "") {
   const url = new URL(origin);
   if (!["https:", "http:"].includes(url.protocol))
@@ -105,4 +117,4 @@ async function publish(client, receipt, current, origin, policyResult = null, on
   });
 }
 
-module.exports = { publish, NAME, subjects, conclusionFor, title, summary };
+module.exports = { publish, NAME, subjects, conclusionFor, title, summary, accessNotice };

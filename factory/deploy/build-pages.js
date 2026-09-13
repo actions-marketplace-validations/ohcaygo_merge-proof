@@ -34,6 +34,7 @@ fs.copyFileSync(
   path.join(__dirname, "../../samples/kiota.html"),
   path.join(out, "sample.html"),
 );
+fs.copyFileSync(path.join(__dirname, "../../samples/kiota.css"), path.join(out, "kiota.css"));
 fs.writeFileSync(path.join(out, "kiota-sample-assessment.pdf"), pdf);
 fs.copyFileSync(
   path.join(__dirname, "pages-worker.mjs"),

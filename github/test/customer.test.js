@@ -103,6 +103,13 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
   const initial = await (await request("/proof/account?installation=2&repository=1")).json();
   a.equal(initial.usage.plan,"AWAITING_FIRST_PROOF");
   a.equal(initial.usage.used,undefined);
+  a.equal(initial.automation.state,"PENDING");
+  const originalOwner=service.customers.billingOwner;
+  service.customers.billingOwner=async()=>false;
+  const member=await (await request("/proof/account?installation=2&repository=1")).json();
+  a.equal(member.billingOwner,false);a.deepEqual(member.usage.activeDevelopers,[]);
+  a.deepEqual(Object.keys(member.automation).sort(),["message","state"]);
+  service.customers.billingOwner=originalOwner;
   await service.drain();
   a.equal(service.meter.usage(2).plan,"TRIAL");
   const response = await request("/proof/run", {

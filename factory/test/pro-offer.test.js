@@ -42,6 +42,9 @@ test("new visitors see Pro, retired checkout fails closed, historical access sti
   a.doesNotMatch(root, /\$5,000|Loading Stripe/);
   const offer = await (await fetch(config.origin + "/api/offer")).json();
   a.equal(offer.available, false);
+  a.equal(offer.scope, "RETIRED_LEGACY_EVIDENCE_PACK");
+  a.equal(offer.hostedReady, undefined);
+  a.equal(offer.hostedUrl, "/proof/");
   a.equal(offer.trialDays, 7);
   a.equal(offer.trialStarts, "FIRST_SUCCESSFUL_HOSTED_PROOF");
   a.equal(offer.freeProofs, undefined);
@@ -55,6 +58,9 @@ test("new visitors see Pro, retired checkout fails closed, historical access sti
   }
   a.equal(oldCalls, 0);
   a.equal((await fetch(config.origin + "/legacy")).status, 200);
+  const sample=await fetch(config.origin+"/sample");
+  a.match(await sample.text(),/href="\/kiota.css"/);
+  const css=await fetch(config.origin+"/kiota.css");a.equal(css.status,200);a.match(css.headers.get("content-type"),/text\/css/);
   a.equal(
     (await (await fetch(config.origin + "/api/order")).json()).id,
     "historical",
