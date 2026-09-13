@@ -1,8 +1,10 @@
 # merge-proof
 
-**Before an AI-authored PR merges, determine whether the available evidence actually proves the candidate against the repository state being merged.**
+This README describes the free local CLI and GitHub Action. They inspect local Git evidence and do not collect hosted CI execution, approvals or remote-ref evidence. Flags the local Git evidence gaps described below; does not establish CI execution or approvals.
 
-A clean diff is not evidence. Git will merge a pull request without conflict even when the combined state — your changes plus everything that landed on the base while the PR was open — was never built or tested by anything. merge-proof looks for that gap and says so plainly.
+For automatic hosted proofs, try the [seven-day, no-card, report-only trial](https://merge-proof.ohcaygo.com/proof/). It starts exactly once with the first CURRENT, collection-complete VERIFIED or NOT_PROVEN hosted receipt. Continue afterward for US$29/month per observed active developer. No automatic charge at expiry. Hosted collection pauses without paid entitlement; authorized receipts remain accessible within retention and capacity limits. New enforcing gates require paid Pro and separate repository-admin/GitHub setup.
+
+**Inspect local Git evidence before merging.** Flags the local Git evidence gaps described below; does not establish CI execution or approvals. A clean diff does not establish validation of the combined state.
 
 ```
 $ npx merge-proof --base origin/main
@@ -13,7 +15,7 @@ NOT_PROVEN - this merge may be fine, but the available evidence does not prove i
     What happened:    The base advanced by 12 commit(s) since this candidate diverged, and 3 file(s)
                       changed by the candidate were also changed on the base in that interval.
     Why it matters:   Git may merge this cleanly even though the combined state was never built or
-                      tested. Any validation of the candidate ran against the older base.
+                      tested. The local analysis does not establish which state CI validated.
     Missing evidence: A validation run of the candidate combined with the current base.
     Do next:          Merge or rebase the current base into the candidate, re-run CI on the combined
                       state, then re-run merge-proof.
