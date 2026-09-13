@@ -1,13 +1,16 @@
 # Prove the merge: exact-state receipts
 
-This is an additive, **local/dev candidate**, not an installed production GitHub
-App. The canonical repository is `ohcaygo/merge-proof`. It extends the existing
-single-process factory and its private JSON store. It does not replace the CLI,
-composite Action, paid pack flow, public collector, or report generator.
+Hosted Merge Proof is live at [merge-proof.ohcaygo.com/proof/](https://merge-proof.ohcaygo.com/proof/). It automatically collects available GitHub evidence for authorized repositories, keeps exact-state receipts and re-proves tracked work after relevant events. The seven-day no-card trial starts with the first CURRENT, collection-complete VERIFIED or NOT_PROVEN hosted receipt, exactly once per paying account, and is report-only. Failed, unavailable or stale collection, OAuth, installation, repository authorization and historical scans do not start the clock. NOT_PROVEN does not mean broken code.
 
-The September 10 engineering assignment explicitly authorizes this candidate
-beyond the older Command Center freeze/public-only scope. It does not authorize
-production deployment, pricing changes, repository policy changes or SKYNET work.
+Paid Pro is US$29/month per observed active developer. No automatic charge at trial expiry: new proofs, re-proofs and scans pause without paid entitlement. Existing receipts remain available with current authorization, within retention and capacity limits. New enforcement also requires paid Pro, repository-admin configuration and a separately required GitHub Check. Existing enforcing policies remain preserved.
+
+The canonical repository is `ohcaygo/merge-proof`. Hosted processing extends the existing single-process factory and private JSON store. The free local CLI and Action inspect local Git evidence; they do not collect hosted CI execution, approvals or remote-ref evidence. The former evidence-pack offer is retired for new sales; existing orders retain their fulfillment path.
+
+Dated evidence: [accepted trial rollout](validation/TRIAL-AUTO-ACTIVATION-001.md), [supported ruleset and queue acceptance](validation/RULESET-FIRST-CLASS-001.md). Trial activation was founder production acceptance, not outside adoption. Queue acceptance used the development/acceptance App; HEADGREEN was exercised, ALLGREEN other-entry evidence remains unsupported. Expiry, reminders and paid resumption are fixture evidence, not a manufactured live payment. These retained records are not rewritten by documentation updates.
+
+## Signup and automation
+
+Connect GitHub, authorize repositories, then Merge Proof discovers open PRs and starts proving automatically. Choose an account or repository where more than one is available. With no open PR, it watches for the next one without starting the trial. “Prove it now” is optional. Provider errors, permissions and technical capacity can require attention; eligibility alone does not establish successful collection. The account shows pending, empty, working, retrying, attention-needed or paused status using scoped discovery and refresh state.
 
 ## Run it
 
@@ -34,7 +37,7 @@ A failed refresh cannot overwrite a prior receipt. The previous receipt's
 currentness is a separate JSON file. Saved HTML starts UNAVAILABLE until fresh
 observations establish currentness; it cannot silently become an evergreen badge.
 
-## Hosted development flow
+## Hosted routes and local development
 
 Set `MP_GITHUB_APP_CONFIG` to a private JSON configuration file outside the repo,
 then start the **existing** factory normally. `{}` enables public proof routes
@@ -50,8 +53,8 @@ New routes:
 
 | Route | Behavior |
 |---|---|
-| `GET /proof/` | Public/cold PR form; no purchase required |
-| `POST /proof/run` | JSON `{repo, pr, publish}`; collect and return a receipt |
+| `GET /proof/` | Seven-day trial welcome and GitHub sign-in; no card upfront |
+| `POST /proof/run` | Authorized installation/repository/PR scope; optional manual proof |
 | `GET /proof/receipts/:id` | Authorized HTML receipt; currentness requires refresh |
 | `GET /proof/receipts/:id?format=json` | Same evidence as the human receipt |
 | `POST /proof/receipts/:id/refresh` | Re-observe evidence; preserve original verdict |
@@ -60,27 +63,13 @@ New routes:
 | `POST /proof/gate` | Set this repository's merge policy; repository admin only |
 | `GET /proof/merges` | Durable merge evidence ledger; `?record=<id>` for one full row |
 
-API clients can supply `Authorization: Bearer <GitHub user token>` to access
-private repositories. Tokens are transient and never persisted. Each read checks
-the current repository identity and authorization at GitHub. Anonymous reads
-require intentional publication **and** a currently public repository. A public
-repository becoming private closes anonymous receipt access. API failure denies
-access; it never publishes private evidence as a fallback.
+Production uses GitHub OAuth through `/proof/login`, with a cookie-bound one-use state. Tokens remain in process memory for at most one hour and expire on restart. Repository and receipt requests recheck the user's and App's installation/repository intersection. Anonymous production receipt access is denied, including for public repositories. Uninstall, suspension, repository removal and revoked access deny retrieval. Provider failures deny access rather than exposing private evidence.
 
-Browser GitHub sign-in/OAuth is **not implemented**. Private receipt JSON/HTML is
-available to authenticated API clients; a bare private permalink does not log in
-the browser. Public shared receipts support the browser journey and refresh.
-Without publication, the form offers a one-time JSON download; later retrieval
-requires an authorized repository API client.
-
-The existing Pages proxy now recognizes `/proof/` and preserves its existing
-origin/proxy-secret boundary. No live Pages or backend deployment occurred.
+The existing Pages proxy forwards `/proof/` to the immutable backend release while preserving the origin/proxy-secret boundary. Public-only local development routes are not the production customer contract.
 
 ## GitHub App connection
 
-Register/install the App through the owner's normal GitHub flow. Registration,
-credentials, installation and production endpoint activation have not occurred
-in this candidate. No token or new authority was obtained during development.
+Use the existing production App through the normal GitHub installation flow. It requests read access for evidence and Checks write for receipt publication; it never configures repository protections. See [production operations](PRODUCTION.md) for private configuration and the documented deployment path.
 
 Repository permissions requested by the installation-token exchange:
 
@@ -90,13 +79,13 @@ Repository permissions requested by the installation-token exchange:
 - Commit statuses: read.
 - Checks: read; **write only if `publishChecks` is enabled** to report this App's check.
 - Actions: read for workflow run/job/step records.
-- Administration: read for classic branch protection; never write.
+- Administration: read for classic protection and active rules; never write.
+- Merge queues: read for queue evidence; never write.
+- Organization Members: read to verify billing-owner authority, not to import inactive members as seats.
 
 Subscribe to pull request, pull request review, check run, check suite, status,
 workflow run, push, merge group, repository ruleset, branch protection rule and
-repository events. Ping is supported. An open PR event starts tracking that PR;
-existing PRs require a new event or an explicit run. This is not an installation
-backfill. There is no organization-wide discovery or organization webhook route.
+repository events. Ping is supported. Signed installation/repository-added events queue discovery, and authorized account reads enroll existing open PRs. Discovery is bounded to authorized repositories and five pages of 100 rows; it does not imply unrestricted organization discovery.
 
 Signed events conservatively invalidate tracked receipts for that repository
 before work begins. A persisted queue processes one proof at a time. Queue jobs
@@ -104,8 +93,7 @@ survive restart; three failed attempts stop that job with explicit unavailabilit
 Later events can retry. Events arriving during collection prevent CURRENT. Own
 check events are ignored and own receipt checks are excluded from proof inputs.
 Optional check publication contains the exact same receipt verdict and link.
-Stale published checks are changed to neutral when the queued refresh can reach
-GitHub. A failed GitHub write cannot guarantee immediate check-UI invalidation;
+Stale enforcing checks retract to failure; advisory notices are neutral when publication can reach GitHub. A failed GitHub write cannot guarantee immediate check-UI invalidation;
 the receipt remains historical and the endpoint never infers currentness.
 
 The owner decides whether to require any check. **Merge Proof never changes
@@ -153,7 +141,7 @@ semantic test coverage.** “GitHub accepted” is a computation from observed
 conclusions, not a claim that all GitHub merge controls permit merging.
 
 Rulesets and classic protection are intersected, not treated as alternatives.
-403/404 on protected-branch policy reads remain unavailable. Classic signature and linear-history requirements are preserved in the evidence
+A classic-protection 404 alone remains unavailable. An error-free, identity-matching GraphQL ref with explicit null can establish classic absence; applicable active rules must still be available. A 403, missing field, identity mismatch or partial read never establishes absence. Classic signature and linear-history requirements are preserved in the evidence
 and block proof as unsupported; they cannot silently disappear from freshness.
 Other classic controls outside CI/review policy are not comprehensively evaluated. Unknown active
 ruleset requirements remain blocking limitations. No required validation
@@ -205,9 +193,11 @@ request blocked with "Waiting for status to be reported".
 
 | Preset | Blocks merge | What it enforces |
 |---|---|---|
-| `ADVISORY` | never | Default for every repository, existing and new. Behavior is unchanged from before this feature existed. |
+| `ADVISORY` | Reports only | Default when no enforcing policy is configured. Installing does not require the Check in GitHub. |
 | `REPOSITORY_REQUIREMENTS` | yes | The evidence for the requirements the repository already configures, established for the exact state being merged. A protected boundary is reported but does not block. |
 | `REPOSITORY_REQUIREMENTS_AND_BOUNDARIES` | yes | As above, and a candidate touching a protected boundary additionally needs at least two current eligible human approvals. |
+
+New enforcing policies require paid Pro and a repository administrator. Trial does not enable them. Previously configured enforcing policies remain enforced: at hosted expiry enforcing notices report failure and advisory notices are neutral. If GitHub requires the Check, subscribe or remove the required check in GitHub Settings → Rules / Branches. Delivery failures can prevent notices; no automatic unblocking is guaranteed. A passing policy Check is not necessarily a VERIFIED receipt.
 
 The policy is stored per repository ID, set only by a repository administrator,
 and recorded with who set it and when. There is no policy language: the
@@ -291,12 +281,11 @@ Retrieval is scoped to the authorized installation and repository:
 `limit`), and `?record=<id>` returns one full row as JSON for export or agent
 consumption.
 
-## Metering is unaffected
+## Active-developer pricing and trial
 
-One billable unit remains `(installation ID, immutable repository ID, PR number,
-head SHA)`, deduplicated permanently. A required gate causes re-proofs on the
-same head — from check, workflow, status, review and ruleset events — and every
-one of those is zero debit. No price, allowance or top-up changed.
+Pro is US$29/month per distinct human GitHub ID observed opening covered PRs or pushing covered commits. Bots, configured service identities and inactive organization members are excluded. One account shares its trial and billing across installations. Initial count uses the preceding 30 days of observed covered activity; subsequent counts use the subscription month. Billing owners review the count before checkout. Withheld billing data is not a zero count. Quantity increases require confirmation; changes take effect at renewal without proration.
+
+The current offer has no proof-credit package, five-proof trial, 50-proof allowance or top-ups. Historical accounting remains preserved; it is not a current sales allowance. Same-head refresh and reinstall do not restart the seven-calendar-day trial. Checkout redirects do not establish payment or entitlement.
 
 ## Receipt, freshness and history
 
@@ -313,27 +302,22 @@ marks refresh unavailable. Unrefreshed permalink views never show saved CURRENT
 as live current. HTML is responsive and printable; no new PDF requirement is
 introduced. Existing PDF delivery still depends on Chrome.
 
-The scan examines at most 10 merged PRs selected from one page of 30 recently
+The customer historical scan is one bounded scan of at most five merged PRs selected from one page of 30 recently
 updated closed PRs. It uses the same collector, proof evaluator and local analyzer.
 Squash/rebase shapes remain UNAVAILABLE. Current rules cannot reconstruct rules
 and approval validity at merge time, so a historical full VERIFIED result is
-withheld. Findings describe exact evidence conditions, never bugs or money saved.
+withheld. The scan does not start the trial, and new collection pauses at hosted expiry. Findings describe exact evidence conditions, never bugs or money saved.
 
-## Persistence and future metering
+## Persistence and technical capacity
 
 Records live in `store.data.github`, separate from existing orders/payments:
 receipts, subscriptions, queue, delivery IDs, repository revisions and completed
 proof events. The existing single-writer lock, atomic rename, fsync and private
 file modes apply. No new database/provider is required.
 
-`proof.completed` is a future counting seam, not billing. It is emitted only for
-a stable, non-FAIL result with available required collection sources. Source
-failures and partial observations retain diagnostic receipts but emit no completed
-event. There are no prices, top-ups, credits, charges or user billing quotas.
-Technical bounds (request/page/file limits, 1,000 stored receipts, 100 tracked PRs,
-10,000 delivery IDs) stop with an error; they are not a commercial offer. A real
-production rollout needs an owner-selected retention/capacity policy. This build
-does not delete historical receipts to free space.
+Stable, collection-complete CURRENT VERIFIED/NOT_PROVEN receipts can atomically start a trial. Source failures and partial observations retain diagnostic receipts without starting it. The existing trial, entitlement, billing ledger and lifecycle records share durable single-writer storage. Stored repository IDs, actors, paths, SHAs, normalized checks/rules/reviews and receipts are sensitive metadata; this is not “no customer data.”
+
+Technical bounds include fewer than 300 files per accepted compare, bounded pagination, 1,000 stored receipts, 100 tracked PRs, 10,000 delivery IDs, five pages of 100 discovery rows and 5,000 merge records with explicit pruning. Capacity errors are explicit, not successful activation or commercial proof credits. Receipts are not promised forever or anonymously public. No customer code is executed or sent to a model.
 
 ## Primary API references
 
@@ -400,7 +384,7 @@ Both observations participate in the existing consistency/freshness checks.
 
 Unsupported signatures, linear history, deployments, required workflows, code
 scanning, review threads/teams, code-owner/last-push evidence, restricted updates,
-ALLGREEN other-entry evidence and unknown rule types remain unproven. No bypass
+ALLGREEN other-entry evidence, unknown rule types and malformed requirements remain unproven. No bypass
 entitlement or ruleset administration is inferred. GitHub remains merge authority.
 
 References: [applicable branch rules](https://docs.github.com/en/rest/repos/rules#get-rules-for-a-branch),

@@ -1,14 +1,12 @@
 # merge-proof
 
-The documentation below describes the published local CLI and Action. The
-[Merge-Proof Standard Evidence Pack](factory/README.md) is the public-GitHub-only
-paid factory in this same product family, adding bounded SHA-bound CI and human
-approval evidence, private report delivery and one reassessment. Its
-[launch readiness](factory/LAUNCH-READINESS.md) is separate from the CLI release.
+This README describes the free local CLI and GitHub Action. They inspect local Git evidence and do not collect hosted CI execution, approvals or remote-ref evidence. Flags the local Git evidence gaps described below; does not establish CI execution or approvals.
 
-**Before an AI-authored PR merges, determine whether the available evidence actually proves the candidate against the repository state being merged.**
+For automatic hosted proofs, try the [seven-day, no-card, report-only trial](https://merge-proof.ohcaygo.com/proof/). It starts exactly once with the first CURRENT, collection-complete VERIFIED or NOT_PROVEN hosted receipt. Continue afterward for US$29/month per observed active developer. No automatic charge at expiry. Hosted collection pauses without paid entitlement; authorized receipts remain accessible within retention and capacity limits. New enforcing gates require paid Pro and separate repository-admin/GitHub setup.
 
-A clean diff is not evidence. Git will merge a pull request without conflict even when the combined state — your changes plus everything that landed on the base while the PR was open — was never built or tested by anything. merge-proof looks for that gap and says so plainly.
+The former [Standard Evidence Pack](factory/README.md) is retired for new sales; existing orders retain their original [private fulfillment path](https://merge-proof.ohcaygo.com/legacy).
+
+**Inspect local Git evidence before merging.** A clean diff does not establish validation of the combined state. The local analyzer reports overlapping base drift and protected-boundary findings; it does not determine whether CI tested the state or whether reviewers approved it.
 
 ```
 $ npx merge-proof --base origin/main
@@ -19,7 +17,7 @@ NOT_PROVEN - this merge may be fine, but the available evidence does not prove i
     What happened:    The base advanced by 12 commit(s) since this candidate diverged, and 3 file(s)
                       changed by the candidate were also changed on the base in that interval.
     Why it matters:   Git may merge this cleanly even though the combined state was never built or
-                      tested. Any validation of the candidate ran against the older base.
+                      tested. The local analysis does not establish which state CI validated.
     Missing evidence: A validation run of the candidate combined with the current base.
     Do next:          Merge or rebase the current base into the candidate, re-run CI on the combined
                       state, then re-run merge-proof.
@@ -187,7 +185,7 @@ Derived from verification rules developed for an internal multi-agent engineerin
 
 ## Standard Evidence Pack factory
 
-The optional [skinny factory](factory/README.md) extends this repository with a
+The [legacy factory](factory/README.md) preserves existing orders from the retired
 single-PR offer, eligibility, Stripe Payment Link fulfillment, isolated Git runs,
 SHA-bound GitHub CI/review evidence, secure report delivery and one reassessment.
 Run `npm run factory:start` locally. It is separate from the published local-only
@@ -195,9 +193,9 @@ CLI/Action coverage described above; those interfaces retain their current check
 Stripe test payment acceptance and release status are recorded in the factory's
 acceptance report. The factory explicitly leaves remote durability and declared
 scope comparison unimplemented.
-# GitHub exact-state candidate
+# Hosted GitHub exact-state receipts
 
 An additive [GitHub receipt layer](github/README.md) now lives beside the existing
 factory. It collects remote evidence, produces versioned receipts and tracks
-freshness. It is a local/dev candidate, not a deployed or installed GitHub App.
+freshness. The hosted App is live at https://merge-proof.ohcaygo.com/proof/.
 The CLI and existing Action documented below remain offline and compatible.
