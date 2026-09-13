@@ -75,6 +75,16 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
     fs.rmSync(root, { recursive: true, force: true });
   });
   const origin = service.config.origin;
+  const welcome = await fetch(origin + "/proof/");
+  a.match(await welcome.text(), /brand-page proof-page/);
+  const mark = await fetch(origin + "/proof/brand-mark.png");
+  a.equal(mark.headers.get("content-type"), "image/png");
+  a.deepEqual(Buffer.from(await mark.arrayBuffer()), fs.readFileSync(path.join(__dirname, "../../factory/public/ohcaygo-mark.png")));
+  const denied = await fetch(origin + "/proof/receipts/fa418b22-ce91-47ab-9000-4d38acee9659", {headers:{accept:"text/html"}});
+  a.equal(denied.status,403);a.match(await denied.text(), /Connect GitHub to view this receipt/);
+  const deniedJson = await fetch(origin + "/proof/receipts/fa418b22-ce91-47ab-9000-4d38acee9659?format=json", {headers:{accept:"text/html"}});
+  a.equal(deniedJson.status,403);a.equal((await deniedJson.json()).error,"LOGIN_REQUIRED");
+
   const login = await fetch(origin + "/proof/login?source=x", { redirect: "manual" });
   a.equal(login.status, 302);
   const state = new URL(login.headers.get("location")).searchParams.get(
@@ -88,6 +98,7 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
     },
   );
   a.equal(callback.status, 303);
+  a.equal(callback.headers.get("location"), "/proof/?view=account");
   const cookie = callback.headers.get("set-cookie").split(";")[0];
   const request = (p, body, withAuth = true) =>
     fetch(origin + p, {

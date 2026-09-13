@@ -8,10 +8,10 @@ async function handle(service, req, res, url) {
     res.writeHead(status, { "Content-Type": type });
     res.end(type === "application/json" ? JSON.stringify(data) : data);
   };
-  // Receipt embeds no scripts, external resources or source contents.
+  // Only same-origin scripts and the existing product mark are loaded; no source contents.
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'none'; script-src 'self'; connect-src 'self'; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
+    `default-src 'none'; script-src 'self'; connect-src 'self'; style-src 'unsafe-inline'; img-src ${new URL("/proof/brand-mark.png", service.config.origin).href}; frame-ancestors 'none'; base-uri 'none'; form-action 'self'`,
   );
   try {
     const customers = service.customers;
@@ -29,7 +29,7 @@ async function handle(service, req, res, url) {
     ) {
       try {
         res.setHeader("Set-Cookie", await customers.callback(req, url));
-        res.writeHead(303, { Location: "/proof/" });
+        res.writeHead(303, { Location: "/proof/?view=account" });
         res.end();
       } catch {
         res.writeHead(303, {
@@ -42,9 +42,13 @@ async function handle(service, req, res, url) {
     if (req.method === "GET" && url.pathname === "/proof/") {
       send(
         200,
-        customers ? require("./customer-public").page : page,
+        customers ? require("./customer-public").renderPage(url) : page,
         "text/html; charset=utf-8",
       );
+      return true;
+    }
+    if (req.method === "GET" && url.pathname === "/proof/brand-mark.png") {
+      send(200, require("node:fs").readFileSync(require("node:path").join(__dirname, "../factory/public/ohcaygo-mark.png")), "image/png");
       return true;
     }
     if (req.method === "GET" && url.pathname === "/proof/app.js") {
@@ -405,11 +409,11 @@ async function handle(service, req, res, url) {
       else
         send(
           200,
-          interactive(html(out.receipt, out.current, out.gate, out.remediation)).replace("<main>", "<main>" + (notice ? `<aside><p>${require("./receipt").escape(notice)}</p><a href="/proof/">Continue Pro / account</a></aside>` : ""))
+          interactive(require("./customer-brand").receipt(html(out.receipt, out.current, out.gate, out.remediation))).replace("<main>", "<main>" + (notice ? `<aside><p>${require("./receipt").escape(notice)}</p><a href="/proof/?view=account">Continue Pro / account</a></aside>` : ""))
             .replace('src="/proof/app.js"', 'src="/proof/receipt.js"')
             .replace(
               "</main>",
-              `<p><a href="?format=json">Download JSON</a> · <a href="/proof/">Your account</a></p>${out.latestReceiptId && out.latestReceiptId !== out.receipt.receiptId && /^[a-f0-9-]{36}$/.test(out.latestReceiptId) ? `<p><a href="/proof/receipts/${out.latestReceiptId}">View latest receipt</a></p>` : ""}</main>`,
+              `<p><a href="?format=json">Download JSON</a> · <a href="/proof/?view=account">Your account</a></p>${out.latestReceiptId && out.latestReceiptId !== out.receipt.receiptId && /^[a-f0-9-]{36}$/.test(out.latestReceiptId) ? `<p><a href="/proof/receipts/${out.latestReceiptId}">View latest receipt</a></p>` : ""}</main>`,
             ),
           "text/html; charset=utf-8",
         );
@@ -436,6 +440,10 @@ async function handle(service, req, res, url) {
       "GATE_NOT_READY",
       "CHECK_RECONCILIATION_PENDING",
     ];
+    if (req.method === "GET" && /^\/proof\/receipts\/[^/]+$/.test(url.pathname) && !url.searchParams.has("format") && (req.headers.accept || "").includes("text/html")) {
+      send(403, require("./customer-brand").error(e.code === "LOGIN_REQUIRED" ? "Connect GitHub to view this receipt. Existing repository authorization is still required." : "This receipt could not be loaded with your current access. Check your connection and repository authorization, then retry."), "text/html; charset=utf-8");
+      return true;
+    }
     send(e.code === "PROOF_BUSY" ? 409 : 403, {
       error: safe.includes(e.code) ? e.code : "PROOF_UNAVAILABLE_OR_DENIED",
     });
