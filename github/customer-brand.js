@@ -30,7 +30,7 @@ body.proof-page{margin:0;font-size:16px;line-height:1.6;color-scheme:dark}
 .proof-page summary{font-weight:650}
 .proof-page li{margin:12px 0;overflow-wrap:anywhere}
 .proof-page #receipts{padding:0;list-style:none}
-.proof-page #receipts li{padding:20px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.proof-page #receipts>li{padding:20px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
 .proof-page p,.proof-page a{overflow-wrap:anywhere}
 .proof-page footer{padding-top:32px;padding-bottom:40px;color:var(--muted)}
 .proof-page small,.proof-page dt{color:var(--muted)}
@@ -42,12 +42,17 @@ body.proof-page{margin:0;font-size:16px;line-height:1.6;color-scheme:dark}
 .proof-page main>header:not(.proof-intro){padding:32px 0;border-bottom:1px solid var(--line)}
 [hidden]{display:none!important}
 @media(max-width:600px){.proof-page main,.proof-page footer{padding-left:20px;padding-right:20px}.proof-page .site-header{padding:20px;gap:14px}.proof-page .site-header nav{font-size:.8rem}.proof-page .proof-intro{padding-top:32px}.proof-page .trial-card{padding:20px}.proof-page .primary{width:100%;text-align:center}.proof-page label{display:block}.proof-page select{display:block;width:100%;margin-top:8px}.proof-page dl{grid-template-columns:1fr}.proof-page dd{margin-bottom:12px}}
+.proof-page .proof-badges{display:flex;gap:10px;flex-wrap:wrap}.proof-page .trial-status{margin:24px 0}.proof-page #receipts h3{font-size:1.3rem}.proof-page #receipts details li{border:0;padding:8px 0}.proof-page .manual-controls{padding:12px 0}.proof-page #run{background:var(--panel);color:#f6f6f4;border:1px solid var(--line);font-weight:600}
 @media print{body.proof-page{background:white;color:black}.proof-page .site-header,.proof-page button{display:none}.proof-page :is(p,small,dt,a){color:black}.proof-page .policy,.proof-page aside{background:white}}
 `;
 const header = `<a class="skip-link" href="#main">Skip to content</a><header class="site-header"><a class="brand" href="/" aria-label="OHCAYGO Merge Proof home"><img src="/proof/brand-mark.png" width="48" height="48" alt=""><span>OHCAYGO<small>MERGE PROOF</small></span></a><nav aria-label="Product navigation"><a href="/">Merge Proof home</a><a href="/proof/">Trial information</a><a href="/proof/?view=account">Connected repositories</a></nav></header>`;
-function receipt(document) {
+function receipt(document, view = null, trial = null) {
+  if(view) {
+    const ui=require("./customer-view");
+    document=document.replace(/<main>([\s\S]*?)<\/main>/, (_, original) => `<main>${trial?ui.trialHtml(trial):""}<header><p class="eyebrow">${require("./receipt").escape(view.repository)} · PR #${view.pr}</p>${ui.summaryHtml(view,"h1")}</header><details><summary>Technical evidence and machine verdict: ${require("./receipt").escape(view.verdict)}</summary>${original}</details></main>`);
+  }
   return document.replace(/<style>[\s\S]*?<\/style>/, `<style>${css}</style><body class="brand-page proof-page">${header}`)
-    .replace('<main><header>', '<main><a id="main"></a><header>')
+    .replace('<main>', '<main id="main">')
     .replace('</html>', '</body></html>');
 }
 function error(message) {

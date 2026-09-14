@@ -114,6 +114,9 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
   const initial = await (await request("/proof/account?installation=2&repository=1")).json();
   a.equal(initial.usage.plan,"AWAITING_FIRST_PROOF");
   a.equal(initial.usage.used,undefined);
+  a.equal(initial.trialStatus.label,"Trial not started");
+  a.equal(initial.inbox.length,1);
+  a.equal(initial.inbox[0].id,null);
   a.equal(initial.automation.state,"PENDING");
   const originalOwner=service.customers.billingOwner;
   service.customers.billingOwner=async()=>false;
@@ -136,6 +139,17 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
   a.equal(store.data.acquisition.x.installation_available, 1);
   a.equal((await request(out.url, false, false)).status, 403);
   a.equal((await request(out.url)).status, 200);
+  const savedReceipt=JSON.stringify(service.data.receipts[out.receipt.receiptId].receipt);
+  const machine=await (await request(out.url+'?format=json')).json();
+  a.deepEqual(machine.receipt,JSON.parse(savedReceipt));
+  const human=await (await request(out.url)).text();
+  a.match(human,/Technical evidence and machine verdict:/);
+  a.match(human,/Verdict: /);a.match(human,/Freshness: /);
+  a.match(human,/Download JSON/);a.match(human,/Trial active/);
+  const grouped=await (await request('/proof/account?installation=2&repository=1')).json();
+  a.equal(grouped.inbox.length,1);
+  a.equal(grouped.inbox[0].history.length+1,grouped.receipts.length);
+  a.equal(JSON.stringify(service.data.receipts[out.receipt.receiptId].receipt),savedReceipt);
   a.equal((await request(out.url + "/refresh", {})).status, 200);
   privateRepo = true;
   a.equal((await request(out.url)).status, 200);

@@ -188,6 +188,8 @@ async function handle(service, req, res, url) {
           if (!billingOwner) usage.activeDevelopers = [];
           send(200, {
             usage,
+            trialStatus: require("./customer-view").trial(usage),
+            inbox: require("./customer-view").inbox(service.data, service.config, installationId, repositoryId, pulls, usage, require("./policy").normalize(service.policyFor(repositoryId))),
             automation: require("./automation-status").status(service.data, installationId, repositoryId, pulls, usage),
             receipts,
             policy: require("./policy").normalize(
@@ -399,7 +401,8 @@ async function handle(service, req, res, url) {
         refresh: Boolean(match[2]),
       });
       const receiptRow = service.data.receipts[match[1]];
-      const notice = customers ? service.meter.usage(receiptRow.installationId).notice : "";
+      const receiptUsage = customers ? service.meter.usage(receiptRow.installationId) : null;
+      const notice = receiptUsage?.notice || "";
       if (customers) { out.entitlementNotice = notice; service.save(); }
       if (
         url.searchParams.get("format") === "json" ||
@@ -409,8 +412,9 @@ async function handle(service, req, res, url) {
       else
         send(
           200,
-          interactive(require("./customer-brand").receipt(html(out.receipt, out.current, out.gate, out.remediation))).replace("<main>", "<main>" + (notice ? `<aside><p>${require("./receipt").escape(notice)}</p><a href="/proof/?view=account">Continue Pro / account</a></aside>` : ""))
+          interactive(require("./customer-brand").receipt(html(out.receipt, out.current, out.gate, out.remediation), require("./customer-view").presentation(receiptRow, require("./customer-view").context(service.data, service.config, receiptRow, receiptUsage, out.receipt.identity.prState === "open", require("./policy").normalize(service.policyFor(out.receipt.identity.repositoryId)))), receiptUsage ? require("./customer-view").trial(receiptUsage) : null))
             .replace('src="/proof/app.js"', 'src="/proof/receipt.js"')
+            .replace('>Refresh current evidence</button>', '>Optional: recheck this historical receipt</button>')
             .replace(
               "</main>",
               `<p><a href="?format=json">Download JSON</a> · <a href="/proof/?view=account">Your account</a></p>${out.latestReceiptId && out.latestReceiptId !== out.receipt.receiptId && /^[a-f0-9-]{36}$/.test(out.latestReceiptId) ? `<p><a href="/proof/receipts/${out.latestReceiptId}">View latest receipt</a></p>` : ""}</main>`,

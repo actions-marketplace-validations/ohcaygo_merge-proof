@@ -48,5 +48,5 @@ test('connection failures expose retry, which restores session without moving th
 test('server renders requested step with shared brand before script or data loads; no history manipulation',()=>{
  a.match(renderPage(new URL('https://example.com/proof/')),/id="welcome" class="trial-card">/);
  a.match(renderPage(new URL('https://example.com/proof/?view=account')),/id="welcome" class="trial-card" hidden/);
- a.doesNotMatch(script,/pushState|replaceState|history\./);
+ a.doesNotMatch(script,/\b(?:pushState|replaceState)\s*\(|\bhistory\.(?:go|back|forward)\s*\(/);
 });
