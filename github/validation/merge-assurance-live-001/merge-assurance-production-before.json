@@ -1,0 +1,79 @@
+{
+  "at": "2026-09-12T03:32:00.058Z",
+  "release": "/opt/merge-proof/releases/brand-615308b",
+  "app": {
+    "id": 4901537,
+    "permissions": {
+      "actions": "read",
+      "administration": "read",
+      "checks": "write",
+      "contents": "read",
+      "members": "read",
+      "merge_queues": "read",
+      "metadata": "read",
+      "pull_requests": "read",
+      "statuses": "read"
+    },
+    "events": [
+      "branch_protection_rule",
+      "check_run",
+      "check_suite",
+      "merge_group",
+      "pull_request",
+      "pull_request_review",
+      "push",
+      "repository",
+      "repository_ruleset",
+      "status",
+      "workflow_run"
+    ]
+  },
+  "installations": [
+    {
+      "id": 160741988,
+      "account": "dupageinspect-beep",
+      "permissions": {
+        "checks": "write",
+        "actions": "read",
+        "contents": "read",
+        "metadata": "read",
+        "statuses": "read",
+        "merge_queues": "read",
+        "pull_requests": "read",
+        "administration": "read"
+      },
+      "events": [
+        "branch_protection_rule",
+        "check_run",
+        "check_suite",
+        "merge_group",
+        "pull_request",
+        "pull_request_review",
+        "push",
+        "repository",
+        "repository_ruleset",
+        "status",
+        "workflow_run"
+      ],
+      "selection": "selected",
+      "repositories": [
+        "dupageinspect-beep/vera-mvp"
+      ]
+    }
+  ],
+  "state": {
+    "meterHash": "523e7444055da17433cbd2c75bd303ffaf74acbc959557cf167fb53c58d212ac",
+    "receipts": {
+      "74957701-3e7f-4017-912f-f6989d77caf7": "a7fbfeb841f35c4d304aacd834e865c0f01824ba7c80c5282e8e3e541c03415d",
+      "b36ffece-0c88-4f44-be7f-941aab679392": "7f77106826ae75e43d728ed782fba45cb182f874530f417772bc8dbe4f524121",
+      "61c2a3a6-87d9-464c-bd63-9e26fad93635": "5e4163d3740c7a0613888b46548ace4c87bc3dfbb996ee53e43cceb472eec510"
+    },
+    "mergeLedgerHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "policies": {},
+    "subscriptions": [
+      "1332241088:16"
+    ]
+  },
+  "publishChecks": true,
+  "hosted": true
+}

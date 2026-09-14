@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OHCAYGO Merge Proof — Prove the merge.</title>
+<meta name="description" content="Check whether the available GitHub evidence supports the exact merge state. Try hosted Merge Proof for 7 days from your first successful proof. No card; report-only trial.">
+<link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/brand.css">
+<link rel="icon" href="/ohcaygo-mark.png"><script src="/landing.js" defer></script>
+</head>
+<body class="brand-page">
+<a class="skip-link" href="#prove">Skip to content</a>
+<header class="site-header">
+<a class="brand" href="#prove"><img src="/ohcaygo-mark.png" width="48" height="48" alt=""><span>OHCAYGO<small>MERGE PROOF</small></span></a>
+<nav aria-label="Main navigation"><a href="#prove">Prove</a><a href="#how-it-works">How it works</a><a href="#what-it-checks">What it checks</a><a href="#pricing">Pricing</a><a class="nav-cta" href="/proof/">Try free <span aria-hidden="true">↗</span></a></nav>
+</header>
+<main>
+<section class="hero" id="prove" aria-labelledby="hero-title">
+<div class="hero-copy">
+<p class="eyebrow">BUILD. REVIEW. PROVE.</p>
+<h1 id="hero-title">PROVE<br>THE MERGE<span class="gold">.</span></h1>
+<p class="lead"><strong>AI lets your code change fast.</strong><br>Merge Proof checks whether the green checks you're trusting actually belong to the code you're about to merge.</p>
+<p class="hero-translation"><strong>Merge?</strong> Add the new work to the main version of your code.<br><strong>Green checks?</strong> The automated checks passed. That doesn't mean bug-free.</p>
+<div class="free-offer"><strong>Try Merge Proof free for 7 days. No card required.</strong><span>Starts with your first successful hosted proof. Report-only during trial.</span></div>
+<a class="primary-cta" href="/proof/">TRY MERGE PROOF FREE <span aria-hidden="true">↗</span></a>
+<p class="journey">Connect GitHub → Authorize repositories → Merge Proof finds open PRs and starts proving automatically.</p>
+<p class="small">You'll need a GitHub account, a repository you can authorize, and an open PR for your first live proof.</p>
+<details class="hero-help"><summary>New to this? What's a repo or PR?</summary><p><strong>Repository (repo):</strong> your project's code and history on GitHub. <strong>Pull request (PR):</strong> new work proposed for review, waiting to be added to the main code. Choose an account or repository if more than one is available. No open PR yet? We watch for the next one; your trial has not started. “Prove it now” is optional.</p></details>
+<p class="local-link">Prefer local? <a href="https://github.com/ohcaygo/merge-proof#readme">Free CLI + GitHub Action →</a></p>
+</div>
+<aside class="story" id="how-it-works" aria-labelledby="story-title">
+<p class="eyebrow">HOW IT WORKS / A QUICK EXAMPLE</p>
+<h2 id="story-title">Checks passed.<br>Then the code moved.</h2>
+<ol class="story-steps">
+<li><span class="step-number">01</span><div><span class="step-label">AI WORKER OR DEVELOPER</span><h3>Writes new code.</h3><p>New work waits to join the main code.</p></div></li>
+<li><span class="step-number green">✓</span><div><span class="step-label">GITHUB CHECKS IT</span><h3 class="green">Checks passed.</h3><p>A green result records what passed then.</p></div></li>
+<li class="changed"><span class="step-number gold">↗</span><div><span class="step-label">ANOTHER AI OR DEVELOPER</span><h3>Changes the code before merge.</h3><p>The new work or the main code moves. The old result may no longer apply.</p></div></li>
+<li><img class="step-mark" src="/ohcaygo-mark.png" width="36" height="36" alt=""><div><span class="step-label">MERGE PROOF</span><h3>Does the evidence still fit?</h3><p>Checks the evidence against the observed code, approvals and project rules.</p></div></li>
+</ol>
+<div class="story-result"><span class="step-label">YOUR RECEIPT</span><p>What was established.<br>What changed. What needs another look.</p><span class="badge green">VERIFIED</span> <span class="badge">NOT_PROVEN</span><p class="freshness-note">Freshness is separate: <strong class="gold">STALE</strong> means the situation changed. Check again; it doesn't mean broken.</p></div>
+<a class="text-link" href="#receipt">See an example receipt ↓</a>
+</aside>
+</section>
+<section class="comparison" aria-label="Tests and Merge Proof">
+<div><span class="eyebrow">TESTS ASK</span><p>Did the code behave the way the tests expected?</p></div>
+<div><span class="eyebrow">MERGE PROOF ASKS</span><p>Does the evidence apply to the version you're about to merge?</p></div>
+</section>
+<section class="page-section" id="what-it-checks" aria-labelledby="checks-title">
+<div class="section-heading"><div><p class="eyebrow">MORE THAN A GREEN LIGHT</p><h2 id="checks-title">Fast work. Clear evidence.</h2></div><p>One deterministic receipt.<br>No AI model decides the verdict.</p></div>
+<div class="benefits">
+<article><span class="card-number">01 / CHECKS &amp; CODE</span><h3>Was this version checked?</h3><p>Connects check evidence to the observed version. Surfaces changes to the new work or the main code while it waits.</p></article>
+<article><span class="card-number">02 / APPROVALS &amp; RULES</span><h3>What actually needs to be true?</h3><p>Examines available project requirements and whether approvals apply to this version. Missing or unsupported evidence stays explicit.</p></article>
+<article><span class="card-number">03 / CURRENT STATE &amp; HISTORY</span><h3>Can I still rely on this receipt?</h3><p>Compares refreshed evidence with the saved record. Keeps what was known then, and shows when it no longer describes now.</p></article>
+</div>
+<details class="disclosure"><summary>Under the hood: exact versions, execution evidence and limits</summary><div class="detail-body"><p>Hosted evidence binds the PR head, target base, applicable merge state and remote GitHub ref at observation. Check conclusions are distinguished from successful workflow/job/step execution records; status-only success does not prove execution. Even a workflow record does not prove checkout contents or test coverage.</p><p>Available branch protection and rulesets are evaluated together. Old-head approvals are insufficient under the implemented policy. Unsupported requirements and unavailable reads remain evidence gaps. Base movement alone is not a bug or an automatic failed verdict.</p><p>AI can inspect its own work, including GitHub. Merge Proof adds an independent deterministic evidence receipt. It does not guarantee correctness or security.</p><a href="https://github.com/ohcaygo/merge-proof/blob/234b1317fd407d133b5da5714b04466625eb84ca/github/README.md">Inspect the hosted evidence policy on GitHub →</a></div></details>
+</section>
+<section class="page-section receipt-section" id="receipt" aria-labelledby="receipt-title">
+<div><p class="eyebrow">EVIDENCE YOU CAN READ</p><h2 id="receipt-title">A receipt.<br>Not a rubber stamp.</h2><p>A record of what Merge Proof could actually establish about this merge at that moment.</p><p>Read the explanation. Inspect the HTML/JSON evidence. See the gap and the next action.</p><a class="text-link" href="#plain-english">What do the labels mean? ↓</a></div>
+<article class="receipt-card" aria-label="Illustrative receipt, not a customer result"><div class="receipt-top"><span>MERGE PROOF / RECEIPT</span><span>ILLUSTRATIVE</span></div><dl><div><dt>Verdict when issued</dt><dd><span class="badge">NOT_PROVEN</span></dd></div><div><dt>Freshness after a change</dt><dd><span class="badge gold">STALE</span></dd></div><div><dt>Evidence gap</dt><dd>Required approval could not be established.</dd></div><div><dt>What changed</dt><dd>The proposed code changed after this receipt was issued.</dd></div><div><dt>Next action</dt><dd>Re-proof the current version. Inspect any remaining evidence gaps.</dd></div></dl><p class="small">The original receipt stays unchanged. Freshness is reported separately. This is an explanation of the format, not a live result.</p></article>
+</section>
+<section class="page-section" id="plain-english" aria-labelledby="learn-title">
+<p class="eyebrow">NEW TO THIS?</p><h2 id="learn-title">Same evidence. Human words.</h2>
+<div class="terms">
+<details><summary>PR, repository &amp; merge</summary><p><strong>Repository:</strong> a project's code and history. <strong>PR / pull request:</strong> proposed new work waiting for review and addition to the main code. <strong>Merge:</strong> integrating that work into the target version of the project.</p></details>
+<details><summary>Green checks &amp; CI</summary><p><strong>CI (Continuous Integration):</strong> automated workflows that build, test or check changes. <strong>Green checks:</strong> GitHub reporting that automated checks passed. Passing checks don't establish that code is bug-free.</p></details>
+<details><summary>Branch, main, base, head &amp; SHA</summary><p><strong>Branch:</strong> a separate line of development. <strong>Main:</strong> the primary version the team builds around; its branch may have another name. <strong>Base:</strong> the version receiving the changes. <strong>Head:</strong> the proposed version. <strong>SHA:</strong> the Git identifier used to tell exact versions apart.</p></details>
+<details><summary>VERIFIED &amp; NOT_PROVEN</summary><p><strong>VERIFIED:</strong> available evidence satisfies the implemented checks for the stated scope and exact observed state. It is not a correctness or security guarantee.</p><p><strong>NOT_PROVEN:</strong> Merge Proof could not establish everything required from the available evidence. This does not mean broken, buggy or unsafe. The receipt explains the gap.</p></details>
+<details><summary>STALE &amp; currentness unavailable</summary><p><strong>STALE:</strong> something relevant changed. The old proof should not be treated as proof of what is there now. It does not mean the code is broken.</p><p>Freshness is separate from the original verdict. Without a fresh observation, the receipt shows <strong>CURRENTNESS UNAVAILABLE / REFRESH REQUIRED</strong>. Time passing alone does not make evidence stale. Re-proof evaluates the current situation.</p></details>
+<details><summary>FAIL &amp; receipt</summary><p><strong>FAIL:</strong> the analysis could not reliably complete. This does not start the trial. This is not a judgment that your code is bad.</p><p><strong>Receipt:</strong> a saved record of the evidence, verdict, gaps and next action at that moment.</p></details>
+</div>
+</section>
+<section class="page-section" id="pricing" aria-labelledby="pricing-title">
+<div class="section-heading"><div><p class="eyebrow">START WITH THE EVIDENCE</p><h2 id="pricing-title">Try it free. Keep building.</h2></div><p>No card upfront.<br>No automatic charge at trial expiry.</p></div>
+<div class="pricing-grid"><article class="price-card free-card"><p class="eyebrow">7-DAY HOSTED TRIAL</p><h3 class="price">$0</h3><p><strong>No card required. Report-only during trial.</strong></p><p>The clock starts with your first successful hosted proof, not when you connect GitHub or install the App. Automatic proofs and re-proofs are report-only during trial.</p><a class="primary-cta" href="/proof/">TRY MERGE PROOF FREE <span aria-hidden="true">↗</span></a></article>
+<article class="price-card"><p class="eyebrow">PRO</p><h3 class="price">$29/month</h3><p>per active developer</p><p>Continue hosted evidence collection, automatic re-proofs, GitHub Checks and authorized HTML/JSON receipts.</p><p>Paid Pro supports optional administrator-configured enforcing gates. Technical capacity and evidence limits apply.</p></article></div>
+<p>No automatic charge at trial expiry. Without a subscription, new hosted proofs, re-proofs and scans pause. Existing receipts remain accessible while you retain authorization, subject to retention and capacity limits.</p>
+<details class="disclosure"><summary>What starts the seven-day trial?</summary><div class="detail-body"><p>The first CURRENT, collection-complete VERIFIED or NOT_PROVEN hosted receipt starts seven calendar days, exactly once. NOT_PROVEN means evidence is missing; it does not mean your code is broken. Failed, unavailable or stale collection does not start the clock. Connecting GitHub, installing the App, authorizing repositories and historical scans do not start it either.</p><p>One trial is shared across installations owned by the same GitHub account. Reinstalling or refreshing the same head does not restart it.</p></div></details>
+<details class="disclosure"><summary>Does the trial block merges?</summary><div class="detail-body"><p>The trial does not enable new enforcing policies. New enforcement requires paid Pro and a repository administrator; GitHub must separately require the correct Merge Proof Check. Merge Proof never edits branch protection or rulesets.</p><p>Previously configured enforcing policies remain enforced. At hosted expiry they report failure; report-only notices are neutral. If GitHub requires the check, subscribe or remove that required check. Provider or permission failures can prevent delivery; automatic unblocking is not guaranteed. A passing policy Check is not necessarily a VERIFIED receipt.</p></div></details>
+<p class="local-option"><strong>Prefer local? Free forever.</strong> MIT CLI + GitHub Action, with deterministic analysis and offline local operation. <a href="https://github.com/ohcaygo/merge-proof#readme">Use free local →</a></p>
+<details class="disclosure"><summary>Who counts as an active developer?</summary><div class="detail-body"><p>Distinct human GitHub IDs observed opening covered PRs or pushing covered commits. Bots, configured service identities and inactive organization members are excluded. One human counts once across the paying account’s installations. Initial pricing uses the preceding 30 days of observed covered activity; subsequent counts use the subscription month. Review the count before checkout. Increases require confirmation; changes take effect at renewal without proration.</p></div></details>
+<details class="disclosure"><summary>What's in the bounded historical scan?</summary><div class="detail-body"><p>Look back at what available evidence can establish about previous merges. The free scan covers up to 5 merged PRs among the 30 most recently updated closed PRs. Unsupported history stays unavailable. Current rules cannot establish historical approval validity. One bounded scan does not start the trial or count bugs prevented. Squash/rebase reconstruction and historical approval validity may be unsupported or unavailable. New scan collection pauses when hosted access expires.</p></div></details>
+<details class="disclosure"><summary>Trust, access &amp; private receipts</summary><div class="detail-body">        <p>
+          No AI model decides your proof. Contents read is a real GitHub permission. The hosted collector projects GitHub responses to metadata; compare responses may contain patch text in transit, which is discarded rather than stored, rendered, logged or sent to a model. It does not clone a repository tree or execute customer code. Stored evidence includes sensitive repository metadata such as paths, identifiers, SHAs and normalized checks and rules; this is not “no customer data.” Private receipts require
+          current authorized repository access. Repository access is rechecked for each hosted request; uninstalling
+          the App revokes hosted receipt access while preserving its history.
+        </p>
+</div></details>
+</section>
+<footer><a class="brand" href="#prove"><img src="/ohcaygo-mark.png" width="40" height="40" alt=""><span>OHCAYGO<small>PROVE THE MERGE.</small></span></a><div><p>Have a team workflow to discuss? <a href="mailto:support@ohcaygo.com">Talk to us.</a></p><a href="mailto:support@ohcaygo.com">support@ohcaygo.com</a><a href="/legacy">Existing evidence-pack order</a><a href="/sample">Historical Kiota methodology sample</a></div></footer>
+</main>
+</body></html>

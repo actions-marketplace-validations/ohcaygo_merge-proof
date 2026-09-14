@@ -4,7 +4,9 @@ This README describes the free local CLI and GitHub Action. They inspect local G
 
 For automatic hosted proofs, try the [seven-day, no-card, report-only trial](https://merge-proof.ohcaygo.com/proof/). It starts exactly once with the first CURRENT, collection-complete VERIFIED or NOT_PROVEN hosted receipt. Continue afterward for US$29/month per observed active developer. No automatic charge at expiry. Hosted collection pauses without paid entitlement; authorized receipts remain accessible within retention and capacity limits. New enforcing gates require paid Pro and separate repository-admin/GitHub setup.
 
-**Inspect local Git evidence before merging.** Flags the local Git evidence gaps described below; does not establish CI execution or approvals. A clean diff does not establish validation of the combined state.
+The former [Standard Evidence Pack](factory/README.md) is retired for new sales; existing orders retain their original [private fulfillment path](https://merge-proof.ohcaygo.com/legacy).
+
+**Inspect local Git evidence before merging.** A clean diff does not establish validation of the combined state. The local analyzer reports overlapping base drift and protected-boundary findings; it does not determine whether CI tested the state or whether reviewers approved it.
 
 ```
 $ npx merge-proof --base origin/main
@@ -180,3 +182,20 @@ Derived from verification rules developed for an internal multi-agent engineerin
 ## License
 
 [MIT](LICENSE)
+
+## Standard Evidence Pack factory
+
+The [legacy factory](factory/README.md) preserves existing orders from the retired
+single-PR offer, eligibility, Stripe Payment Link fulfillment, isolated Git runs,
+SHA-bound GitHub CI/review evidence, secure report delivery and one reassessment.
+Run `npm run factory:start` locally. It is separate from the published local-only
+CLI/Action coverage described above; those interfaces retain their current checks.
+Stripe test payment acceptance and release status are recorded in the factory's
+acceptance report. The factory explicitly leaves remote durability and declared
+scope comparison unimplemented.
+# Hosted GitHub exact-state receipts
+
+An additive [GitHub receipt layer](github/README.md) now lives beside the existing
+factory. It collects remote evidence, produces versioned receipts and tracks
+freshness. The hosted App is live at https://merge-proof.ohcaygo.com/proof/.
+The CLI and existing Action documented below remain offline and compatible.

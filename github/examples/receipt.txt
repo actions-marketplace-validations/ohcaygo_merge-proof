@@ -1,0 +1,44 @@
+SYNTHETIC FIXTURE — NOT CUSTOMER EVIDENCE
+
+MERGE PROOF
+NOT_PROVEN
+fixture/public #1
+
+Candidate: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+Current base at proof: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+GitHub mergeability: true (clean)
+Applicable validation state: Head includes current base: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+Base movement: 0 commits
+Candidate/base overlap: 0 files
+Required check conclusions satisfied: 1 / 1
+Execution recorded on applicable state: NOT_PROVEN
+Human approval: OBSERVED
+Current required approval: PROVEN
+Remote candidate: CONFIRMED AT OBSERVATION
+Repository requirements: AVAILABLE
+Merge Proof required on this branch: NO
+Current receipt status: UNAVAILABLE
+Protected boundary: No designated boundary detected under available path evidence
+
+WHO / WHAT CHANGED THIS
+Pull request opened by: author (human account)
+Commits authored by: author (human account)
+Commits committed by: author (human account)
+Reviewed by: reviewer (human account)
+Checks published by: ci (GitHub App)
+Workflows started by: author (human account)
+App or bot authorship: NONE_OBSERVED — Every account recorded as authoring this change is a human account. That does not establish that a person wrote the code.
+
+MISSING EVIDENCE
+The required checks did not demonstrably run against this exact version.
+
+WHAT TO DO
+- The required checks did not demonstrably run against this exact version.
+  Run the required validation against the current version, then proof runs again.
+
+NEXT
+Run the required validation against the applicable current state, then re-run proof.
+
+Nothing in this receipt establishes that the code contains a bug.
+Receipt: fa418b22-ce91-47ab-9000-4d38acee9659
+Observed: 2026-09-10T12:00:00Z

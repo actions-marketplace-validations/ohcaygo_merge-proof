@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:merge-proof:github-receipt:2",
+  "title": "Merge Proof immutable GitHub receipt",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "receiptId",
+    "policy",
+    "verdict",
+    "issuedAt",
+    "identity",
+    "fingerprint",
+    "summary",
+    "gaps",
+    "local",
+    "evidence",
+    "notChecked",
+    "limitations"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "receiptId": { "type": "string", "format": "uuid" },
+    "policy": { "const": "github-exact-state-v1" },
+    "verdict": { "enum": ["VERIFIED", "NOT_PROVEN", "FAIL"] },
+    "issuedAt": { "type": "string", "format": "date-time" },
+    "fingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "identity": {
+      "type": "object",
+      "required": [
+        "repository",
+        "repositoryId",
+        "visibility",
+        "authorization",
+        "pr",
+        "headSha",
+        "headRef",
+        "baseRef",
+        "baseSha"
+      ],
+      "properties": {
+        "repository": { "type": "string" },
+        "repositoryId": { "type": "integer", "minimum": 1 },
+        "visibility": { "enum": ["public", "private"] },
+        "authorization": { "enum": ["PUBLIC_ANONYMOUS", "GITHUB_TOKEN"] },
+        "pr": { "type": "integer", "minimum": 1 },
+        "headSha": { "$ref": "#/$defs/sha" },
+        "baseSha": { "$ref": "#/$defs/sha" },
+        "headRef": { "type": "string" },
+        "baseRef": { "type": "string" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["ci", "approval", "remote", "rules", "target"],
+      "properties": {
+        "ci": {
+          "type": "object",
+          "properties": {
+            "selfReference": {
+              "description": "Set when the repository requires Merge Proof's own check. Recorded as out of scope for the evidence claim, never counted as evidence about the change.",
+              "oneOf": [
+                { "type": "null" },
+                {
+                  "type": "object",
+                  "required": ["context", "state"],
+                  "properties": {
+                    "context": { "type": "string" },
+                    "ruleAppId": { "type": ["integer", "null"] },
+                    "boundToThisApp": { "type": ["boolean", "null"] },
+                    "state": { "const": "SELF_CHECK_NOT_INDEPENDENT_EVIDENCE" }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "actors": {
+          "description": "Deterministic human, app and bot provenance. UNKNOWN is preserved, never inferred.",
+          "type": "object",
+          "required": ["state", "agentIdentity", "limitation"],
+          "properties": {
+            "state": { "enum": ["AVAILABLE", "UNAVAILABLE"] },
+            "agentIdentity": {
+              "enum": ["OBSERVED_APP_OR_BOT", "NONE_OBSERVED", "UNAVAILABLE"]
+            },
+            "limitation": { "type": "string" }
+          }
+        },
+        "gate": {
+          "description": "Whether Merge Proof's own check is currently required on the base branch, read from the repository's rules.",
+          "type": "object",
+          "required": ["context", "required", "readiness"],
+          "properties": {
+            "context": { "type": "string" },
+            "required": { "enum": [true, false, "UNAVAILABLE"] },
+            "boundToThisApp": { "type": ["boolean", "null"] },
+            "readiness": {
+              "type": "object",
+              "required": ["state", "blockers"],
+              "properties": {
+                "state": { "enum": ["READY", "NOT_READY", "UNAVAILABLE"] },
+                "blockers": { "type": "array" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "local": {
+      "type": "object",
+      "required": ["verdict", "findings", "metrics"]
+    },
+    "evidence": {
+      "type": "object",
+      "required": [
+        "identity",
+        "git",
+        "rules",
+        "target",
+        "checks",
+        "statuses",
+        "execution",
+        "reviews",
+        "remote",
+        "source",
+        "observedAt",
+        "consistency"
+      ],
+      "properties": {
+        "git": { "$ref": "#/$defs/observation" },
+        "target": { "$ref": "#/$defs/observation" },
+        "checks": { "$ref": "#/$defs/observation" },
+        "statuses": { "$ref": "#/$defs/observation" },
+        "execution": { "$ref": "#/$defs/observation" },
+        "reviews": { "$ref": "#/$defs/observation" },
+        "actors": { "$ref": "#/$defs/observation" },
+        "remote": { "$ref": "#/$defs/observation" },
+        "rules": {
+          "type": "object",
+          "required": ["classic", "active"],
+          "properties": {
+            "classic": { "$ref": "#/$defs/observation" },
+            "active": { "$ref": "#/$defs/observation" }
+          }
+        },
+        "consistency": {
+          "enum": ["STABLE_OBSERVATION", "CHANGED_DURING_COLLECTION"]
+        },
+        "source": { "const": "github-rest" },
+        "observedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "gaps": { "type": "array", "items": { "type": "string" } },
+    "notChecked": { "type": "array", "items": { "type": "string" } },
+    "limitations": { "type": "array", "items": { "type": "string" } }
+  },
+  "$defs": {
+    "sha": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "observation": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["state", "value"],
+          "properties": { "state": { "const": "AVAILABLE" } }
+        },
+        {
+          "type": "object",
+          "required": ["state", "reason"],
+          "properties": {
+            "state": { "const": "UNAVAILABLE" },
+            "reason": { "type": "string" }
+          }
+        }
+      ]
+    }
+  }
+}

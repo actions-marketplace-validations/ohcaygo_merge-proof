@@ -6,7 +6,7 @@
 // repository actually prove this candidate against the base state it will be
 // merged into? It does not look for bugs and it does not judge code.
 
-const git = require('./git');
+const localGit = require('./git');
 const rules = require('./rules');
 
 const SCHEMA_VERSION = 1;
@@ -60,6 +60,9 @@ function partition(files, ignoreRules) {
 }
 
 function analyze(options) {
+  // Hosted callers may supply already-collected Git metadata. The CLI always
+  // uses the offline reader; collection and authorization live outside src/.
+  const git = options.evidenceGit || localGit;
   const {
     repoPath,
     base,
@@ -142,7 +145,9 @@ function analyze(options) {
     return result;
   }
 
-  const { rules: ignoreRules, source: ignoreSource } = rules.loadIgnoreRules(repoPath, ignoreFile);
+  const { rules: ignoreRules, source: ignoreSource } = options.evidenceGit
+    ? { rules: [], source: null }
+    : rules.loadIgnoreRules(repoPath, ignoreFile);
   const candidate = partition(candidateFilesRaw, ignoreRules);
   const baseSide = partition(baseFilesRaw, ignoreRules);
 

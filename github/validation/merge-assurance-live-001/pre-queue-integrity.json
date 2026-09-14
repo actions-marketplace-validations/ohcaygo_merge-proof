@@ -1,0 +1,97 @@
+{
+  "observedAt": "2026-09-12T03:04:38.279Z",
+  "head": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+  "mergeableState": "clean",
+  "requiredChecks": [
+    {
+      "id": 103487580759,
+      "name": "Merge Proof exact-state receipt",
+      "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 4899448,
+      "url": "https://github.com/ohcaygo/merge-proof/runs/103487580759"
+    },
+    {
+      "id": 103487422721,
+      "name": "assurance acceptance validation",
+      "sha": "40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633",
+      "status": "completed",
+      "conclusion": "success",
+      "appId": 15368,
+      "url": "https://github.com/ohcaygo/merge-proof/actions/runs/34669282147/job/103487422721"
+    }
+  ],
+  "meterProofKeys": [
+    "[160648161,1352881392,6,\"515fff8628c9c01e524d6f5332c73be583d3ea5a\"]",
+    "[160648161,1352881392,6,\"40c96df39ec4ce22df6e8ac2ee7a85c84d7e3633\"]"
+  ],
+  "freeUsed": [
+    2
+  ],
+  "oldHeadStates": [
+    {
+      "receiptId": "a89cd16e-ee2c-46e8-9f5d-d7280e3daea5",
+      "verdict": "NOT_PROVEN",
+      "current": "STALE"
+    },
+    {
+      "receiptId": "fab46858-5c47-4eb5-bad4-d8497fdc8965",
+      "verdict": "NOT_PROVEN",
+      "current": "STALE"
+    },
+    {
+      "receiptId": "5e98444d-d0cd-4fcb-adb3-cadc2ff19b6f",
+      "verdict": "NOT_PROVEN",
+      "current": "STALE"
+    },
+    {
+      "receiptId": "87216960-56a7-41c0-b27f-34703368c13f",
+      "verdict": "NOT_PROVEN",
+      "current": "STALE"
+    },
+    {
+      "receiptId": "fe7cba62-5957-4fc2-b407-ca512d7d2020",
+      "verdict": "NOT_PROVEN",
+      "current": "STALE"
+    }
+  ],
+  "receiptHashes": [
+    {
+      "receiptId": "a89cd16e-ee2c-46e8-9f5d-d7280e3daea5",
+      "sha256": "d2a619ea5e1b7d2d9860f53679794e18a044bdb0e30cc3d1dbcb187dcacb8763"
+    },
+    {
+      "receiptId": "fab46858-5c47-4eb5-bad4-d8497fdc8965",
+      "sha256": "6995fd0143002111c0aaed2ec246184970bc55a4e7e952902b4fc657d5d5a395"
+    },
+    {
+      "receiptId": "5e98444d-d0cd-4fcb-adb3-cadc2ff19b6f",
+      "sha256": "e7d1894c1fa75eeddfe5049ab8f994ed5d8eed10979425327d6d83b58cfae859"
+    },
+    {
+      "receiptId": "87216960-56a7-41c0-b27f-34703368c13f",
+      "sha256": "48d8f6962e93b441ff1230a1dc2b4515c94b0e21ac73eb475bb0ed40caa566c3"
+    },
+    {
+      "receiptId": "fe7cba62-5957-4fc2-b407-ca512d7d2020",
+      "sha256": "5afb7fbff95477e8d32ce7f82b9ac794669fc56ae76e646005a9a43bd3b6bbc6"
+    },
+    {
+      "receiptId": "b3f79e86-844b-4c81-b283-4d5f11eaed8e",
+      "sha256": "ef4d5952f25c61fd22910af47e496a73eaf9e5ac562ecfbf5909f739ce2d905e"
+    },
+    {
+      "receiptId": "3d655a3b-5b0d-4c69-bce6-f51c9226c5a8",
+      "sha256": "880853a3663d3c30b2614510d269e69fde7b909db1143862611889b0301cde34"
+    },
+    {
+      "receiptId": "8f2b39f9-5cd0-4256-8cca-03c93f974f6a",
+      "sha256": "f44e894ec54fd88fa8139c595107913b44a8b0947fb91c43253fca1736ddf26a"
+    },
+    {
+      "receiptId": "6f9c03e8-4486-409a-8e35-8a523ca9ee0c",
+      "sha256": "b63d31298de4ace51c9b7cd22dc2fc3fbe88f3a4a0a88da88628049ee8328672"
+    }
+  ]
+}

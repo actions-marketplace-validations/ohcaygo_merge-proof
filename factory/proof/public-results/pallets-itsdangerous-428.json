@@ -1,0 +1,202 @@
+{
+  "method": "Live public GitHub capture plus isolated Git analysis. Purposive one-PR sample. These repositories are not customers. Required check selected from captured checks, not inferred branch policy.",
+  "scope": {
+    "repo": "pallets/itsdangerous",
+    "repoId": 1945034,
+    "pr": 428,
+    "headSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+    "baseSha": "672971d66a2ef9f85151e53283113f33d642dabd",
+    "ciSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+    "shape": "open-candidate",
+    "authorId": 110765
+  },
+  "required": [
+    {
+      "name": "typing",
+      "appId": 15368
+    }
+  ],
+  "capture": {
+    "repo": "pallets/itsdangerous",
+    "repoId": 1945034,
+    "pr": 428,
+    "headSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+    "baseSha": "672971d66a2ef9f85151e53283113f33d642dabd",
+    "ciSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+    "shape": "open-candidate",
+    "authorId": 110765,
+    "capturedAt": "2026-09-08T00:34:48.609Z",
+    "checks": [
+      {
+        "id": 84996905753,
+        "name": "typing",
+        "appId": 15368,
+        "headSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-07-03T12:10:26Z"
+      },
+      {
+        "id": 84996905728,
+        "name": "main",
+        "appId": 15368,
+        "headSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-07-03T12:10:31Z"
+      },
+      {
+        "id": 84996905706,
+        "name": "Windows",
+        "appId": 15368,
+        "headSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-07-03T12:10:41Z"
+      },
+      {
+        "id": 84996905685,
+        "name": "3.11",
+        "appId": 15368,
+        "headSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-07-03T12:10:13Z"
+      },
+      {
+        "id": 84996905684,
+        "name": "3.12",
+        "appId": 15368,
+        "headSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-07-03T12:10:14Z"
+      },
+      {
+        "id": 84996905677,
+        "name": "Mac",
+        "appId": 15368,
+        "headSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-07-03T12:10:12Z"
+      },
+      {
+        "id": 84996905676,
+        "name": "PyPy",
+        "appId": 15368,
+        "headSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-07-03T12:10:32Z"
+      },
+      {
+        "id": 84996905655,
+        "name": "3.10",
+        "appId": 15368,
+        "headSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-07-03T12:10:13Z"
+      },
+      {
+        "id": 84996905647,
+        "name": "3.13",
+        "appId": 15368,
+        "headSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-07-03T12:10:14Z"
+      }
+    ],
+    "reviews": []
+  },
+  "result": {
+    "schemaVersion": 1,
+    "tool": {
+      "name": "merge-proof",
+      "version": "0.1.0"
+    },
+    "verdict": "NOT_PROVEN",
+    "repository": {
+      "path": "pallets/itsdangerous",
+      "shallow": false
+    },
+    "refs": {
+      "base": {
+        "ref": "672971d66a2ef9f85151e53283113f33d642dabd",
+        "sha": "672971d66a2ef9f85151e53283113f33d642dabd",
+        "date": "2025-06-14T13:35:42-07:00"
+      },
+      "head": {
+        "ref": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+        "sha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+        "date": "2026-07-03T14:08:40+02:00"
+      },
+      "forkPoint": {
+        "sha": "672971d66a2ef9f85151e53283113f33d642dabd",
+        "date": "2025-06-14T13:35:42-07:00"
+      }
+    },
+    "metrics": {
+      "baseAdvanceCommits": 0,
+      "baseAgeDays": 0,
+      "candidateFileCount": 2,
+      "baseChangedFileCount": 0,
+      "overlapCount": 0,
+      "excludedCount": 0
+    },
+    "findings": [
+      {
+        "id": "HUMAN_APPROVAL_PRESENT",
+        "severity": "blocking",
+        "title": "HUMAN_APPROVAL_PRESENT",
+        "whatHappened": "APPROVAL_MISSING",
+        "missingEvidence": "Exact SHA-bound evidence for d9f3b250e0cac90529e9dd2c6806d4f9d46901fb.",
+        "doNext": "Supply current evidence for the confirmed scope and use the included reassessment."
+      }
+    ],
+    "advisories": [],
+    "excluded": [],
+    "notChecked": [
+      {
+        "id": "CANDIDATE_DURABLE_ON_REMOTE",
+        "reason": "Remote durability is outside the implemented proof."
+      },
+      {
+        "id": "SCOPE_CREEP_VS_DECLARED_SCOPE",
+        "reason": "Comparison with declared intent or scope is outside the implemented proof."
+      }
+    ],
+    "ignoreFile": null,
+    "evidence": {
+      "ci": {
+        "targetSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+        "policy": "All scope-confirmed check names and App IDs must succeed on the relevant SHA.",
+        "checks": [
+          {
+            "name": "typing",
+            "appId": 15368,
+            "state": "CI_MATCHES_RELEVANT_SHA",
+            "evidence": {
+              "id": 84996905753,
+              "name": "typing",
+              "appId": 15368,
+              "headSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+              "status": "completed",
+              "conclusion": "success",
+              "completedAt": "2026-07-03T12:10:26Z"
+            }
+          }
+        ],
+        "state": "CI_MATCHES_RELEVANT_SHA"
+      },
+      "approval": {
+        "targetSha": "d9f3b250e0cac90529e9dd2c6806d4f9d46901fb",
+        "policy": "At least one non-author human collaborator approval on this exact candidate; no outstanding changes-requested review.",
+        "reviews": [],
+        "state": "APPROVAL_MISSING"
+      }
+    }
+  }
+}

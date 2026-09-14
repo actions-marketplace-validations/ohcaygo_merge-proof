@@ -41,7 +41,10 @@
   },
   "scripts": {
     "test": "node test/run.js && node test/pilot-report.js",
-    "report:sample": "node bin/merge-proof-report.js --input study-data.json --repo microsoft/kiota --scope \"Public Kiota methodology sample; historical agent-authored squash merges in the committed study dataset. Microsoft is not a customer.\" --out output/kiota"
+    "report:sample": "node bin/merge-proof-report.js --input study-data.json --repo microsoft/kiota --scope \"Public Kiota methodology sample; historical agent-authored squash merges in the committed study dataset. Microsoft is not a customer.\" --out output/kiota",
+    "factory:start": "node factory/server.js",
+    "test:factory": "node --test factory/test/*.test.js",
+    "test:github": "node --test github/test/*.test.js"
   },
   "dependencies": {},
   "devDependencies": {}

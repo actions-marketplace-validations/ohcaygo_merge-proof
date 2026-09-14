@@ -5,3 +5,7 @@ node_modules/
 /tmp/
 /study-work/
 /output/
+.factory-state/
+.factory-config*.json
+.env*
+factory/proof/private/

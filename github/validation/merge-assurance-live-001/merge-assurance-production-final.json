@@ -1,0 +1,207 @@
+{
+  "latest": {
+    "id": "d14e6cf4-3e9c-4f35-920f-7923c4f6b6ba",
+    "verdict": "NOT_PROVEN",
+    "gaps": [
+      "RULES_UNAVAILABLE",
+      "APPLICABLE_MERGE_STATE_UNAVAILABLE",
+      "BASE_DRIFT_UNVERIFIED"
+    ],
+    "current": {
+      "state": "UNAVAILABLE",
+      "historicalVerdict": "NOT_PROVEN",
+      "changed": [],
+      "unavailable": [
+        "rules",
+        "target",
+        "execution"
+      ],
+      "asOf": "2026-09-12T03:34:34.690Z",
+      "next": "REFRESH REQUIRED"
+    },
+    "gate": {
+      "version": 1,
+      "preset": "ADVISORY",
+      "enforced": false,
+      "boundaries": false,
+      "conclusion": "neutral",
+      "satisfied": null,
+      "blocking": [],
+      "reported": [
+        "APPLICABLE_MERGE_STATE_UNAVAILABLE",
+        "BASE_DRIFT_UNVERIFIED",
+        "RULES_UNAVAILABLE"
+      ],
+      "currentness": "UNAVAILABLE",
+      "verdict": "NOT_PROVEN",
+      "boundaryEscalation": null,
+      "mergeConsequence": "Merge Proof is set to report only. This result does not block the merge."
+    },
+    "metering": {
+      "charged": false,
+      "reason": "NOT_BILLABLE_COMPLETION"
+    },
+    "check": null
+  },
+  "deliveries": [
+    {
+      "event": "installation",
+      "action": "new_permissions_accepted",
+      "status": "OK",
+      "statusCode": 202,
+      "guid": "719a8e00-ae5a-11f1-97e0-baa13bc0c69c",
+      "deliveredAt": "2026-09-12T03:35:34.964Z"
+    },
+    {
+      "event": "installation",
+      "action": "new_permissions_accepted",
+      "status": "OK",
+      "statusCode": 202,
+      "guid": "719a8e00-ae5a-11f1-97e0-baa13bc0c69c",
+      "deliveredAt": "2026-09-12T03:31:31.058Z"
+    },
+    {
+      "event": "installation",
+      "action": "created",
+      "status": "OK",
+      "statusCode": 202,
+      "guid": "283d8240-ad73-11f1-82da-4b8638254a85",
+      "deliveredAt": "2026-09-10T23:55:54.063Z"
+    },
+    {
+      "event": "installation",
+      "action": "deleted",
+      "status": "OK",
+      "statusCode": 202,
+      "guid": "549caf62-ad70-11f1-87ca-7c1e23fa4aea",
+      "deliveredAt": "2026-09-10T23:35:39.782Z"
+    },
+    {
+      "event": "check_run",
+      "action": "created",
+      "status": "OK",
+      "statusCode": 202,
+      "guid": "b4d3cbd4-ad5e-11f1-80d8-e9e255346cdb",
+      "deliveredAt": "2026-09-10T21:29:30.876Z"
+    },
+    {
+      "event": "check_run",
+      "action": "completed",
+      "status": "OK",
+      "statusCode": 202,
+      "guid": "b4ce6b6c-ad5e-11f1-916b-56c63aee9e1f",
+      "deliveredAt": "2026-09-10T21:29:30.784Z"
+    },
+    {
+      "event": "check_run",
+      "action": "created",
+      "status": "OK",
+      "statusCode": 202,
+      "guid": "ab779eda-ad5e-11f1-98d7-f05fda727c58",
+      "deliveredAt": "2026-09-10T21:29:15.077Z"
+    },
+    {
+      "event": "check_run",
+      "action": "completed",
+      "status": "OK",
+      "statusCode": 202,
+      "guid": "ab72e37c-ad5e-11f1-9d18-659dfaa12e92",
+      "deliveredAt": "2026-09-10T21:29:14.932Z"
+    },
+    {
+      "event": "workflow_run",
+      "action": "completed",
+      "status": "OK",
+      "statusCode": 202,
+      "guid": "a3a8b630-ad5e-11f1-981a-f26ffed74bfe",
+      "deliveredAt": "2026-09-10T21:29:01.984Z"
+    },
+    {
+      "event": "check_run",
+      "action": "completed",
+      "status": "OK",
+      "statusCode": 202,
+      "guid": "a395ae50-ad5e-11f1-9cbb-53400c271f25",
+      "deliveredAt": "2026-09-10T21:29:01.876Z"
+    }
+  ],
+  "at": "2026-09-12T03:35:50.353Z",
+  "release": "/opt/merge-proof/releases/assurance-a14a28b",
+  "app": {
+    "id": 4901537,
+    "permissions": {
+      "actions": "read",
+      "administration": "read",
+      "checks": "write",
+      "contents": "read",
+      "members": "read",
+      "merge_queues": "read",
+      "metadata": "read",
+      "pull_requests": "read",
+      "statuses": "read"
+    },
+    "events": [
+      "branch_protection_rule",
+      "check_run",
+      "check_suite",
+      "merge_group",
+      "pull_request",
+      "pull_request_review",
+      "push",
+      "repository",
+      "repository_ruleset",
+      "status",
+      "workflow_run"
+    ]
+  },
+  "installations": [
+    {
+      "id": 160741988,
+      "account": "dupageinspect-beep",
+      "permissions": {
+        "checks": "write",
+        "actions": "read",
+        "contents": "read",
+        "metadata": "read",
+        "statuses": "read",
+        "merge_queues": "read",
+        "pull_requests": "read",
+        "administration": "read"
+      },
+      "events": [
+        "branch_protection_rule",
+        "check_run",
+        "check_suite",
+        "merge_group",
+        "pull_request",
+        "pull_request_review",
+        "push",
+        "repository",
+        "repository_ruleset",
+        "status",
+        "workflow_run"
+      ],
+      "selection": "selected",
+      "repositories": [
+        "dupageinspect-beep/vera-mvp"
+      ]
+    }
+  ],
+  "state": {
+    "meterHash": "523e7444055da17433cbd2c75bd303ffaf74acbc959557cf167fb53c58d212ac",
+    "receipts": {
+      "74957701-3e7f-4017-912f-f6989d77caf7": "a7fbfeb841f35c4d304aacd834e865c0f01824ba7c80c5282e8e3e541c03415d",
+      "b36ffece-0c88-4f44-be7f-941aab679392": "7f77106826ae75e43d728ed782fba45cb182f874530f417772bc8dbe4f524121",
+      "61c2a3a6-87d9-464c-bd63-9e26fad93635": "5e4163d3740c7a0613888b46548ace4c87bc3dfbb996ee53e43cceb472eec510",
+      "d14e6cf4-3e9c-4f35-920f-7923c4f6b6ba": "a1f9aeb2fc7d68adbb541fe058f847a3052b3ebfb27584c1c1abe8e2c0f2983d"
+    },
+    "mergeLedgerHash": "f84894a2f4ec8c952834267affa3c99d3e2def484f0c8f8609138fd7306b2060",
+    "mergeRecordCount": 0,
+    "policies": {},
+    "subscriptions": [
+      "1332241088:16"
+    ]
+  },
+  "publishChecks": true,
+  "hosted": true
+}
