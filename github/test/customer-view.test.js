@@ -10,7 +10,7 @@ test('nineteen immutable observations become one latest card and eighteen histor
  const d=dataset(),before=JSON.stringify(d),cards=ui.inbox(d,config,2,1,[{number:16}],usage);
  a.equal(cards.length,1);a.equal(cards[0].id,row(19).receipt.receiptId);a.equal(cards[0].history.length,18);
  a.equal(new Set([cards[0].id,...cards[0].history.map(r=>r.id)]).size,19);
- a.equal(cards[0].label,'Unable to evaluate');a.equal(cards[0].freshness,'Currentness unavailable');a.equal(cards[0].automation.state,'EVENT_DRIVEN');
+ a.equal(cards[0].label,'FAIL');a.equal(cards[0].freshness,'Currentness unavailable');a.equal(cards[0].automation.state,'EVENT_DRIVEN');
  a.match(cards[0].explanation,/conflicts.*incomplete.*requirements could not be read/);a.doesNotMatch(cards[0].nextAction,/reinstall|grant/);
  a.equal(JSON.stringify(d),before);
 });
@@ -21,12 +21,12 @@ test('grouping includes history beyond the old last-30 cap, sorts by observation
  a.doesNotMatch(JSON.stringify(cards),/privateKey|webhookSecret|installationId|retryAt/);
 });
 test('result follows concrete evidence, not a global FAIL rename',()=>{
- const r=row(19).receipt;a.equal(ui.result(r).label,'Unable to evaluate');
- r.summary.ci.required=[{name:'build',state:'FAILED',conclusion:'failure'}];a.equal(ui.result(r).label,'Requirements not satisfied');a.match(ui.result(r).action,/failed check/);
- r.summary.ci.required=[{name:'build',state:'MISSING'}];a.equal(ui.result(r).label,'Unable to evaluate');
- r.summary.approval.reason='CHANGES_REQUESTED_OBSERVED';a.equal(ui.result(r).label,'Requirements not satisfied');
- r.summary.approval.reason='UNAVAILABLE';r.verdict='VERIFIED';r.gaps=[];r.freshness.state='CURRENT';a.equal(ui.result(r).label,'Verified');
- r.verdict='NOT_PROVEN';a.equal(ui.result(r).label,'Unable to evaluate');
+ const r=row(19).receipt;a.equal(ui.result(r).label,'FAIL');
+ r.summary.ci.required=[{name:'build',state:'FAILED',conclusion:'failure'}];a.equal(ui.result(r).label,'FAIL');a.match(ui.result(r).action,/failed check/);
+ r.summary.ci.required=[{name:'build',state:'MISSING'}];a.equal(ui.result(r).label,'FAIL');
+ r.summary.approval.reason='CHANGES_REQUESTED_OBSERVED';a.equal(ui.result(r).label,'FAIL');
+ r.summary.approval.reason='UNAVAILABLE';r.verdict='VERIFIED';r.gaps=[];r.freshness.state='CURRENT';a.equal(ui.result(r).label,'VERIFIED');
+ r.verdict='NOT_PROVEN';a.equal(ui.result(r).label,'NOT_PROVEN');
 });
 test('freshness never inherits worker CURRENT, stale does not invent a queued recovery, and policy is independent',()=>{
  const r=row(19),c={tracked:true,sub:{refreshState:'CURRENT'},usage,jobs:[],policy:{enforced:true}};
@@ -56,7 +56,7 @@ test('trial presentation preserves exact expiry and does not infer payment, star
 });
 test('receipt foreground is human-readable, raw evidence remains collapsed and HTML escapes untrusted values',()=>{
  const r=row(19);r.receipt.identity.repository='<img onerror=bad>';const raw=require('../receipt').html(r.receipt,r.current);const html=brand.receipt(raw,ui.presentation(r),ui.trial(usage));
- a.match(html,/Technical evidence and machine verdict: FAIL/);a.match(html,/<details><summary>Technical evidence/);a.doesNotMatch(html,/<details open/);a.match(html,/&lt;img onerror=bad&gt;/);a.match(html,/Verdict: Unable to evaluate/);a.match(html,/Freshness: Currentness unavailable/);
+ a.match(html,/Technical evidence and machine verdict: FAIL/);a.match(html,/<details><summary>Technical evidence/);a.doesNotMatch(html,/<details open/);a.match(html,/&lt;img onerror=bad&gt;/);a.match(html,/Verdict: FAIL/);a.match(html,/Freshness: Currentness unavailable/);
  a.equal((html.match(/<main\b/g)||[]).length,1);a.equal((html.match(/<\/main>/g)||[]).length,1);
  a.ok(html.indexOf('Next action:')<html.indexOf('Technical evidence and machine verdict'));
 });
@@ -69,4 +69,17 @@ test('executed client shows one card, collapsed complete history, explicit toggl
  history().open=true;history().ontoggle();vm.runInContext('renderInbox(cards)',ctx);a.equal(history().open,true);
  get('latestOnly').checked=true;get('latestOnly').onchange();a.equal(history().open,false);
  get('latestOnly').checked=false;get('latestOnly').onchange();a.equal(history().open,true);
+});
+
+test('no required validation preserves machine NOT_PROVEN across Check, account and receipt independently of freshness',()=>{
+ const r=row(19);Object.assign(r.receipt,{verdict:'NOT_PROVEN',gaps:['NO_REQUIRED_VALIDATION_CONFIGURED'],freshness:{state:'CURRENT'}});r.receipt.identity.githubMergeable=true;r.current={state:'CURRENT'};
+ const before=JSON.stringify(r.receipt),view=ui.presentation(r,{policy:{enforced:false}});
+ a.equal(view.label,'NOT_PROVEN');a.match(view.explanation,/does not require any validation/);a.match(view.nextAction,/at least one existing check required/);a.match(view.freshness,/Current at last observation/);a.match(view.mergeImpact,/report-only/);
+ const policy=require('../policy').evaluate(r.receipt,r.current,null),check=require('../check');
+ a.match(check.title(r.receipt,r.current,policy),/^NOT_PROVEN.*CURRENT.*reporting only/);
+ a.match(check.summary(r.receipt,r.current,policy),/at least one existing check required/);
+ const html=brand.receipt(require('../receipt').html(r.receipt,{state:'UNAVAILABLE',reason:'REFRESH_REQUIRED'}),view);
+ a.match(html,/Verdict: NOT_PROVEN/);a.doesNotMatch(html,/Unable to evaluate|Receipt currentness: UNAVAILABLE/);a.match(html,/Live recheck: not requested/);
+ for(const state of ['STALE','UNAVAILABLE']){r.current={state};const v=ui.presentation(r);a.equal(v.label,'NOT_PROVEN');a.equal(v.freshness,state==='STALE'?'Out of date':'Currentness unavailable');}
+ a.equal(JSON.stringify(r.receipt),before);
 });

@@ -27,18 +27,26 @@ function operation(c={}) {
   if (c.tracked) return {state:"EVENT_DRIVEN",text:"No re-check is queued. Merge Proof will check again when it receives relevant authorized PR activity. It cannot repair conflicts, provider restrictions or unsupported history; missed events are not guaranteed to be replayed."};
   return {state:"UNCONFIRMED",text:"Automatic re-check is not confirmed for this PR in this view. Check repository access and the PR's open state; use manual recovery only when needed."};
 }
-function result(r) {
+function explanation(r) {
   const s=r.summary||{}, gaps=new Set(r.gaps||[]);
   const failed=(s.ci?.required||[]).find(x=>x.state==="FAILED"&&["failure","timed_out","cancelled","action_required","startup_failure"].includes(x.conclusion));
-  if(failed) return {label:"Requirements not satisfied",explanation:`Required check “${failed.name}” did not succeed on the observed validation state. Other evidence gaps may also remain.`,action:"Open the failed check in GitHub, resolve its reported cause, then rerun the required validation on the applicable version."};
-  if(s.approval?.reason==="CHANGES_REQUESTED_OBSERVED")return {label:"Requirements not satisfied",explanation:"A changes-requested review was observed. Other evidence gaps may also remain.",action:"Open this PR in GitHub and address the changes-requested review."};
-  if(r.verdict==="VERIFIED"&&!(r.gaps||[]).length&&r.freshness?.state==="CURRENT")return {label:"Verified",explanation:"The supported evidence claims were established for the recorded version at observation. This is not a bug-free guarantee or a current permission to merge.",action:"No action needed for the recorded evidence claims. Check the separate freshness and merge-impact statements before relying on them now."};
+  if(failed) return {explanation:`Required check “${failed.name}” did not succeed on the observed validation state. Other evidence gaps may also remain.`,action:"Open the failed check in GitHub, resolve its reported cause, then rerun the required validation on the applicable version."};
+  if(s.approval?.reason==="CHANGES_REQUESTED_OBSERVED")return {explanation:"A changes-requested review was observed. Other evidence gaps may also remain.",action:"Open this PR in GitHub and address the changes-requested review."};
+  if(r.verdict==="VERIFIED"&&!(r.gaps||[]).length&&r.freshness?.state==="CURRENT")return {explanation:"The supported evidence claims were established for the recorded version at observation. This is not a bug-free guarantee or a current permission to merge.",action:"No action needed for the recorded evidence claims. Check the separate freshness and merge-impact statements before relying on them now."};
+  if(r.verdict==="NOT_PROVEN"&&gaps.has("NO_REQUIRED_VALIDATION_CONFIGURED")&&gaps.size===1) {
+    const wording=specialize("NO_REQUIRED_VALIDATION_CONFIGURED",r);
+    return {explanation:wording.plain,action:wording.doNext};
+  }
   const conflict=r.identity?.githubMergeable===false&&r.identity?.githubMergeState==="dirty";
-  if(conflict)return {label:"Unable to evaluate",explanation:"GitHub reported merge conflicts at this observation. Merge Proof could not establish the applicable combined-state evidence."+((gaps.has("INCOMPLETE_GIT_METADATA")||gaps.has("GIT_HISTORY_UNAVAILABLE"))?" Git comparison evidence was incomplete.":"")+(gaps.has("RULES_UNAVAILABLE")?" Branch requirements could not be read.":""),action:"Open this PR in GitHub and resolve the reported conflicts. Inspect the evidence limits in the receipt; repeated refreshes do not fix unchanged comparison limits or provider restrictions."};
-  if(gaps.has("INCOMPLETE_GIT_METADATA")||gaps.has("GIT_HISTORY_UNAVAILABLE"))return {label:"Unable to evaluate",explanation:"Merge Proof could not complete the Git history/comparison evidence needed for this observation.",action:"Inspect the missing Git evidence in the receipt. Use full local history to investigate the comparison; the local verifier does not replace unavailable hosted rules/check evidence. Repeated refreshes alone are not an established fix."};
-  if(gaps.has("RULES_UNAVAILABLE"))return {label:"Unable to evaluate",explanation:"The applicable repository requirements could not be established; unknown requirements do not mean no requirements.",action:"Ask the repository owner or support to diagnose the unavailable rules read using the receipt details. Reinstalling or granting a permission is not an established fix."};
+  if(conflict)return {explanation:"GitHub reported merge conflicts at this observation. Merge Proof could not establish the applicable combined-state evidence."+((gaps.has("INCOMPLETE_GIT_METADATA")||gaps.has("GIT_HISTORY_UNAVAILABLE"))?" Git comparison evidence was incomplete.":"")+(gaps.has("RULES_UNAVAILABLE")?" Branch requirements could not be read.":""),action:"Open this PR in GitHub and resolve the reported conflicts. Inspect the evidence limits in the receipt; repeated refreshes do not fix unchanged comparison limits or provider restrictions."};
+  if(gaps.has("INCOMPLETE_GIT_METADATA")||gaps.has("GIT_HISTORY_UNAVAILABLE"))return {explanation:"Merge Proof could not complete the Git history/comparison evidence needed for this observation.",action:"Inspect the missing Git evidence in the receipt. Use full local history to investigate the comparison; the local verifier does not replace unavailable hosted rules/check evidence. Repeated refreshes alone are not an established fix."};
+  if(gaps.has("RULES_UNAVAILABLE"))return {explanation:"The applicable repository requirements could not be established; unknown requirements do not mean no requirements.",action:"Ask the repository owner or support to diagnose the unavailable rules read using the receipt details. Reinstalling or granting a permission is not an established fix."};
   const gap=[...gaps][0], wording=gap?specialize(gap,r):null;
-  return {label:"Unable to evaluate",explanation:wording?.plain||"The available evidence does not establish the required claims. This does not mean the code is broken.",action:wording?.doNext||"Inspect the missing evidence in this receipt before relying on it. No specific fix is established."};
+  return {explanation:wording?.plain||"The available evidence does not establish the required claims. This does not mean the code is broken.",action:wording?.doNext||"Inspect the missing evidence in this receipt before relying on it. No specific fix is established."};
+}
+function result(r) {
+  // Machine verdict is the answer; evidence explains it without renaming it.
+  return {...explanation(r),label:r.verdict||"No observation available"};
 }
 function presentation(row,c={}) {
   const r=row.receipt, saved=row.current||r.freshness||{state:"UNAVAILABLE"};
@@ -64,7 +72,7 @@ function inbox(data,config,installationId,repositoryId,pulls,usage,policy=null) 
   return [...groups.values()];
 }
 function summaryHtml(view,heading="h2") {
-  return `<${heading}>${escape(view.label)}</${heading}><p class="proof-badges"><span class="badge">Verdict: ${escape(view.label)}</span> <span class="badge">Freshness: ${escape(view.freshness)}</span></p><p>${escape(view.explanation)}</p><p><strong>Next action:</strong> ${escape(view.nextAction)}</p><p><strong>Merging:</strong> ${escape(view.mergeImpact)}</p><p><strong>Automatic re-check:</strong> ${escape(view.automation.text)}</p><p class="small">Observed: ${escape(view.observedAt)}${view.currentnessObservedAt?" · Currentness last checked: "+escape(view.currentnessObservedAt):""}. ${escape(view.freshnessDetail)}</p>`;
+  return `<${heading}>${escape(view.label)}</${heading}><p>${escape(view.explanation)}</p><p class="proof-badges"><span class="badge">Verdict: ${escape(view.label)}</span> <span class="badge">Freshness: ${escape(view.freshness)}</span></p><p><strong>Merging:</strong> ${escape(view.mergeImpact)}</p><p><strong>Next action:</strong> ${escape(view.nextAction)}</p><p><strong>Automatic re-check:</strong> ${escape(view.automation.text)}</p><p class="small">Observed: ${escape(view.observedAt)}${view.currentnessObservedAt?" · Currentness last checked: "+escape(view.currentnessObservedAt):""}. ${escape(view.freshnessDetail)}</p>`;
 }
 function trialHtml(value) {return `<aside class="trial-status" aria-label="Trial and hosted access"><h2>${escape(value.label)}</h2><p>${escape(value.detail)}</p><a href="/proof/?view=account#billing">Account / Continue Pro</a></aside>`;}
 module.exports={trial,context,operation,result,presentation,inbox,summaryHtml,trialHtml};

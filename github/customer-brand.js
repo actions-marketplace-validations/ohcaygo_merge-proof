@@ -49,7 +49,7 @@ const header = `<a class="skip-link" href="#main">Skip to content</a><header cla
 function receipt(document, view = null, trial = null) {
   if(view) {
     const ui=require("./customer-view");
-    document=document.replace(/<main>([\s\S]*?)<\/main>/, (_, original) => `<main>${trial?ui.trialHtml(trial):""}<header><p class="eyebrow">${require("./receipt").escape(view.repository)} · PR #${view.pr}</p>${ui.summaryHtml(view,"h1")}</header><details><summary>Technical evidence and machine verdict: ${require("./receipt").escape(view.verdict)}</summary>${original}</details></main>`);
+    document=document.replace(/<main>([\s\S]*?)<\/main>/, (_, original) => `<main><header><p class="eyebrow">${require("./receipt").escape(view.repository)} · PR #${view.pr}</p>${ui.summaryHtml(view,"h1")}</header>${trial?ui.trialHtml(trial):""}<details><summary>Technical evidence and machine verdict: ${require("./receipt").escape(view.verdict)}</summary>${original}</details></main>`);
   }
   return document.replace(/<style>[\s\S]*?<\/style>/, `<style>${css}</style><body class="brand-page proof-page">${header}`)
     .replace('<main>', '<main id="main">')

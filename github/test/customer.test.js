@@ -109,7 +109,10 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
       },
       ...(body ? { method: "POST", body: JSON.stringify(body) } : {}),
     });
-  a.equal((await request("/proof/installations")).status, 200);
+  const connected=await request("/proof/installations");
+  a.equal(connected.status,200);a.ok((await connected.json()).sessionExpiresAt>Date.now());
+  const authorized=await (await request("/proof/repositories?installation=2")).json();
+  a.ok(authorized.sessionExpiresAt>Date.now());a.equal(authorized.repositories[0].id,1);
   a.equal((await request("/proof/repositories?installation=999")).status, 403);
   const initial = await (await request("/proof/account?installation=2&repository=1")).json();
   a.equal(initial.usage.plan,"AWAITING_FIRST_PROOF");
@@ -151,6 +154,25 @@ test("customer OAuth login, authorized repository, receipt, free meter, private 
   a.equal(grouped.inbox[0].history.length+1,grouped.receipts.length);
   a.equal(JSON.stringify(service.data.receipts[out.receipt.receiptId].receipt),savedReceipt);
   a.equal((await request(out.url + "/refresh", {})).status, 200);
+  // Exercise the actual HTTP rendering and grouped account against a complete
+  // no-required-validation observation, without altering its canonical body.
+  const capture=require('./fixtures').capture();
+  capture.rules.classic=require('../common').available(null);
+  const noRequired=require('../proof').prove(capture);
+  a.equal(noRequired.verdict,'NOT_PROVEN');
+  a.deepEqual(noRequired.gaps,['NO_REQUIRED_VALIDATION_CONFIGURED']);
+  noRequired.issuedAt='2099-01-01T00:00:00.000Z';
+  const row={installationId:2,receipt:noRequired,current:{state:'CURRENT',asOf:noRequired.issuedAt}};
+  service.data.receipts[noRequired.receiptId]=row;
+  const body=JSON.stringify(noRequired);
+  const noRequiredHtml=await (await request('/proof/receipts/'+noRequired.receiptId)).text();
+  a.match(noRequiredHtml,/Verdict: NOT_PROVEN/);a.match(noRequiredHtml,/Freshness: Current at last observation/);
+  a.match(noRequiredHtml,/does not require any validation/);a.doesNotMatch(noRequiredHtml,/Unable to evaluate|Receipt currentness: UNAVAILABLE/);
+  const card=(await (await request('/proof/account?installation=2&repository=1')).json()).inbox[0];
+  a.equal(card.id,noRequired.receiptId);a.equal(card.label,'NOT_PROVEN');a.match(card.freshness,/Current at last observation/);a.match(card.nextAction,/at least one existing check required/);
+  const machineNoRequired=await (await request('/proof/receipts/'+noRequired.receiptId+'?format=json')).json();
+  a.equal(JSON.stringify(machineNoRequired.receipt),body);a.equal(machineNoRequired.current.reason,'REFRESH_REQUIRED');
+  delete service.data.receipts[noRequired.receiptId];
   privateRepo = true;
   a.equal((await request(out.url)).status, 200);
   a.equal((await request(out.url, false, false)).status, 403);
@@ -319,4 +341,11 @@ test('acquisition is coarse, bounded, deduplicated per session and excludes arbi
   }
   a.deepEqual(service.store.data.acquisition,{x:{github_connected:1,installation_available:1,receipt_returned:1},other:{github_connected:1,installation_available:1,receipt_returned:1},direct:{github_connected:2,installation_available:2,receipt_returned:2}});
   a.doesNotMatch(JSON.stringify(service.store.data), /secret|example|click_id/);
+});
+
+test("revoked GitHub user token requires login while provider denial stays distinct",async()=>{
+ const customers=new Customers({config:{}},{fetchImpl:async()=>new Response('{}',{status:401})});
+ await a.rejects(customers.api('fixture','/user/installations'),{code:'LOGIN_REQUIRED'});
+ customers.fetch=async()=>new Response('{}',{status:403});
+ await a.rejects(customers.api('fixture','/user/installations'),{code:'ACCESS_UNAVAILABLE_OR_DENIED'});
 });

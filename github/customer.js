@@ -136,6 +136,7 @@ class Customers {
         "User-Agent": "Merge-Proof",
       },
     });
+    assert(r.status !== 401, "LOGIN_REQUIRED");
     assert(r.ok, "ACCESS_UNAVAILABLE_OR_DENIED");
     return r.json();
   }

@@ -37,8 +37,8 @@ async function render(billingOwner){
  const els=new Map();const get=id=>{if(!els.has(id))els.set(id,element());return els.get(id);};
  get('installation').value=2;get('repository').value=1;
  const response={billingOwner,usage,automation:{state:'PENDING',message:'Finding open PRs and collecting evidence.'},pulls:[],receipts:[],merges:{records:[],total:0,completeness:'Fixture'}};
- const context=vm.createContext({document:{getElementById:get,createElement:element},location:{search:''},URLSearchParams,setInterval(){},fetch:async url=>({ok:url.includes('account?'),json:async()=>url.includes('account?')?response:{error:'LOGIN_REQUIRED'}})});
- vm.runInContext(script,context);await vm.runInContext('load()',context);return get;
+ const context=vm.createContext({document:{getElementById:get,createElement:element},location:{search:''},URLSearchParams,setInterval(){},fetch:async url=>({ok:!url.includes('gate?'),json:async()=>url.includes('account?')?response:url.endsWith('installations')?{installations:[]}:{error:'PROOF_UNAVAILABLE_OR_DENIED'}})});
+ vm.runInContext(script,context);await new Promise(r=>setImmediate(r));get('installation').value=2;get('repository').value=1;await vm.runInContext('load()',context);return get;
 }
 test('non-billing-owner UI never fabricates zero and hides billing quantity controls',async()=>{
  const get=await render(false);

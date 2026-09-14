@@ -105,6 +105,7 @@ async function handle(service, req, res, url) {
         const installations = await customers.installations(session);
         if (installations.length) customers.acquisition(session, "installation_available");
         send(200, {
+          sessionExpiresAt: customers.session(req).expiresAt,
           installations: installations.map((i) => ({
             id: i.id,
             account: i.account.login,
@@ -125,6 +126,7 @@ async function handle(service, req, res, url) {
           "repositories",
         );
         send(200, {
+          sessionExpiresAt: customers.session(req).expiresAt,
           repositories: rows.map((r) => ({ id: r.id, name: r.full_name })),
         });
         return true;
