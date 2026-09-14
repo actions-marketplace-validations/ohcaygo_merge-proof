@@ -127,3 +127,7 @@
 .brand-page nav .nav-cta { position:absolute; top:19px; right:22px; margin:0; }
 .brand-page .site-header nav span { display:inline; margin:0; }
 }
+
+.brand-page .audience-chips { display:flex; flex-wrap:wrap; gap:6px; list-style:none; padding:0; margin:0 0 18px; }
+.brand-page .audience-chips li { margin:0; padding:4px 9px; border:1px solid var(--line); border-radius:4px; color:var(--muted); font-size:.75rem; }
+.brand-page .cta-shadow { color:var(--muted); font-size:.875rem; margin:10px 0 0; }
