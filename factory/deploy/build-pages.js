@@ -19,6 +19,8 @@ if (
 fs.mkdirSync(out); // Fail if the directory exists; never overwrite another bundle.
 for (const name of [
   "index.html",
+  "privacy.html",
+  "terms.html",
   "app.js",
   "landing.js",
   "legacy.html",
