@@ -132,6 +132,38 @@
 .brand-page .audience-chips li { margin:0; padding:4px 9px; border:1px solid var(--line); border-radius:4px; color:var(--muted); font-size:.75rem; }
 .brand-page .cta-shadow { color:var(--muted); font-size:.875rem; margin:10px 0 0; }
 
+/* Keep the stale-tip scene and installation path together in the first fold. */
+.brand-page .hero { padding:44px 0; gap:48px; }
+.brand-page .hero h1 { font-size:clamp(2.5rem,4.5vw,4rem); line-height:1.04; letter-spacing:-.045em; margin-bottom:24px; }
+.brand-page .tip-scene { border-left:2px solid var(--gold); padding-left:16px; margin-bottom:22px; }
+.brand-page .tip-scene p { margin:0 0 8px; }
+.brand-page .tip-scene p:last-child { margin:0; }
+.brand-page .hero-evidence { color:var(--muted); font-size:.95rem; margin-bottom:10px; }
+.brand-page .hero-evidence strong { color:#f6f6f4; }
+.brand-page .hero-boundary { color:var(--muted); font-size:.875rem; margin:0; }
+.brand-page .install-card h2 { font-size:.75rem; line-height:1.4; letter-spacing:.12em; margin-bottom:20px; }
+.brand-page .install-steps { list-style:none; padding:0; margin:0 0 22px; }
+.brand-page .install-steps li { display:flex; align-items:center; gap:12px; margin:0 0 14px; }
+.brand-page .install-steps .step-number { flex-shrink:0; }
+.brand-page .install-prereq { color:var(--muted); font-size:.875rem; margin-bottom:16px; }
+.brand-page .install-card .primary-cta { width:100%; font-size:.95rem; }
+.brand-page .install-card .local-link { margin-top:14px; }
+@media(max-width:1000px) { .brand-page .hero { gap:28px; } }
+@media(max-width:760px) {
+.brand-page .hero { padding:20px 0 32px; gap:20px; }
+.brand-page .hero h1 { font-size:2rem; line-height:1.08; margin-bottom:12px; }
+.brand-page .tip-scene { margin-bottom:14px; padding-left:12px; font-size:.875rem; }
+.brand-page .tip-scene p { margin-bottom:4px; }
+.brand-page .hero-evidence { font-size:.875rem; margin-bottom:6px; }
+.brand-page .hero-boundary { font-size:.8125rem; }
+.brand-page .install-card { padding:18px; }
+.brand-page .install-card h2 { margin-bottom:12px; }
+.brand-page .install-steps { margin-bottom:12px; }
+.brand-page .install-steps li { gap:10px; margin-bottom:8px; font-size:.875rem; }
+.brand-page .install-steps .step-number { width:28px; height:28px; }
+.brand-page .install-prereq { margin-bottom:12px; font-size:.8125rem; }
+}
+
 /* Static legal pages share the public site's typography and navigation. */
 .brand-page .legal-copy { max-width:760px; margin:0 auto; padding:56px 0 16px; overflow-wrap:anywhere; }
 .brand-page .legal-copy h1 { font-size:clamp(2.6rem,6vw,4rem); line-height:1.08; }
