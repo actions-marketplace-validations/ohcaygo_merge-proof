@@ -16,29 +16,26 @@
 <main>
 <section class="hero" id="prove" aria-labelledby="hero-title">
 <div class="hero-copy">
-<p class="eyebrow">BUILD. REVIEW. PROVE.</p>
-<h1 id="hero-title">PROVE<br>THE MERGE<span class="gold">.</span></h1>
-<p class="lead"><strong>Code moves fast. Do the green checks still belong?</strong><br>Merge Proof checks whether the available GitHub evidence supports the exact code you’re about to merge.</p>
-<ul class="audience-chips" aria-label="For teams working with"><li>Platform / DevEx</li><li>Teams with AI PRs</li><li>Merge queue / required checks</li></ul>
-<p class="hero-translation"><strong>Merge?</strong> Add the new work to the main version of your code.<br><strong>Green checks?</strong> The automated checks passed. That doesn't mean bug-free.</p>
-<div class="free-offer"><strong>Try Merge Proof free for 7 days. No card required.</strong><span>Report-only during trial.</span></div>
-<a class="primary-cta" href="/proof/">TRY MERGE PROOF FREE <span aria-hidden="true">↗</span></a>
-<p class="cta-shadow">Your 7 days start with your first successful hosted proof—not when you connect GitHub or install the App. No card.</p>
-<p class="journey">Connect GitHub → Authorize repositories → Merge Proof finds open PRs and starts proving automatically.</p>
-<p class="small">You'll need a GitHub account, a repository you can authorize, and an open PR for your first live proof.</p>
-<details class="hero-help"><summary>New to this? What's a repo or PR?</summary><p><strong>Repository (repo):</strong> your project's code and history on GitHub. <strong>Pull request (PR):</strong> new work proposed for review, waiting to be added to the main code. Choose an account or repository if more than one is available. No open PR yet? We watch for the next one; your trial has not started. “Prove it now” is optional.</p></details>
-<p class="local-link">Prefer local? <a href="https://github.com/ohcaygo/merge-proof#readme">Free CLI + GitHub Action →</a></p>
+<h1 id="hero-title">Green checks go <span class="gold">STALE</span> when the tip moves.</h1>
+<div class="tip-scene" aria-label="Why old green checks go stale">
+<p><span class="green">Checks were green</span> on one tip.</p>
+<p>Someone pushed again. <strong>The tip moved.</strong></p>
+<p>Old green no longer proves this tip → <strong class="gold">STALE.</strong></p>
 </div>
-<aside class="story" id="how-it-works" aria-labelledby="story-title">
-<p class="eyebrow">HOW IT WORKS / A QUICK EXAMPLE</p>
-<h2 id="story-title">Checks passed.<br>Then the code moved.</h2>
-<ol class="story-steps">
-<li><span class="step-number green">01</span><div><h3 class="green">Checks green.</h3><p>A passing result describes the version checked.</p></div></li>
-<li class="changed"><span class="step-number gold">02</span><div><h3>The code moves.</h3><p>A new commit changes the PR head. Earlier checks may no longer apply.</p></div></li>
-<li><span class="step-number">03</span><div><h3>Re-proof this version.</h3><p>When Merge Proof observes the change, the earlier receipt’s freshness becomes STALE. Re-proof checks the current evidence.</p></div></li>
+<p class="hero-evidence"><strong>Independent exact-tip merge evidence.</strong><br>Verdict: VERIFIED / NOT_PROVEN. Freshness: CURRENT / STALE.</p>
+<p class="hero-boundary">Not an AI reviewer. Neither NOT_PROVEN nor STALE means bad code.</p>
+</div>
+<aside class="story install-card" id="how-it-works" aria-labelledby="install-title">
+<h2 class="eyebrow" id="install-title">START IN 1–2–3</h2>
+<ol class="install-steps">
+<li><span class="step-number gold" aria-hidden="true">1</span><span>Install the GitHub App on a repo you admin.</span></li>
+<li><span class="step-number gold" aria-hidden="true">2</span><span>Pick an open PR.</span></li>
+<li><span class="step-number gold" aria-hidden="true">3</span><span>Get a receipt for that tip.</span></li>
 </ol>
-<div class="story-result"><p><strong>Verdict: VERIFIED or NOT_PROVEN. Freshness: separate.</strong></p><p class="freshness-note">Re-proof may return NOT_PROVEN if required evidence is missing. Read the gap and next action. Neither NOT_PROVEN nor STALE means broken code.</p></div>
-<a class="text-link" href="#receipt">See an example receipt ↓</a>
+<p class="install-prereq">Needs a GitHub account, a repo you can authorize, and an open PR. No card for the trial.</p>
+<a class="primary-cta" href="/proof/">CONNECT GITHUB <span aria-hidden="true">↗</span></a>
+<p class="cta-shadow">7-day hosted trial. Report-only.</p>
+<p class="local-link"><a href="https://github.com/ohcaygo/merge-proof#readme">Free local CLI + GitHub Action →</a></p>
 </aside>
 </section>
 <section class="comparison" aria-label="Tests and Merge Proof">
