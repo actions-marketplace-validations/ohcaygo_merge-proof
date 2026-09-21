@@ -1,0 +1,540 @@
+{
+  "schemaVersion": 2,
+  "receiptId": "fa418b22-ce91-47ab-9000-4d38acee9659",
+  "tool": {
+    "name": "merge-proof",
+    "version": "0.1.0"
+  },
+  "policy": "github-exact-state-v1",
+  "verdict": "NOT_PROVEN",
+  "issuedAt": "2026-09-10T12:00:00Z",
+  "identity": {
+    "repository": "fixture/public",
+    "repositoryId": 1,
+    "visibility": "public",
+    "authorization": "PUBLIC_ANONYMOUS",
+    "pr": 1,
+    "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "headRef": "feature",
+    "headRepository": "fixture/public",
+    "headRepositoryId": 1,
+    "baseRef": "main",
+    "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "branchProtected": true,
+    "prState": "open",
+    "merged": false,
+    "mergeCommitSha": "cccccccccccccccccccccccccccccccccccccccc",
+    "authorId": 1,
+    "author": {
+      "id": 1,
+      "login": "author",
+      "type": "User"
+    },
+    "mergedBy": null,
+    "githubMergeable": true,
+    "githubMergeState": "clean"
+  },
+  "fingerprint": "f0963a26f8e886072ee04fbf400ae805efb05c8b5c8182f2d406d7c9e8b23e79",
+  "freshness": {
+    "state": "CURRENT",
+    "asOf": "2026-09-10T12:00:00Z",
+    "meaning": "Current only at the recorded observation; later views must recheck evidence."
+  },
+  "summary": {
+    "ci": {
+      "target": {
+        "state": "AVAILABLE",
+        "value": {
+          "kind": "HEAD_CONTAINS_CURRENT_BASE",
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        }
+      },
+      "state": "NOT_PROVEN",
+      "required": [
+        {
+          "name": "test",
+          "appId": 10,
+          "state": "SKIPPED",
+          "accepted": true,
+          "acceptanceSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "checkId": 10,
+          "conclusion": "skipped",
+          "executionRecorded": false,
+          "workflowJobs": [
+            {
+              "runId": 20,
+              "workflowId": 30,
+              "attempt": 1,
+              "runSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "actor": {
+                "id": 1,
+                "login": "author",
+                "type": "User"
+              },
+              "triggeringActor": {
+                "id": 1,
+                "login": "author",
+                "type": "User"
+              },
+              "jobId": 40,
+              "checkId": 10,
+              "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "status": "completed",
+              "conclusion": "success",
+              "runStatus": "completed",
+              "runConclusion": "success",
+              "steps": [
+                {
+                  "number": 1,
+                  "status": "completed",
+                  "conclusion": "success",
+                  "startedAt": "2026-09-10T12:00:00Z",
+                  "completedAt": "2026-09-10T12:00:00Z"
+                }
+              ]
+            }
+          ],
+          "observedCheck": {
+            "id": 10,
+            "name": "test",
+            "appId": 10,
+            "appSlug": "ci",
+            "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "status": "completed",
+            "conclusion": "skipped",
+            "startedAt": "2026-09-10T12:00:00Z",
+            "completedAt": "2026-09-10T12:00:00Z",
+            "suiteId": 50
+          },
+          "observedStatus": null
+        }
+      ],
+      "selfReference": null,
+      "acceptedCount": 1,
+      "executionCount": 0
+    },
+    "approval": {
+      "state": "PROVEN",
+      "observed": [
+        {
+          "id": 60,
+          "reviewer": "reviewer",
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "current": [
+        {
+          "id": 60,
+          "reviewer": "reviewer",
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "required": 1,
+      "reason": null
+    },
+    "remote": {
+      "state": "AVAILABLE",
+      "value": {
+        "repositoryId": 1,
+        "ref": "feature",
+        "expectedSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "observedSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "confirmed": true
+      }
+    },
+    "rules": {
+      "state": "AVAILABLE",
+      "checks": [
+        {
+          "name": "test",
+          "appId": 10
+        }
+      ],
+      "approvals": 1,
+      "strict": true,
+      "dismissStale": true,
+      "lastPush": false,
+      "codeOwners": false,
+      "mergeQueue": false,
+      "unsupported": []
+    },
+    "target": {
+      "state": "AVAILABLE",
+      "value": {
+        "kind": "HEAD_CONTAINS_CURRENT_BASE",
+        "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    },
+    "actors": {
+      "state": "AVAILABLE",
+      "prAuthor": {
+        "id": 1,
+        "login": "author",
+        "type": "User",
+        "kind": "HUMAN_ACCOUNT",
+        "botLoginSuffix": false
+      },
+      "mergedBy": null,
+      "commitAuthors": [
+        {
+          "id": 1,
+          "login": "author",
+          "type": "User",
+          "kind": "HUMAN_ACCOUNT",
+          "botLoginSuffix": false
+        }
+      ],
+      "commitCommitters": [
+        {
+          "id": 1,
+          "login": "author",
+          "type": "User",
+          "kind": "HUMAN_ACCOUNT",
+          "botLoginSuffix": false
+        }
+      ],
+      "commitsObserved": 1,
+      "commitsTruncated": false,
+      "signedCommits": 0,
+      "reviewers": [
+        {
+          "id": 2,
+          "login": "reviewer",
+          "type": "User",
+          "kind": "HUMAN_ACCOUNT",
+          "botLoginSuffix": false
+        }
+      ],
+      "checkPublishers": [
+        {
+          "appId": 10,
+          "slug": "ci",
+          "kind": "APP"
+        }
+      ],
+      "workflowActors": [
+        {
+          "id": 1,
+          "login": "author",
+          "type": "User",
+          "kind": "HUMAN_ACCOUNT",
+          "botLoginSuffix": false
+        }
+      ],
+      "authorship": [
+        {
+          "id": 1,
+          "login": "author",
+          "type": "User",
+          "kind": "HUMAN_ACCOUNT",
+          "botLoginSuffix": false
+        }
+      ],
+      "nonHumanAuthorship": [],
+      "agentIdentity": "NONE_OBSERVED",
+      "limitation": "GitHub records the account that acted, not the tool it was driven by. A coding agent run with a person's own credentials is recorded as that person; only an agent acting as its own GitHub App or bot account is separately identifiable here."
+    },
+    "gate": {
+      "context": "Merge Proof exact-state receipt",
+      "appId": null,
+      "required": false,
+      "boundToThisApp": null,
+      "independentRequiredChecks": 1,
+      "requiredChecks": [
+        {
+          "name": "test",
+          "appId": 10
+        }
+      ],
+      "approvalsRequired": 1,
+      "readiness": {
+        "state": "READY",
+        "blockers": []
+      },
+      "unsupported": []
+    }
+  },
+  "gaps": [
+    "CURRENT_STATE_EXECUTION_NOT_PROVEN"
+  ],
+  "local": {
+    "schemaVersion": 1,
+    "tool": {
+      "name": "merge-proof",
+      "version": "0.1.0"
+    },
+    "verdict": "VERIFIED",
+    "repository": {
+      "path": "fixture/public",
+      "shallow": false
+    },
+    "refs": {
+      "base": {
+        "ref": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "date": "2026-09-10T12:00:00Z"
+      },
+      "head": {
+        "ref": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "date": "2026-09-10T12:00:00Z"
+      },
+      "forkPoint": {
+        "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "date": "2026-09-10T12:00:00Z"
+      }
+    },
+    "metrics": {
+      "baseAdvanceCommits": 0,
+      "baseAgeDays": 0,
+      "candidateFileCount": 1,
+      "baseChangedFileCount": 0,
+      "overlapCount": 0,
+      "excludedCount": 0
+    },
+    "findings": [],
+    "advisories": [],
+    "excluded": [],
+    "notChecked": [
+      {
+        "id": "CI_RAN_ON_FINAL_HEAD",
+        "reason": "merge-proof does not read CI results; it cannot tell which commit was tested."
+      },
+      {
+        "id": "HUMAN_APPROVAL_PRESENT",
+        "reason": "merge-proof does not read reviews or approvals."
+      },
+      {
+        "id": "CANDIDATE_DURABLE_ON_REMOTE",
+        "reason": "merge-proof inspects local git state only; it does not query a remote for durability."
+      },
+      {
+        "id": "SCOPE_CREEP_VS_DECLARED_SCOPE",
+        "reason": "merge-proof has no declared-scope input to compare the diff against."
+      }
+    ],
+    "ignoreFile": null,
+    "changedFiles": [
+      "src/feature.js"
+    ],
+    "source": "github-rest-git-metadata"
+  },
+  "evidence": {
+    "source": "github-rest",
+    "startedAt": "2026-09-10T12:00:00Z",
+    "observedAt": "2026-09-10T12:00:00Z",
+    "consistency": "STABLE_OBSERVATION",
+    "identity": {
+      "repository": "fixture/public",
+      "repositoryId": 1,
+      "visibility": "public",
+      "authorization": "PUBLIC_ANONYMOUS",
+      "pr": 1,
+      "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "headRef": "feature",
+      "headRepository": "fixture/public",
+      "headRepositoryId": 1,
+      "baseRef": "main",
+      "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "branchProtected": true,
+      "prState": "open",
+      "merged": false,
+      "mergeCommitSha": "cccccccccccccccccccccccccccccccccccccccc",
+      "authorId": 1,
+      "author": {
+        "id": 1,
+        "login": "author",
+        "type": "User"
+      },
+      "mergedBy": null,
+      "githubMergeable": true,
+      "githubMergeState": "clean"
+    },
+    "rules": {
+      "classic": {
+        "state": "AVAILABLE",
+        "value": {
+          "required_status_checks": {
+            "strict": true,
+            "checks": [
+              {
+                "context": "test",
+                "app_id": 10
+              }
+            ]
+          },
+          "required_pull_request_reviews": {
+            "required_approving_review_count": 1,
+            "dismiss_stale_reviews": true
+          }
+        }
+      },
+      "active": {
+        "state": "AVAILABLE",
+        "value": []
+      }
+    },
+    "git": {
+      "state": "AVAILABLE",
+      "value": {
+        "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "mergeBase": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "candidateFiles": [
+          "src/feature.js"
+        ],
+        "baseFiles": [],
+        "baseAdvanceCommits": 0,
+        "dates": {
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": "2026-09-10T12:00:00Z",
+          "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb": "2026-09-10T12:00:00Z"
+        }
+      }
+    },
+    "target": {
+      "state": "AVAILABLE",
+      "value": {
+        "kind": "HEAD_CONTAINS_CURRENT_BASE",
+        "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "baseSha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    },
+    "remote": {
+      "state": "AVAILABLE",
+      "value": {
+        "repositoryId": 1,
+        "ref": "feature",
+        "expectedSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "observedSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "confirmed": true
+      }
+    },
+    "checks": {
+      "state": "AVAILABLE",
+      "value": [
+        {
+          "id": 10,
+          "name": "test",
+          "appId": 10,
+          "appSlug": "ci",
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "completed",
+          "conclusion": "skipped",
+          "startedAt": "2026-09-10T12:00:00Z",
+          "completedAt": "2026-09-10T12:00:00Z",
+          "suiteId": 50
+        }
+      ]
+    },
+    "statuses": {
+      "state": "AVAILABLE",
+      "value": []
+    },
+    "execution": {
+      "state": "AVAILABLE",
+      "value": [
+        {
+          "runId": 20,
+          "workflowId": 30,
+          "attempt": 1,
+          "runSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "actor": {
+            "id": 1,
+            "login": "author",
+            "type": "User"
+          },
+          "triggeringActor": {
+            "id": 1,
+            "login": "author",
+            "type": "User"
+          },
+          "jobId": 40,
+          "checkId": 10,
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "completed",
+          "conclusion": "success",
+          "runStatus": "completed",
+          "runConclusion": "success",
+          "steps": [
+            {
+              "number": 1,
+              "status": "completed",
+              "conclusion": "success",
+              "startedAt": "2026-09-10T12:00:00Z",
+              "completedAt": "2026-09-10T12:00:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    "reviews": {
+      "state": "AVAILABLE",
+      "value": [
+        {
+          "id": 60,
+          "userId": 2,
+          "login": "reviewer",
+          "userType": "User",
+          "state": "APPROVED",
+          "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "submittedAt": "2026-09-10T12:00:00Z",
+          "writePermission": {
+            "state": "AVAILABLE",
+            "value": true
+          }
+        }
+      ]
+    },
+    "actors": {
+      "state": "AVAILABLE",
+      "value": {
+        "author": {
+          "id": 1,
+          "login": "author",
+          "type": "User"
+        },
+        "mergedBy": null,
+        "truncated": false,
+        "commits": [
+          {
+            "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "author": {
+              "id": 1,
+              "login": "author",
+              "type": "User"
+            },
+            "committer": {
+              "id": 1,
+              "login": "author",
+              "type": "User"
+            },
+            "verified": false,
+            "verificationReason": "unsigned"
+          }
+        ]
+      }
+    }
+  },
+  "notChecked": [
+    "CODE_CORRECTNESS",
+    "SECURITY",
+    "WORKFLOW_CHECKOUT_CONTENTS",
+    "SCOPE_CREEP_VS_DECLARED_SCOPE",
+    "FUTURE_REMOTE_RETENTION",
+    "WHICH_TOOL_OR_MODEL_PRODUCED_THE_CODE"
+  ],
+  "next": "Run the required validation against the applicable current state, then re-run proof.",
+  "limitations": [
+    "VERIFIED covers only these evidence claims; it does not establish bug-free, secure or production-safe code.",
+    "GitHub observations are not an atomic transaction or a guarantee of future merge state.",
+    "Job records establish GitHub-reported execution, not what source a workflow actually checked out.",
+    "Remote confirmation is point-in-time ref presence, not a future retention guarantee.",
+    "GitHub records the account that acted, not the tool it was driven by. A coding agent run with a person's own credentials is recorded as that person; only an agent acting as its own GitHub App or bot account is separately identifiable here."
+  ],
+  "example": "SYNTHETIC_FIXTURE_NOT_CUSTOMER_EVIDENCE"
+}

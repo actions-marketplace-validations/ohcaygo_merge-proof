@@ -1,0 +1,18 @@
+{
+  "kind": "LIVE_PUBLIC_READ_NOT_CUSTOMER_ACCEPTANCE",
+  "command": "node github/cli.js ohcaygo/merge-proof 3 --out /tmp/merge-proof-live-exact-state-3",
+  "observedAt": "2026-09-10T07:27:27.836Z",
+  "repository": "ohcaygo/merge-proof",
+  "pr": 3,
+  "headSha": "1d9fa803cb5a549aae1c4968f79b14a6c37d8d48",
+  "baseSha": "dab4c4b896a4ff704603e4945edfce87c43fd4e5",
+  "verdict": "NOT_PROVEN",
+  "gaps": [
+    "LIVE_PR_NOT_OPEN",
+    "RULES_UNAVAILABLE",
+    "APPLICABLE_MERGE_STATE_UNAVAILABLE",
+    "REMOTE_CANDIDATE_NOT_CONFIRMED",
+    "BASE_DRIFT_UNVERIFIED"
+  ],
+  "note": "Read-only observation of a closed PR. This was not live installed-App or open-PR acceptance."
+}

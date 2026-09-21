@@ -1,0 +1,195 @@
+TAP version 13
+# Subtest: Stripe raw signature rejects modified, expired, unsigned and live-mode events
+ok 1 - Stripe raw signature rejects modified, expired, unsigned and live-mode events
+  ---
+  duration_ms: 9.000869
+  ...
+# Subtest: Stripe retrieves authoritative amount/contact/transaction; ignores webhook amount
+ok 2 - Stripe retrieves authoritative amount/contact/transaction; ignores webhook amount
+  ---
+  duration_ms: 4.068099
+  ...
+# Subtest: Stripe rejects wrong SKU, mode, quantity, link, pending payment
+ok 3 - Stripe rejects wrong SKU, mode, quantity, link, pending payment
+  ---
+  duration_ms: 3.00814
+  ...
+# Subtest: offer price comes from Payment Link and rejects adjustable or recurring SKU
+ok 4 - offer price comes from Payment Link and rejects adjustable or recurring SKU
+  ---
+  duration_ms: 39.892599
+  ...
+# Subtest: repository input is public GitHub only; no token, query, fragment, local path or other host
+ok 5 - repository input is public GitHub only; no token, query, fragment, local path or other host
+  ---
+  duration_ms: 1.352758
+  ...
+# Subtest: public repo scope is exact; private adapter fails eligibility without requesting token
+ok 6 - public repo scope is exact; private adapter fails eligibility without requesting token
+  ---
+  duration_ms: 6.057649
+  ...
+# Subtest: merged history requires explicit parent relationship and landed CI SHA
+ok 7 - merged history requires explicit parent relationship and landed CI SHA
+  ---
+  duration_ms: 1.792903
+  ...
+# Subtest: GitHub pagination exhaustion fails closed
+ok 8 - GitHub pagination exhaustion fails closed
+  ---
+  duration_ms: 2.78872
+  ...
+# Subtest: secret scrub covers tokens and does not retain review bodies
+ok 9 - secret scrub covers tokens and does not retain review bodies
+  ---
+  duration_ms: 1.346183
+  ...
+# Subtest: restricted API keys preserve strict live/test separation
+ok 10 - restricted API keys preserve strict live/test separation
+  ---
+  duration_ms: 3935.389231
+  ...
+# Subtest: exact SHA and expected App success can meet CI
+ok 11 - exact SHA and expected App success can meet CI
+  ---
+  duration_ms: 4.879124
+  ...
+# Subtest: wrong SHA never verifies, even when same check succeeds
+ok 12 - wrong SHA never verifies, even when same check succeeds
+  ---
+  duration_ms: 1.955962
+  ...
+# Subtest: wrong App, missing, failed, neutral, skipped, in-progress CI all block
+ok 13 - wrong App, missing, failed, neutral, skipped, in-progress CI all block
+  ---
+  duration_ms: 1.100271
+  ...
+# Subtest: latest failed attempt overrides old success
+ok 14 - latest failed attempt overrides old success
+  ---
+  duration_ms: 0.963348
+  ...
+# Subtest: unresolved or empty CI policy cannot infer not-applicable
+ok 15 - unresolved or empty CI policy cannot infer not-applicable
+  ---
+  duration_ms: 0.609517
+  ...
+# Subtest: approval is exact candidate bound
+ok 16 - approval is exact candidate bound
+  ---
+  duration_ms: 1.376344
+  ...
+# Subtest: dismissed, changes-requested, bot, author and outsider cannot be current approval
+ok 17 - dismissed, changes-requested, bot, author and outsider cannot be current approval
+  ---
+  duration_ms: 1.138017
+  ...
+# Subtest: later comment does not erase an approval but latest decision does
+ok 18 - later comment does not erase an approval but latest decision does
+  ---
+  duration_ms: 0.717573
+  ...
+# Subtest: outstanding changes requested from another reviewer blocks
+ok 19 - outstanding changes requested from another reviewer blocks
+  ---
+  duration_ms: 0.906587
+  ...
+# Subtest: unresolvable approval remains unknown
+ok 20 - unresolvable approval remains unknown
+  ---
+  duration_ms: 0.869018
+  ...
+# Subtest: existing FAIL or blocking local finding is never upgraded
+ok 21 - existing FAIL or blocking local finding is never upgraded
+  ---
+  duration_ms: 0.958335
+  ...
+# Subtest: reassessment preserves original, reports resolved remaining and new gaps
+ok 22 - reassessment preserves original, reports resolved remaining and new gaps
+  ---
+  duration_ms: 3.784505
+  ...
+# Subtest: complete HTTP journey: eligibility -> signed fixture webhook -> authorization -> real Git/PDF -> download -> one reassessment
+ok 23 - complete HTTP journey: eligibility -> signed fixture webhook -> authorization -> real Git/PDF -> download -> one reassessment
+  ---
+  duration_ms: 8477.827641
+  ...
+# Subtest: eligibility blocks inaccessible or unsupported scope without taking payment
+ok 24 - eligibility blocks inaccessible or unsupported scope without taking payment
+  ---
+  duration_ms: 104.346008
+  ...
+# Subtest: report failure is honest, retryable, preserves cleanup, escalates refund to Ryan
+ok 25 - report failure is honest, retryable, preserves cleanup, escalates refund to Ryan
+  ---
+  duration_ms: 1900.107366
+  ...
+# Subtest: post-payment auth and unsupported history have explicit states
+ok 26 - post-payment auth and unsupported history have explicit states
+  ---
+  duration_ms: 566.447718
+  ...
+# Subtest: expired access is denied and artifacts are purged; unknown paid reference escalates
+ok 27 - expired access is denied and artifacts are purged; unknown paid reference escalates
+  ---
+  duration_ms: 553.188116
+  ...
+# Subtest: isolated runner has hard timeout and removes its working directory
+ok 28 - isolated runner has hard timeout and removes its working directory
+  ---
+  duration_ms: 96.967083
+  ...
+# Subtest: new visitors see Pro, retired checkout fails closed, historical access still routes
+ok 29 - new visitors see Pro, retired checkout fails closed, historical access still routes
+  ---
+  duration_ms: 491.76475
+  ...
+# Subtest: hosted sandbox isolates provider credentials and accounting from historical live orders
+ok 30 - hosted sandbox isolates provider credentials and accounting from historical live orders
+  ---
+  duration_ms: 40.803491
+  ...
+# Subtest: authenticated proxy preserves per-client eligibility limits and rejects direct forwarding
+ok 31 - authenticated proxy preserves per-client eligibility limits and rejects direct forwarding
+  ---
+  duration_ms: 438.292916
+  ...
+# Subtest: Pages proxy preserves webhook bytes, origin, cookie and protected response without exposing its key
+ok 32 - Pages proxy preserves webhook bytes, origin, cookie and protected response without exposing its key
+  ---
+  duration_ms: 107.665214
+  ...
+# Subtest: undelivered expired payment escalates once to Ryan instead of disappearing
+ok 33 - undelivered expired payment escalates once to Ryan instead of disappearing
+  ---
+  duration_ms: 15.744097
+  ...
+# Subtest: delivered expired pack retains reconciliation but does not invent a refund on later sweeps
+ok 34 - delivered expired pack retains reconciliation but does not invent a refund on later sweeps
+  ---
+  duration_ms: 3.449029
+  ...
+# Subtest: expired failed reassessment also escalates while unused reassessment does not
+ok 35 - expired failed reassessment also escalates while unused reassessment does not
+  ---
+  duration_ms: 3.600774
+  ...
+# Subtest: one thousand expired paid records do not permanently block new eligibility
+ok 36 - one thousand expired paid records do not permanently block new eligibility
+  ---
+  duration_ms: 35.796404
+  ...
+# Subtest: factory merge report labels and shows the real landed state
+ok 37 - factory merge report labels and shows the real landed state
+  ---
+  duration_ms: 20.833819
+  ...
+1..37
+# tests 37
+# suites 0
+# pass 37
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 20453.569595

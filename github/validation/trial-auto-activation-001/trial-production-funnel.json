@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "interval": "since inclusive, until exclusive",
+  "rows": [
+    {
+      "day": "2026-09-12",
+      "source": "direct",
+      "stage": "account_connected",
+      "events": 1,
+      "accounts": 1
+    },
+    {
+      "day": "2026-09-12",
+      "source": "direct",
+      "stage": "automatic_proof",
+      "events": 1,
+      "accounts": 1
+    },
+    {
+      "day": "2026-09-12",
+      "source": "direct",
+      "stage": "first_successful_proof",
+      "events": 1,
+      "accounts": 1
+    },
+    {
+      "day": "2026-09-12",
+      "source": "direct",
+      "stage": "github_connected",
+      "events": 1,
+      "accounts": 0
+    },
+    {
+      "day": "2026-09-12",
+      "source": "direct",
+      "stage": "hosted_proof_completed",
+      "events": 1,
+      "accounts": 1
+    },
+    {
+      "day": "2026-09-12",
+      "source": "direct",
+      "stage": "installation_available",
+      "events": 1,
+      "accounts": 0
+    },
+    {
+      "day": "2026-09-12",
+      "source": "direct",
+      "stage": "proof_observed",
+      "events": 1,
+      "accounts": 1
+    },
+    {
+      "day": "2026-09-12",
+      "source": "direct",
+      "stage": "repo_authorized",
+      "events": 1,
+      "accounts": 1
+    },
+    {
+      "day": "2026-09-12",
+      "source": "direct",
+      "stage": "trial_cta",
+      "events": 1,
+      "accounts": 0
+    },
+    {
+      "day": "2026-09-12",
+      "source": "direct",
+      "stage": "trial_started",
+      "events": 1,
+      "accounts": 1
+    },
+    {
+      "day": "2026-09-12",
+      "source": "unknown",
+      "stage": "app_installed",
+      "events": 1,
+      "accounts": 1
+    }
+  ]
+}

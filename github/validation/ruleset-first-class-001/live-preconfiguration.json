@@ -1,0 +1,30 @@
+{
+  "at": "2026-09-12T14:41:50.859Z",
+  "repository": "ohcaygo/merge-proof",
+  "ref": "codex/ruleset-only-acceptance-base",
+  "sha": "fac0f4ef30c6ca3477793ddda5296c1c22e9722d",
+  "protected": false,
+  "graphql": {
+    "data": {
+      "repository": {
+        "nameWithOwner": "ohcaygo/merge-proof",
+        "ref": {
+          "name": "codex/ruleset-only-acceptance-base",
+          "prefix": "refs/heads/",
+          "branchProtectionRule": null
+        }
+      }
+    }
+  },
+  "rules": {
+    "classic": {
+      "state": "AVAILABLE",
+      "value": null
+    },
+    "active": {
+      "state": "AVAILABLE",
+      "value": []
+    }
+  },
+  "note": "Preconfiguration only. No ruleset-only acceptance claimed."
+}

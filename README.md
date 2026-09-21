@@ -1,8 +1,12 @@
 # merge-proof
 
-**Before an AI-authored PR merges, determine whether the available evidence actually proves the candidate against the repository state being merged.**
+This README describes the free local CLI and GitHub Action. They inspect local Git evidence and do not collect hosted CI execution, approvals or remote-ref evidence. Flags the local Git evidence gaps described below; does not establish CI execution or approvals.
 
-A clean diff is not evidence. Git will merge a pull request without conflict even when the combined state — your changes plus everything that landed on the base while the PR was open — was never built or tested by anything. merge-proof looks for that gap and says so plainly.
+For automatic hosted proofs, try the [seven-day, no-card, report-only trial](https://merge-proof.ohcaygo.com/proof/). It starts exactly once with the first CURRENT, collection-complete VERIFIED or NOT_PROVEN hosted receipt. Continue afterward for US$29/month per observed active developer. No automatic charge at expiry. Hosted collection pauses without paid entitlement; authorized receipts remain accessible within retention and capacity limits. New enforcing gates require paid Pro and separate repository-admin/GitHub setup.
+
+The former [Standard Evidence Pack](factory/README.md) is retired for new sales; existing orders retain their original [private fulfillment path](https://merge-proof.ohcaygo.com/legacy).
+
+**Inspect local Git evidence before merging.** A clean diff does not establish validation of the combined state. The local analyzer reports overlapping base drift and protected-boundary findings; it does not determine whether CI tested the state or whether reviewers approved it.
 
 ```
 $ npx merge-proof --base origin/main
@@ -13,7 +17,7 @@ NOT_PROVEN - this merge may be fine, but the available evidence does not prove i
     What happened:    The base advanced by 12 commit(s) since this candidate diverged, and 3 file(s)
                       changed by the candidate were also changed on the base in that interval.
     Why it matters:   Git may merge this cleanly even though the combined state was never built or
-                      tested. Any validation of the candidate ran against the older base.
+                      tested. The local analysis does not establish which state CI validated.
     Missing evidence: A validation run of the candidate combined with the current base.
     Do next:          Merge or rebase the current base into the candidate, re-run CI on the combined
                       state, then re-run merge-proof.
@@ -121,6 +125,46 @@ Add repository-specific exclusions in a `.mergeproofignore` file, gitignore-styl
 
 merge-proof makes no network requests, no model or API calls, and no telemetry calls of any kind. It has no cloud backend and no dependencies. Everything it reports is derived from `git` commands run against your local repository. You can verify this: the whole tool is about 700 lines across four files in [`src/`](src/).
 
+## Generate a pilot report in 5 minutes
+
+From a clone of this repository, use **Node 18+** and a locally installed **Google Chrome or Chromium**. No npm install is needed. The verifier and HTML renderer remain dependency-free; PDF export launches the browser in headless mode with a temporary profile. On Linux, install Chrome/Chromium using your distribution's supported installation path. If it is not detected, set `CHROME_BIN` to its executable or pass `--chrome /path/to/chrome`.
+
+Run the committed public sample offline:
+
+```bash
+npm run report:sample
+# output/kiota.html and output/kiota.pdf
+```
+
+The sample selects `microsoft/kiota` from `study-data.json`: **75 VERIFIED, 2 NOT_PROVEN, 0 FAIL**, with no unresolvable records. It is a historical methodology demonstration, not a fresh assessment. **Microsoft is not a customer.** Inspect the committed [sample HTML](samples/kiota.html) and [sample PDF](samples/kiota.pdf), or download the `kiota-pilot-report` artifact from a self-check run.
+
+For one real candidate, collect JSON and render it (replace the repository, refs and scope with the agreed pilot):
+
+```bash
+node bin/merge-proof.js --repo /path/to/full-clone --base origin/main --head HEAD --json > pilot.json
+node bin/merge-proof-report.js --input pilot.json \
+  --scope "One candidate against origin/main; refs captured in JSON; no CI evidence inspected" \
+  --out output/pilot
+```
+
+For a retrospective pilot, use the existing collector with an explicit repository list. **Collection uses the network** to read GitHub; rendering does not recollect evidence. Set the selection bounds deliberately:
+
+```bash
+printf '%s\n' 'owner/repository' > pilot-repos.txt
+node study/collect.js --repos pilot-repos.txt --out pilot.json --max-prs 20 --max-commits 4000
+node bin/merge-proof-report.js --input pilot.json --repo owner/repository \
+  --scope "Up to 20 detected agent-authored squash merges in 4000 scanned commits; no date-window guarantee" \
+  --out output/pilot
+```
+
+Collection can take longer than five minutes. Once JSON exists, the same rendering command creates both files without hand assembly. `--scope` is required. No timestamps are invented: existing formats omit capture/merge dates. A local CLI result is not evidence that its candidate landed on its base. The collector records base-at-merge but still does not inspect final-state CI.
+
+Reports include scope, all three verdict counts, every NOT_PROVEN/FAIL record in plain English, a recommendation including **do nothing**, coverage limits, an evidence register, and the source file's SHA-256. Unresolvable collector records remain visible outside verdict counts; they are never silently counted as VERIFIED or changed into FAIL. **NOT_PROVEN means missing evidence under implemented checks, not bad code.** The renderer preserves the source verdicts; it does not authenticate JSON, verify CI, or execute recommendations.
+
+Invalid/empty input or a PDF export error exits `1`. Successful export exits `0` regardless of evidence verdicts; retain the verifier's `--fail-on` option if you need an evidence gate. A failed browser export leaves HTML and removes the previous PDF so stale output is not mistaken for a new report. For an explicit HTML-only run use `--html-only` (also removes an older PDF at that prefix). Keep the input JSON alongside the report for audit and review scope/paths before sharing private data.
+
+Validation: `npm test` runs verifier and HTML/report contract tests on Node 18/20/22 in CI. `node test/pilot-report.js --pdf` additionally exercises real browser export. Self-check parses workflow YAML with a full parser and publishes the Kiota HTML/PDF artifact. Browser and YAML-parser tooling are CI/export prerequisites, not npm package dependencies.
+
 ## The study
 
 merge-proof exists because of a measurement, not a hunch.
@@ -138,3 +182,20 @@ Derived from verification rules developed for an internal multi-agent engineerin
 ## License
 
 [MIT](LICENSE)
+
+## Standard Evidence Pack factory
+
+The [legacy factory](factory/README.md) preserves existing orders from the retired
+single-PR offer, eligibility, Stripe Payment Link fulfillment, isolated Git runs,
+SHA-bound GitHub CI/review evidence, secure report delivery and one reassessment.
+Run `npm run factory:start` locally. It is separate from the published local-only
+CLI/Action coverage described above; those interfaces retain their current checks.
+Stripe test payment acceptance and release status are recorded in the factory's
+acceptance report. The factory explicitly leaves remote durability and declared
+scope comparison unimplemented.
+# Hosted GitHub exact-state receipts
+
+An additive [GitHub receipt layer](github/README.md) now lives beside the existing
+factory. It collects remote evidence, produces versioned receipts and tracks
+freshness. The hosted App is live at https://merge-proof.ohcaygo.com/proof/.
+The CLI and existing Action documented below remain offline and compatible.

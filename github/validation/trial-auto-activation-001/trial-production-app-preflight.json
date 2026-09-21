@@ -1,0 +1,17 @@
+{
+  "at": "2026-09-12T19:23:50.504Z",
+  "appId": 4901537,
+  "installationId": 161208536,
+  "repo": "ohcaygo/merge-proof",
+  "trial": {
+    "startedAt": 1789241030499,
+    "endsAt": 1789845830499,
+    "receiptId": "e7693df5-bd14-4902-82e4-53e06c2dd28d"
+  },
+  "receiptId": "e7693df5-bd14-4902-82e4-53e06c2dd28d",
+  "verdict": "NOT_PROVEN",
+  "current": "CURRENT",
+  "head": "4b6e8246f88a25b99ed307c1a062afbadf29c08f",
+  "productionStateTouched": false,
+  "publishedChecks": false
+}

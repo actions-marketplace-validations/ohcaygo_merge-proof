@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "interval": "since inclusive, until exclusive",
+  "rows": [
+    {
+      "day": "2026-09-12",
+      "source": "unknown",
+      "stage": "app_installed",
+      "events": 1,
+      "accounts": 1
+    },
+    {
+      "day": "2026-09-12",
+      "source": "unknown",
+      "stage": "automatic_proof",
+      "events": 1,
+      "accounts": 1
+    },
+    {
+      "day": "2026-09-12",
+      "source": "unknown",
+      "stage": "first_successful_proof",
+      "events": 1,
+      "accounts": 1
+    },
+    {
+      "day": "2026-09-12",
+      "source": "unknown",
+      "stage": "hosted_proof_completed",
+      "events": 1,
+      "accounts": 1
+    },
+    {
+      "day": "2026-09-12",
+      "source": "unknown",
+      "stage": "proof_observed",
+      "events": 1,
+      "accounts": 1
+    },
+    {
+      "day": "2026-09-12",
+      "source": "unknown",
+      "stage": "repo_authorized",
+      "events": 1,
+      "accounts": 1
+    },
+    {
+      "day": "2026-09-12",
+      "source": "unknown",
+      "stage": "trial_started",
+      "events": 1,
+      "accounts": 1
+    }
+  ]
+}

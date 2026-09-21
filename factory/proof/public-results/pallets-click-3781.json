@@ -1,0 +1,546 @@
+{
+  "method": "Live public GitHub capture plus isolated Git analysis. Purposive one-PR sample. These repositories are not customers. Required check selected from captured checks, not inferred branch policy.",
+  "scope": {
+    "repo": "pallets/click",
+    "repoId": 19103692,
+    "pr": 3781,
+    "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+    "baseSha": "2103e157683c5e4cadc8ee1838df526a54bde9a4",
+    "ciSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+    "shape": "two-parent-merge",
+    "authorId": 159718
+  },
+  "required": [
+    {
+      "name": "Random 3.14t (stable)",
+      "appId": 15368
+    }
+  ],
+  "capture": {
+    "repo": "pallets/click",
+    "repoId": 19103692,
+    "pr": 3781,
+    "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+    "baseSha": "2103e157683c5e4cadc8ee1838df526a54bde9a4",
+    "ciSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+    "shape": "two-parent-merge",
+    "authorId": 159718,
+    "capturedAt": "2026-09-08T00:34:50.885Z",
+    "checks": [
+      {
+        "id": 96331379942,
+        "name": "Random 3.14t (stable)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:05:04Z"
+      },
+      {
+        "id": 96331379924,
+        "name": "Random 3.11 (main)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:04:54Z"
+      },
+      {
+        "id": 96331379899,
+        "name": "Random Windows (main)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:05:13Z"
+      },
+      {
+        "id": 96331379855,
+        "name": "Random 3.12 (main)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:05:02Z"
+      },
+      {
+        "id": 96331379853,
+        "name": "Stress 3.14 (main)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:04:57Z"
+      },
+      {
+        "id": 96331379844,
+        "name": "Stress Mac 3.14t (main)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:05:23Z"
+      },
+      {
+        "id": 96331379843,
+        "name": "Random 3.10 (main)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:05:03Z"
+      },
+      {
+        "id": 96331379814,
+        "name": "Random 3.14t (main)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:05:06Z"
+      },
+      {
+        "id": 96331379789,
+        "name": "Random 3.14 (main)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:04:56Z"
+      },
+      {
+        "id": 96331379775,
+        "name": "Stress 3.14t (main)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:05:01Z"
+      },
+      {
+        "id": 96331379758,
+        "name": "Random 3.14 (stable)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:10:03Z"
+      },
+      {
+        "id": 96331379757,
+        "name": "Random 3.12 (stable)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:04:56Z"
+      },
+      {
+        "id": 96331379679,
+        "name": "Random Mac (stable)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:05:00Z"
+      },
+      {
+        "id": 96331379670,
+        "name": "Stress 3.14t (stable)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:05:04Z"
+      },
+      {
+        "id": 96331379639,
+        "name": "Random 3.13 (main)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:04:56Z"
+      },
+      {
+        "id": 96331379604,
+        "name": "Stress Mac 3.14t (stable)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:05:51Z"
+      },
+      {
+        "id": 96331379603,
+        "name": "Random Mac (main)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:05:01Z"
+      },
+      {
+        "id": 96331379602,
+        "name": "Random Windows (stable)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:05:10Z"
+      },
+      {
+        "id": 96331379596,
+        "name": "Flask (stable)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:04:56Z"
+      },
+      {
+        "id": 96331379591,
+        "name": "Random 3.10 (stable)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:04:57Z"
+      },
+      {
+        "id": 96331379580,
+        "name": "Stress 3.14 (stable)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:04:56Z"
+      },
+      {
+        "id": 96331379569,
+        "name": "Random 3.13 (stable)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:05:00Z"
+      },
+      {
+        "id": 96331379566,
+        "name": "Random 3.11 (stable)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:04:58Z"
+      },
+      {
+        "id": 96331379341,
+        "name": "Flask (main)",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T06:04:50Z"
+      },
+      {
+        "id": 96297442507,
+        "name": "3.13",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T02:50:42Z"
+      },
+      {
+        "id": 96297442502,
+        "name": "Windows",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T02:51:02Z"
+      },
+      {
+        "id": 96297442460,
+        "name": "3.11",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T02:50:41Z"
+      },
+      {
+        "id": 96297442416,
+        "name": "3.14t",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T02:50:46Z"
+      },
+      {
+        "id": 96297442370,
+        "name": "PyPy",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T02:50:57Z"
+      },
+      {
+        "id": 96297442368,
+        "name": "3.10",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T02:50:49Z"
+      },
+      {
+        "id": 96297442356,
+        "name": "3.12",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T02:50:40Z"
+      },
+      {
+        "id": 96297442347,
+        "name": "Mac",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T02:50:49Z"
+      },
+      {
+        "id": 96297442336,
+        "name": "3.14",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T02:50:42Z"
+      },
+      {
+        "id": 96297442160,
+        "name": "typing",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T02:50:47Z"
+      },
+      {
+        "id": 96297441988,
+        "name": "main",
+        "appId": 15368,
+        "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-20T02:50:52Z"
+      },
+      {
+        "id": 96128328669,
+        "name": "3.14",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:50Z"
+      },
+      {
+        "id": 96128328444,
+        "name": "PyPy",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:40:08Z"
+      },
+      {
+        "id": 96128328390,
+        "name": "Mac",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:51Z"
+      },
+      {
+        "id": 96128328371,
+        "name": "Windows",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:40:00Z"
+      },
+      {
+        "id": 96128328332,
+        "name": "3.13",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:50Z"
+      },
+      {
+        "id": 96128328290,
+        "name": "3.10",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:43Z"
+      },
+      {
+        "id": 96128328241,
+        "name": "3.12",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:47Z"
+      },
+      {
+        "id": 96128328238,
+        "name": "3.11",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:59Z"
+      },
+      {
+        "id": 96128328149,
+        "name": "3.14t",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:59Z"
+      },
+      {
+        "id": 96128327668,
+        "name": "typing",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:40Z"
+      },
+      {
+        "id": 96128327103,
+        "name": "main",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:49Z"
+      }
+    ],
+    "reviews": [
+      {
+        "id": 4978619972,
+        "userId": 67291205,
+        "userType": "User",
+        "association": "MEMBER",
+        "state": "APPROVED",
+        "commitId": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "submittedAt": "2026-08-20T02:50:02Z"
+      }
+    ]
+  },
+  "result": {
+    "schemaVersion": 1,
+    "tool": {
+      "name": "merge-proof",
+      "version": "0.1.0"
+    },
+    "verdict": "VERIFIED",
+    "repository": {
+      "path": "pallets/click",
+      "shallow": false
+    },
+    "refs": {
+      "base": {
+        "ref": "2103e157683c5e4cadc8ee1838df526a54bde9a4",
+        "sha": "2103e157683c5e4cadc8ee1838df526a54bde9a4",
+        "date": "2026-08-19T08:20:27-07:00"
+      },
+      "head": {
+        "ref": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "sha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "date": "2026-08-19T19:39:09+04:00"
+      },
+      "forkPoint": {
+        "sha": "2103e157683c5e4cadc8ee1838df526a54bde9a4",
+        "date": "2026-08-19T08:20:27-07:00"
+      }
+    },
+    "metrics": {
+      "baseAdvanceCommits": 0,
+      "baseAgeDays": 0,
+      "candidateFileCount": 5,
+      "baseChangedFileCount": 0,
+      "overlapCount": 0,
+      "excludedCount": 0
+    },
+    "findings": [],
+    "advisories": [],
+    "excluded": [],
+    "notChecked": [
+      {
+        "id": "CANDIDATE_DURABLE_ON_REMOTE",
+        "reason": "Remote durability is outside the implemented proof."
+      },
+      {
+        "id": "SCOPE_CREEP_VS_DECLARED_SCOPE",
+        "reason": "Comparison with declared intent or scope is outside the implemented proof."
+      }
+    ],
+    "ignoreFile": null,
+    "evidence": {
+      "ci": {
+        "targetSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "policy": "All scope-confirmed check names and App IDs must succeed on the relevant SHA.",
+        "checks": [
+          {
+            "name": "Random 3.14t (stable)",
+            "appId": 15368,
+            "state": "CI_MATCHES_RELEVANT_SHA",
+            "evidence": {
+              "id": 96331379942,
+              "name": "Random 3.14t (stable)",
+              "appId": 15368,
+              "headSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+              "status": "completed",
+              "conclusion": "success",
+              "completedAt": "2026-08-20T06:05:04Z"
+            }
+          }
+        ],
+        "state": "CI_MATCHES_RELEVANT_SHA"
+      },
+      "approval": {
+        "targetSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "policy": "At least one non-author human collaborator approval on this exact candidate; no outstanding changes-requested review.",
+        "reviews": [
+          {
+            "id": 4978619972,
+            "userId": 67291205,
+            "userType": "User",
+            "association": "MEMBER",
+            "state": "APPROVED",
+            "commitId": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+            "submittedAt": "2026-08-20T02:50:02Z"
+          }
+        ],
+        "state": "APPROVAL_MATCHES_CANDIDATE"
+      }
+    }
+  }
+}

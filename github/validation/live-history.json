@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 2,
+  "repository": "ohcaygo/merge-proof",
+  "requestedLimit": 1,
+  "selected": 1,
+  "selection": "Up to 10 merged PRs from the first 30 most recently updated closed PRs.",
+  "observedAt": "2026-09-10T07:32:12.299Z",
+  "rows": [
+    {
+      "pr": 3,
+      "url": "https://github.com/ohcaygo/merge-proof/pull/3",
+      "state": "UNAVAILABLE",
+      "reason": "UNSUPPORTED_HISTORICAL_SHAPE"
+    }
+  ],
+  "limitations": [
+    "Only explicit two-parent merges bind the historical base and candidate. Squash/rebase history is unavailable.",
+    "Current repository rules and review records cannot establish policy or approval validity at merge time. Historical receipts therefore cannot establish a full VERIFIED result.",
+    "Counts describe evidence conditions, not bugs, incidents prevented or money saved."
+  ]
+}

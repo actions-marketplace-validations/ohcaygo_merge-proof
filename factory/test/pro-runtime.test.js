@@ -1,0 +1,26 @@
+'use strict';
+const {test}=require('node:test');
+const a=require('node:assert/strict');
+const fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+const {Store}=require('../store');
+const {createProofRuntime}=require('../server');
+test('hosted sandbox isolates provider credentials and accounting from historical live orders',t=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'mp-pro-runtime-'));
+ const legacy=new Store(path.join(root,'legacy'));
+ t.after(()=>{legacy.close();fs.rmSync(root,{recursive:true,force:true});});
+ const config={origin:'https://example.test',stateDir:legacy.root,mode:'live',stripeSecret:'rk_live_legacy',webhookSecret:'legacy'};
+ a.throws(()=>createProofRuntime(config,legacy,{hosted:true,stateDir:legacy.root}),/SEPARATE_PRO_STATE_REQUIRED/);
+ const app={hosted:true,stateDir:path.join(root,'sandbox'),billing:{mode:'test',stripeSecret:'sk_test_sandbox',webhookSecret:'sandbox'}};
+ const proof=createProofRuntime(config,legacy,app);
+ a.equal(proof.billing.config.stripeSecret,'sk_test_sandbox');
+ a.equal(proof.billing.config.mode,'test');
+ a.equal(proof.billing.config.webhookSecret,'sandbox');
+ proof.meter.connect(1,2);proof.save();
+ a.equal(legacy.data.meter,undefined);
+ a.equal(config.stripeSecret,'rk_live_legacy');
+ proof.store.close();
+ a.throws(()=>createProofRuntime(config,legacy,{...app,billing:{mode:'live',stripeSecret:'sk_live_other'}}),/BILLING_LEDGER_MODE_MISMATCH/);
+ const again=createProofRuntime(config,legacy,app);
+ a.equal(again.meter.account(1).freeUsed,0);
+ again.store.close();
+});

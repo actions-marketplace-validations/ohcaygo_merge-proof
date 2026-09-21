@@ -1,0 +1,20 @@
+{
+  "hosted": true,
+  "appId": 0,
+  "clientId": "PRODUCTION_APP_CLIENT_ID",
+  "clientSecret": "SET_PRIVATELY_ON_HOST",
+  "privateKey": "SET_PRIVATELY_ON_HOST",
+  "webhookSecret": "SET_PRIVATELY_ON_HOST_AT_LEAST_32_CHARACTERS",
+  "installUrl": "https://github.com/apps/PRODUCTION_APP_SLUG/installations/new",
+  "publishChecks": true,
+  "serviceIdentityIds": [],
+  "stateDir": "/var/lib/merge-proof/pro-sandbox",
+  "billing": {
+    "mode": "test",
+    "stripeSecret": "SET_PRIVATELY_ON_HOST",
+    "webhookSecret": "SET_SEPARATE_PRO_STRIPE_SIGNING_SECRET",
+    "proPriceId": "SET_SANDBOX_MONTHLY_PRICE_ID",
+    "topupPriceId": "SET_SANDBOX_TOPUP_PRICE_ID",
+    "billingPortalConfiguration": "SET_SANDBOX_PORTAL_CONFIGURATION_ID"
+  }
+}

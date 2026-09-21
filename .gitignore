@@ -4,3 +4,8 @@ node_modules/
 .DS_Store
 /tmp/
 /study-work/
+/output/
+.factory-state/
+.factory-config*.json
+.env*
+factory/proof/private/

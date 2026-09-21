@@ -1,0 +1,231 @@
+{
+  "method": "CONTROLLED WITHHOLDING REPLAY, not a claim about the live repository: remove all landed-SHA checks from the authentic click #3781 capture; retain only genuine candidate-SHA checks, select one of those check names, and require evidence for the original landed SHA. No SHA/outcome/approval is fabricated. Original live capture remains unchanged.",
+  "sourceSha256": "59207f3d2946c27dc7f9515a1f72c5d186a0fcaeffd4d098c95aa515c26f5bf9",
+  "required": [
+    {
+      "name": "3.14",
+      "appId": 15368
+    }
+  ],
+  "capture": {
+    "repo": "pallets/click",
+    "repoId": 19103692,
+    "pr": 3781,
+    "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+    "baseSha": "2103e157683c5e4cadc8ee1838df526a54bde9a4",
+    "ciSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+    "shape": "two-parent-merge",
+    "authorId": 159718,
+    "capturedAt": "2026-09-08T00:34:50.885Z",
+    "checks": [
+      {
+        "id": 96128328669,
+        "name": "3.14",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:50Z"
+      },
+      {
+        "id": 96128328444,
+        "name": "PyPy",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:40:08Z"
+      },
+      {
+        "id": 96128328390,
+        "name": "Mac",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:51Z"
+      },
+      {
+        "id": 96128328371,
+        "name": "Windows",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:40:00Z"
+      },
+      {
+        "id": 96128328332,
+        "name": "3.13",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:50Z"
+      },
+      {
+        "id": 96128328290,
+        "name": "3.10",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:43Z"
+      },
+      {
+        "id": 96128328241,
+        "name": "3.12",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:47Z"
+      },
+      {
+        "id": 96128328238,
+        "name": "3.11",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:59Z"
+      },
+      {
+        "id": 96128328149,
+        "name": "3.14t",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:59Z"
+      },
+      {
+        "id": 96128327668,
+        "name": "typing",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:40Z"
+      },
+      {
+        "id": 96128327103,
+        "name": "main",
+        "appId": 15368,
+        "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "status": "completed",
+        "conclusion": "success",
+        "completedAt": "2026-08-19T15:39:49Z"
+      }
+    ],
+    "reviews": [
+      {
+        "id": 4978619972,
+        "userId": 67291205,
+        "userType": "User",
+        "association": "MEMBER",
+        "state": "APPROVED",
+        "commitId": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "submittedAt": "2026-08-20T02:50:02Z"
+      }
+    ]
+  },
+  "result": {
+    "schemaVersion": 1,
+    "tool": {
+      "name": "merge-proof",
+      "version": "0.1.0"
+    },
+    "verdict": "NOT_PROVEN",
+    "repository": {
+      "path": "pallets/click",
+      "shallow": false
+    },
+    "refs": {
+      "base": {
+        "ref": "2103e157683c5e4cadc8ee1838df526a54bde9a4",
+        "sha": "2103e157683c5e4cadc8ee1838df526a54bde9a4",
+        "date": "2026-08-19T08:20:27-07:00"
+      },
+      "head": {
+        "ref": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "sha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "date": "2026-08-19T19:39:09+04:00"
+      },
+      "forkPoint": {
+        "sha": "2103e157683c5e4cadc8ee1838df526a54bde9a4",
+        "date": "2026-08-19T08:20:27-07:00"
+      }
+    },
+    "metrics": {
+      "baseAdvanceCommits": 0,
+      "baseAgeDays": 0,
+      "candidateFileCount": 5,
+      "baseChangedFileCount": 0,
+      "overlapCount": 0,
+      "excludedCount": 0
+    },
+    "findings": [
+      {
+        "id": "CI_RAN_ON_FINAL_HEAD",
+        "severity": "blocking",
+        "title": "CI_RAN_ON_FINAL_HEAD",
+        "whatHappened": "CI_STALE_OR_OTHER_SHA",
+        "missingEvidence": "Exact SHA-bound evidence for e1fd5946ab26aaf372009eaff1acf947140b40fb.",
+        "doNext": "Supply current evidence for the confirmed scope and use the included reassessment."
+      }
+    ],
+    "advisories": [],
+    "excluded": [],
+    "notChecked": [
+      {
+        "id": "CANDIDATE_DURABLE_ON_REMOTE",
+        "reason": "Remote durability is outside the implemented proof."
+      },
+      {
+        "id": "SCOPE_CREEP_VS_DECLARED_SCOPE",
+        "reason": "Comparison with declared intent or scope is outside the implemented proof."
+      }
+    ],
+    "ignoreFile": null,
+    "evidence": {
+      "ci": {
+        "targetSha": "e1fd5946ab26aaf372009eaff1acf947140b40fb",
+        "policy": "All scope-confirmed check names and App IDs must succeed on the relevant SHA.",
+        "checks": [
+          {
+            "name": "3.14",
+            "appId": 15368,
+            "state": "CI_STALE_OR_OTHER_SHA",
+            "evidence": {
+              "id": 96128328669,
+              "name": "3.14",
+              "appId": 15368,
+              "headSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+              "status": "completed",
+              "conclusion": "success",
+              "completedAt": "2026-08-19T15:39:50Z"
+            }
+          }
+        ],
+        "state": "CI_STALE_OR_OTHER_SHA"
+      },
+      "approval": {
+        "targetSha": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+        "policy": "At least one non-author human collaborator approval on this exact candidate; no outstanding changes-requested review.",
+        "reviews": [
+          {
+            "id": 4978619972,
+            "userId": 67291205,
+            "userType": "User",
+            "association": "MEMBER",
+            "state": "APPROVED",
+            "commitId": "a1d87858abd77fa8e3ffc204670ccd75b96c4781",
+            "submittedAt": "2026-08-20T02:50:02Z"
+          }
+        ],
+        "state": "APPROVAL_MATCHES_CANDIDATE"
+      }
+    }
+  }
+}

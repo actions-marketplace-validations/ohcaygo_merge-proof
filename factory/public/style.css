@@ -1,0 +1,248 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #18272d;
+  background: #fff;
+  font-size: 16px;
+  line-height: 1.55;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 1060px;
+  margin: auto;
+  padding: 0 36px;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid #bbc9c3;
+  padding: 28px 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.09em;
+}
+.brand {
+  font-weight: 800;
+  text-decoration: none;
+}
+a {
+  color: #205b4d;
+  text-underline-offset: 4px;
+}
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4.7rem);
+  line-height: 1.06;
+  letter-spacing: -0.055em;
+  font-weight: 700;
+  margin: 14px 0 24px;
+}
+h2 {
+  font-size: 1.35rem;
+  line-height: 1.3;
+  margin: 0 0 14px;
+}
+h3 {
+  font-size: 1.1rem;
+}
+p {
+  margin: 0 0 16px;
+}
+.intro {
+  padding: 65px 0 38px;
+  max-width: 760px;
+}
+.eyebrow {
+  color: #276352;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+.lead {
+  font-size: 1.25rem;
+  max-width: 650px;
+}
+.small {
+  font-size: 0.875rem;
+  color: #526269;
+  margin-top: 12px;
+}
+.definitions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  border-top: 3px solid #276352;
+  padding: 26px 0;
+}
+.definitions h2 {
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+.definitions p {
+  font-size: 0.95rem;
+}
+.offer {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 50px;
+  border-top: 1px solid #bbc9c3;
+  padding: 34px 0;
+}
+.price {
+  font-size: 1.7rem;
+  color: #205b4d;
+  font-weight: bold;
+}
+.limits {
+  background: #eef3f1;
+  padding: 26px 30px;
+  margin: 15px 0 45px;
+  border-left: 4px solid #276352;
+}
+.limits code {
+  overflow-wrap: anywhere;
+  font-size: 0.875rem;
+}
+li {
+  margin: 8px 0;
+}
+.work {
+  border-top: 3px solid #276352;
+  padding: 25px 0;
+}
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+.section-head span {
+  font-size: 0.8rem;
+  color: #276352;
+  overflow-wrap: anywhere;
+}
+label {
+  display: block;
+  font-weight: 600;
+  margin: 16px 0 6px;
+}
+input,
+textarea {
+  display: block;
+  font: inherit;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #8c9d95;
+  border-radius: 3px;
+  margin-top: 7px;
+}
+textarea {
+  font-family: monospace;
+}
+button {
+  font: inherit;
+  font-weight: 600;
+  border: 1px solid #205b4d;
+  border-radius: 3px;
+  background: #205b4d;
+  color: white;
+  padding: 12px 20px;
+  margin: 8px 10px 8px 0;
+  cursor: pointer;
+}
+button.secondary {
+  background: white;
+  color: #205b4d;
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+input:focus,
+textarea:focus,
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #72a9ce;
+  outline-offset: 3px;
+}
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: normal;
+}
+.check input {
+  width: auto;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: #eef3f1;
+  padding: 20px;
+  font-size: 0.9rem;
+}
+#message:not(:empty) {
+  border-left: 3px solid #ad7430;
+  padding: 12px;
+  background: #faf5e9;
+}
+#downloads section {
+  padding: 15px 0;
+  border-top: 1px solid #bbc9c3;
+}
+#downloads a {
+  display: inline-block;
+  margin: 8px 22px 8px 0;
+}
+footer {
+  border-top: 1px solid #bbc9c3;
+  margin: 45px 0 20px;
+  padding: 20px 0;
+  font-size: 0.875rem;
+  color: #526269;
+}
+[hidden] {
+  display: none !important;
+}
+@media (max-width: 650px) {
+  main {
+    padding: 0 20px;
+  }
+  .intro {
+    padding-top: 38px;
+  }
+  .definitions,
+  .offer {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .limits {
+    padding: 22px 18px;
+  }
+  .section-head,
+  header {
+    display: block;
+  }
+  .section-head span {
+    display: block;
+    margin-bottom: 15px;
+  }
+  header span {
+    display: block;
+    margin-top: 8px;
+  }
+  button {
+    width: 100%;
+  }
+  h1 br {
+    display: none;
+  }
+}
+
+.primary-cta { display:inline-block; padding:14px 22px; border-radius:3px; background:#205b4d; color:#fff; font-weight:700; text-decoration:none; text-align:center; }
+.journey { margin-top:18px; }
+@media(max-width:650px) { .primary-cta { width:100%; } }
